@@ -1,4 +1,6 @@
 import category from '@/models/category'
+import conn from '../db'
+
 export default async function getListCategory(req, res) {
     try {
         let rs = await category.find().lean()

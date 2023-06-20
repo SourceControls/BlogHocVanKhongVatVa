@@ -1,5 +1,6 @@
 import post from '@/models/post'
 import post_category from '@/models/post_category'
+import conn from '../db'
 
 async function deletePost(req, res) {
     try {

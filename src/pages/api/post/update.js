@@ -1,6 +1,8 @@
 import post from '@/models/post'
 import post_category from '@/models/post_category'
 import {getNews} from '@util'
+import conn from '../db'
+
 async function updateNews(req, res) {
     try {
         const {_id, content, title, subTitle, displayType, categories} = req.body

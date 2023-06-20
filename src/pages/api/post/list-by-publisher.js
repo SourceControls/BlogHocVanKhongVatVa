@@ -1,4 +1,5 @@
 import post from '@/models/post'
+import conn from '../db'
 
 async function listByAuthor(req, res) {
     try {

@@ -1,4 +1,6 @@
 import postSchema from '@/models/post'
+import conn from '../db'
+
 async function Count(req, res) {
     try {
         let post = await postSchema.findById(req.query.postId, {postId: 1, view: 1})

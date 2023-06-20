@@ -2,10 +2,11 @@ import post from '@/models/post'
 import post_category from '@/models/post_category'
 import categorySchema from '@/models/category'
 import {resBody} from '@util'
+import conn from '../db'
+
 async function getListNews(req, res) {
     try {
         let {id, category, page, key, displayType, limit} = req.query
-        console.log('post/list')
         page = parseInt(page)
         // if (page <= 0) {
         //     page = 1
