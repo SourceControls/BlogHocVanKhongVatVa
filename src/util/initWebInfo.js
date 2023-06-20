@@ -1,4 +1,4 @@
-function init(favIcon, title) {
+export function initWebInfo(favIcon, title) {
     let link = document.querySelector("link[rel~='icon']")
     if (!link) {
         link = document.createElement('link')
@@ -8,5 +8,3 @@ function init(favIcon, title) {
     link.href = favIcon
     document.title = title
 }
-
-export default init

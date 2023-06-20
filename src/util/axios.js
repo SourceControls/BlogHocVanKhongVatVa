@@ -10,7 +10,7 @@ function GlobalLoading() {
 }
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: '/api',
     timeout: 15000,
     headers: {
         'Content-Type': 'application/json',
@@ -54,5 +54,3 @@ instance.interceptors.response.use(
 )
 
 export {instance as axios, GlobalLoading, setDisplayGlobalLoading}
-
-export default GlobalLoading

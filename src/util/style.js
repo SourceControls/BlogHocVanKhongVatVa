@@ -1,4 +1,4 @@
-function style(config) {
+export function style(config) {
     return config
         ? {
               globalStyles: (theme) => ({
@@ -66,4 +66,3 @@ function style(config) {
           }
         : {}
 }
-export default style

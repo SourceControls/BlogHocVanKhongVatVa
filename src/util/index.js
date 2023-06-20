@@ -1,35 +1,8 @@
-import formatDate from './formatDate'
-import initWebInfo from './initWebInfo'
+export * from './formatDate'
+export * from './initWebInfo'
+export * from './service'
+export * from './style'
+export * from './axios'
+
 import 'react-toastify/dist/ReactToastify.css'
-
-import {
-    addPost,
-    getCategories,
-    getConfig,
-    getConfigAsync,
-    getNews,
-    getNewsByPublisher,
-    updateConfig,
-    updatePost,
-} from './service'
-import style from './style'
 import './globalStyle.css'
-import {axios, GlobalLoading, setDisplayGlobalLoading} from './axios'
-module.exports = {
-    formatDate,
-    initWebInfo,
-    addPost,
-    getCategories,
-    getConfig,
-    getConfigAsync,
-    getNews,
-    getNewsByPublisher,
-    updateConfig,
-    updatePost,
-    style,
-    axios,
-    GlobalLoading,
-    setDisplayGlobalLoading,
-}
-
-export default function df() {}
