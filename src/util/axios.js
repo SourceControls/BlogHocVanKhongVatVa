@@ -20,19 +20,19 @@ const instance = axios.create({
 instance.interceptors.request.use(
     function (config) {
         // if (!displayGlobalLoading) setDisplayGlobalLoading(true)
-        toast.info('Call API: ' + config.url)
-        config.headers.Authorization = localStorage.Authorization
+
+        console.log('Call API: ' + config.url)
+        if (typeof window !== 'undefined') config.headers.Authorization = localStorage.Authorization
         return config
     },
     function (error) {
-        setDisplayGlobalLoading(false)
+        // setDisplayGlobalLoading(false)
         return toast.error(error.message)
     },
 )
 instance.interceptors.response.use(
     async function (response) {
         // if (displayGlobalLoading) setTimeout(() => setDisplayGlobalLoading(false), 0)
-
         // lưu lại auth token
         if (response.headers.get('Authorization')) {
             response.data['Authorization'] = response.headers.get('Authorization')
@@ -49,6 +49,7 @@ instance.interceptors.response.use(
     },
     function (error) {
         // setDisplayGlobalLoading(false)
+        console.log(error.message)
         return toast.error(error.message)
     },
 )

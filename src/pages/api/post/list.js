@@ -6,7 +6,7 @@ import conn from '../db'
 
 async function getListNews(req, res) {
     try {
-        let {id, category, page, key, displayType, limit} = req.query
+        let {id, category, page, key, displayType, limit, sortByView} = req.query
         page = parseInt(page)
         // if (page <= 0) {
         //     page = 1
@@ -42,6 +42,7 @@ async function getListNews(req, res) {
                 },
             },
         ]
+
         if (id) {
             query.unshift({$match: {$expr: {$eq: ['$_id', {$toObjectId: id}]}}})
         } else if (category) {
@@ -63,6 +64,21 @@ async function getListNews(req, res) {
 
         // chuyển đổi thời gian
         let rs = await post.aggregate(query)
+
+        if (sortByView) {
+            // sort theo ngày, nếu cùng ngày thì sort theo view
+            rs.sort(function (a, b) {
+                const timeA = new Date(new Date(a.createdAt).toLocaleDateString()).getTime()
+                const timeB = new Date(new Date(b.createdAt).toLocaleDateString()).getTime()
+
+                if (timeA > timeB) return -1
+                else if (timeA < timeB) {
+                    return 1
+                } else {
+                    return b.view - a.view
+                }
+            })
+        }
         rs = rs.map((item) => ({
             ...item,
             url: '/read/' + item._id,

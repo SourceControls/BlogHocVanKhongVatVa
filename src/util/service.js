@@ -1,8 +1,16 @@
 import {axios} from './axios'
 
-export async function getNews({id = '', category = '', key = '', displayType = 'NORMAL', page = 1, limit = 1}) {
+export async function getNews({
+    id = '',
+    category = '',
+    key = '',
+    displayType = 'NORMAL',
+    page = 1,
+    limit = 1,
+    sortByView = '',
+}) {
     return await axios.get(
-        `/post/list?id=${id}&category=${category}&key=${key}&displayType=${displayType}&page=${page}&limit=${limit}`,
+        `/post/list?id=${id}&category=${category}&key=${key}&displayType=${displayType}&page=${page}&limit=${limit}&sortByView=${sortByView}`,
     )
 }
 export async function getNewsByPublisher({publisher = '', page = 1, limit = 1}) {
