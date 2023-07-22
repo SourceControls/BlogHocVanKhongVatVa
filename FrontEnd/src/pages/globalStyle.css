@@ -1,0 +1,45 @@
+@import url(https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500;600;700&display=swap);
+
+
+/* :root {} */
+
+* {
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+html {
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: var(--primary-color-0) !important;
+}
+
+.limit-w {
+    max-width: 1440px;
+}
+
+.init-bg {
+    background-color: var(--default-bg-color);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+
+/* img {
+    borderRadius: 8px !important;
+} */
+
+@media (max-width: 32em) {
+    html {
+        font-size: 14px;
+    }
+
+}

@@ -1,13 +1,13 @@
 import axios from 'axios'
-import {useState} from 'react'
-import {LoadingOverlay} from '@mantine/core'
+// import {useState} from 'react'
+// import {LoadingOverlay} from '@mantine/core'
 import {toast} from 'react-toastify'
 
 var displayGlobalLoading, setDisplayGlobalLoading
-function GlobalLoading() {
-    ;[displayGlobalLoading, setDisplayGlobalLoading] = useState(false)
-    return <LoadingOverlay visible={displayGlobalLoading} overlayBlur={2} />
-}
+// function GlobalLoading() {
+//     ;[displayGlobalLoading, setDisplayGlobalLoading] = useState(false)
+//     return <LoadingOverlay visible={displayGlobalLoading} overlayBlur={2} />
+// }
 
 const instance = axios.create({
     baseURL: '/api',
@@ -54,4 +54,4 @@ instance.interceptors.response.use(
     },
 )
 
-export {instance as axios, GlobalLoading, setDisplayGlobalLoading}
+export {instance as axios}

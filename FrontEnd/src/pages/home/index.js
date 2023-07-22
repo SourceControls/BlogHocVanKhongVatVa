@@ -1,12 +1,26 @@
-import Layout from '../Layout/index'
-import Hero from './../component/Hero/index'
-import ListCategorySection from './ListCategorySection'
+import {Stack} from '@mantine/core'
+import Layout from '../Layout'
+import {Decorate} from '@comp'
+import {Section, GridPost, CommonLiterarySection} from '@comp'
+import Hero from './Hero'
+import FeaturedPosts from './FeaturedPosts'
 function Home() {
     return (
-        <>
-            <Hero page='home'></Hero>
-            <ListCategorySection />
-        </>
+        <Stack pt='xl'>
+            <Hero></Hero>
+            <Decorate />
+            <Section title='Tác Phẩm Tiêu Biểu' titlePosition='center'>
+                <CommonLiterarySection />
+            </Section>
+            {/* <Adverting /> */}
+
+            <Section title='Bài Viết Nổi Bật'>
+                <FeaturedPosts />
+            </Section>
+            <Section title='Bài Viết Mới Nhất'>
+                <GridPost />
+            </Section>
+        </Stack>
     )
 }
 Home.Layout = Layout

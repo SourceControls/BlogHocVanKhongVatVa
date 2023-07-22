@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500;600;700&display=swap');
+
+
+#editor .tox-tinymce {
+    font-family: Mali !important;
+    font-size: 18px !important;
+}
+
+#editor-body {
+    font-family: Mali;
+    max-width: 700px;
+    font-size: 18px;
+    margin: 0 auto;
+}
+
+#editor-body img {
+    width: 90% !important;
+    display: block;
+    margin: 0 auto;
+
+}
+
+#editor .tox-mbtn--select {
+    width: unset !important;
+}

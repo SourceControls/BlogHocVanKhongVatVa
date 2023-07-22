@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, Response } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SignInDto } from './dto/signIn.dto';
 import { SignUpDto } from './dto/signUp.dto';
@@ -8,10 +8,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common/exceptions';
 import { JwtService } from '@nestjs/jwt';
-
+import { Public } from './public.decorator';
+import { Response as Res } from 'express';
+@Public()
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+
   async signUp(dto: SignUpDto) {
     try {
       //check user already exists
@@ -32,7 +35,8 @@ export class AuthService {
       throw new ForbiddenException(error.message);
     }
   }
-  async signIn(dto: SignInDto) {
+
+  async signIn(dto: SignInDto, @Response() res: Res) {
     try {
       //get account via email address
       const user = await this.prisma.user.findUnique({
@@ -45,10 +49,16 @@ export class AuthService {
       if (!matchPassword)
         throw new UnauthorizedException('Thông tin đăng nhập không chính xác!');
       //generate token
-      const payload = { sub: user.userId, email: user.email };
+      const payload = {
+        userId: user.userId,
+        email: user.email,
+        roles: [user.role],
+      };
       const token = await this.jwtService.signAsync(payload);
       delete user.password;
-      return { data: user, message: 'Hello!! ' + user.name + ' !', token };
+
+      res.setHeader('authentication', token);
+      return res.json({ data: user, message: 'Hello!! ' + user.name + ' !' });
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }

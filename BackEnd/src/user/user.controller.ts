@@ -6,23 +6,22 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ForbiddenException } from '@nestjs/common/exceptions';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from 'src/auth/role.enum';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(AuthGuard)
   @Get('profile')
+  @Roles(Role.CONTRIBUTOR)
   getProfile(@Request() req) {
-    return this.userService.findOne(req.user.email);
+    return this.userService.findOne(req.authUser.email);
   }
 
   @Post()

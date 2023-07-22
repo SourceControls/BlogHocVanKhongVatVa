@@ -1,7 +1,9 @@
+import './globalStyle.css'
 import {MantineProvider} from '@mantine/core'
 import {useEffect, useState} from 'react'
-import {getConfigAsync, style, initWebInfo, GlobalLoading} from '@util'
+import {getConfigAsync, style, initWebInfo} from '@util'
 import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function EmptyLayout({children}) {
     return <>{children}</>
@@ -12,7 +14,7 @@ export default function MyApp({Component, pageProps}) {
     useEffect(() => {
         getConfigAsync().then((rs) => {
             setConfig(rs)
-            initWebInfo(rs.favIcon, rs.pageTitle)
+            initWebInfo(rs.favIcon, rs.webTitle)
         })
     }, [])
 
@@ -21,14 +23,14 @@ export default function MyApp({Component, pageProps}) {
     return (
         <>
             {config && (
-                <MantineProvider theme={style(config)} withGlobalStyles withNormalizeCSS>
-                    <Layout config={config}>
+                <MantineProvider theme={style()} withGlobalStyles withNormalizeCSS withCSSVariables>
+                    <Layout>
                         <Component {...pageProps} />
                     </Layout>
                 </MantineProvider>
             )}
             <ToastContainer position='top-left' autoClose={1000} />
-            <GlobalLoading />
+            {/* <GlobalLoading /> */}
         </>
     )
 }
