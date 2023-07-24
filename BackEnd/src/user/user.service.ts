@@ -15,10 +15,14 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  async findOne(email: any) {
+  async findOne(data: string | number) {
     try {
+      const query =
+        typeof data === 'number' ? { userId: data } : { email: data };
       const user = await this.prisma.user.findUnique({
-        where: { email: email },
+        where: {
+          ...query,
+        },
       });
       delete user.password;
       return { data: user };
@@ -27,8 +31,17 @@ export class UserService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(userId: number, updateUserDto: UpdateUserDto) {
+    try {
+      const user = await this.prisma.user.update({
+        data: updateUserDto,
+        where: { userId: userId },
+      });
+      delete user.password;
+      return { data: user };
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
   }
 
   remove(id: number) {

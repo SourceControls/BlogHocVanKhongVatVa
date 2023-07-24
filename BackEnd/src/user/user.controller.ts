@@ -11,22 +11,16 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from 'src/auth/roles.decorator';
-import { Role } from 'src/auth/role.enum';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
+@ApiTags('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('profile')
-  @Roles(Role.CONTRIBUTOR)
   getProfile(@Request() req) {
-    return this.userService.findOne(req.authUser.email);
-  }
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+    return this.userService.findOne(req.authUser.useruserId);
   }
 
   @Get()
@@ -34,18 +28,25 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get(':userId')
+  findOne(@Param('userId') userId: string) {
+    return this.userService.findOne(+userId);
+  }
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Patch(':userId')
+  update(
+    @Param('userId') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.update(+userId, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Delete(':userId')
+  remove(@Param('userId') userId: string) {
+    return this.userService.remove(+userId);
   }
 }

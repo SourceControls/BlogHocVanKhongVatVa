@@ -22,7 +22,7 @@ model advertisement {
   price                              Decimal  @default(0.0000000) @db.Decimal(10, 7)
   createdAt                          DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
   createdBy                          Int?
-  updatedAt                          DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
+  updatedAt                          DateTime @updatedAt
   updatedBy                          Int?
   user_advertisement_createdByTouser user?    @relation("advertisement_createdByTouser", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "advertisement_ibfk_1")
   user_advertisement_updatedByTouser user?    @relation("advertisement_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "advertisement_ibfk_2")
@@ -39,7 +39,7 @@ model category {
   group                         String?            @db.VarChar(200)
   createdAt                     DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
   createdBy                     Int
-  updatedAt                     DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
+  updatedAt                     DateTime           @updatedAt
   updatedBy                     Int?
   user_category_updatedByTouser user?              @relation("category_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "category_ibfk_1")
   user_category_createdByTouser user               @relation("category_createdByTouser", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "category_ibfk_2")
@@ -75,7 +75,7 @@ model literary {
   image                         String?            @db.VarChar(500)
   createdAt                     DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
   createdBy                     Int
-  updatedAt                     DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
+  updatedAt                     DateTime           @updatedAt
   updatedBy                     Int?
   user_literary_updatedByTouser user?              @relation("literary_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "literary_ibfk_1")
   user_literary_createdByTouser user               @relation("literary_createdByTouser", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "literary_ibfk_2")
@@ -107,10 +107,10 @@ model post {
   featured                         Boolean         @default(false)
   status                           post_status     @default(DRAFT)
   visibility                       post_visibility @default(PUBLIC)
-  view                             BigInt          @default(0)
+  view                             Int          @default(0)
   createdBy                        Int
   createdAt                        DateTime        @default(dbgenerated("(now())")) @db.DateTime(0)
-  updatedAt                        DateTime        @default(dbgenerated("(now())")) @db.DateTime(0)
+  updatedAt                        DateTime        @updatedAt
   updatedBy                        Int?
   publishedBy                      Int?
   literary                         Int?
@@ -157,7 +157,7 @@ model setting {
   key       String   @db.VarChar(50)
   value     String?  @db.Text
   type      String   @db.VarChar(50)
-  updatedAt DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
+  updatedAt DateTime @updatedAt
   updatedBy Int?
   user      user?    @relation(fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "setting_ibfk_1")
 
@@ -172,7 +172,7 @@ model tag {
   visibility               Boolean   @default(true)
   createdAt                DateTime  @default(dbgenerated("(now())")) @db.DateTime(0)
   createdBy                Int
-  updatedAt                DateTime  @default(dbgenerated("(now())")) @db.DateTime(0)
+  updatedAt                DateTime  @updatedAt
   updatedBy                Int?
   posttag                  posttag[]
   user_tag_updatedByTouser user?     @relation("tag_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "tag_ibfk_1")
@@ -195,7 +195,7 @@ model user {
   password                                    String          @db.VarChar(200)
   role                                        user_role       @default(VIEWER)
   createdAt                                   DateTime        @default(dbgenerated("(now())")) @db.DateTime(0)
-  updatedAt                                   DateTime        @default(dbgenerated("(now())")) @db.DateTime(0)
+  updatedAt                                   DateTime        @updatedAt
   updatedBy                                   Int?
   advertisement_advertisement_createdByTouser advertisement[] @relation("advertisement_createdByTouser")
   advertisement_advertisement_updatedByTouser advertisement[] @relation("advertisement_updatedByTouser")

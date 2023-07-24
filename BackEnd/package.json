@@ -25,6 +25,7 @@
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.1.2",
     "@nestjs/typeorm": "^10.0.0",
     "@prisma/client": "^4.16.2",
     "argon2": "^0.30.3",
@@ -33,7 +34,8 @@
     "class-validator": "^0.14.0",
     "mysql2": "^3.4.2",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -76,5 +78,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

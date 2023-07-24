@@ -14,20 +14,20 @@ import { RolesGuard } from './roles.guard';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '24d' },
+      signOptions: { expiresIn: '24h' },
     }),
   ],
   controllers: [AuthController],
   providers: [
     AuthService,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
   ],
   exports: [AuthService],
 })
