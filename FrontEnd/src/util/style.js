@@ -96,9 +96,9 @@ export function style(settings) {
                   Avatar: {
                       defaultProps: {
                           radius: '50%',
-                          p: '4px',
+                          //   p: '4px',
                           style: {
-                              border: '1px solid black',
+                              border: '2px solid grey',
                           },
                       },
                   },

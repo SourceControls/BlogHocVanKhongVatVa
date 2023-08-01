@@ -1,5 +1,5 @@
 import useStyles from './style'
-import {Navbar, Group, Code, ScrollArea, rem, Image, Box, AppShell, MantineProvider} from '@mantine/core'
+import {Navbar, Group, Code, ScrollArea, rem, Image, Box, AppShell, MantineProvider, Text} from '@mantine/core'
 import {
     IconGauge,
     IconPresentationAnalytics,
@@ -12,7 +12,7 @@ import {
     IconAd2,
 } from '@tabler/icons-react'
 import {UserButton, LinksGroup} from '@comp'
-import {useSettings} from '@util'
+import {useSettings, useUsers} from '@util'
 
 const mockdata = [
     // {label: 'Dashboard', icon: IconGauge},
@@ -57,7 +57,13 @@ export function Layout({children}) {
     const {classes} = useStyles()
     const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />)
     const {settings, isLoading} = useSettings()
-
+    const {users, mutate, isLoading: isUserLoading} = useUsers(undefined, '/profile')
+    if (isUserLoading) {
+        return <Text>Loading...</Text>
+    }
+    if (!users[0]?.userId) {
+        return <Text>404 Error</Text>
+    }
     return (
         <MantineProvider
             theme={{
@@ -83,11 +89,7 @@ export function Layout({children}) {
                         </Navbar.Section>
 
                         <Navbar.Section className={classes.footer}>
-                            <UserButton
-                                image='https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80'
-                                name='Tuấn Hùng'
-                                email='@yahoo.com'
-                            />
+                            <UserButton image={users[0]?.avatarImage} name={users[0]?.name} email={users[0]?.email} />
                         </Navbar.Section>
                     </Navbar>
                 }>

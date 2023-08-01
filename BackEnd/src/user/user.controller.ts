@@ -23,7 +23,7 @@ export class UserController {
 
   @Get('profile')
   getProfile(@Request() req) {
-    return this.userService.findOne(req.authUser.id);
+    return this.userService.findOne(req.authUser.userId);
   }
 
   @Get()

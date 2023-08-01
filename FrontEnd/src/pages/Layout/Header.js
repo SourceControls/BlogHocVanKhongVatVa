@@ -1,5 +1,5 @@
 'use client'
-import {ActionIcon, Box, Button, Flex, Group, Image, Modal, Paper, TextInput} from '@mantine/core'
+import {ActionIcon, Avatar, Box, Button, Flex, Group, Image, Modal, Paper, Text, TextInput} from '@mantine/core'
 import Link from 'next/link'
 import {UserCircle} from 'tabler-icons-react'
 import {Auth, FloatingLabelInput} from '@comp'
@@ -7,17 +7,19 @@ import {useMediaQuery, useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
 import {IconHome, IconSearch} from '@tabler/icons-react'
 import {useState} from 'react'
-import {useSettings} from '@util'
+import {useSettings, useUsers} from '@util'
 function Header({categories, active, setActive}) {
     const router = useRouter()
     const [searchKey, setSearchKey] = useState('')
     const [opened, {open, close}] = useDisclosure(false)
     const smScreen = useMediaQuery('(max-width: 48em)')
     const {settings, isLoading} = useSettings()
+    const {users, mutate} = useUsers(undefined, '/profile')
     const closeModal = (props) => {
         close(props)
         router.push(router.asPath, undefined, {shallow: true})
     }
+    const signOut = () => {}
     return (
         <>
             <Paper
@@ -56,7 +58,19 @@ function Header({categories, active, setActive}) {
                             }
                         }}
                     />
-                    {smScreen ? (
+                    {users[0]?.userId ? (
+                        <Group style={{flex: 1}}>
+                            <Group
+                                ml='auto'
+                                align='center'
+                                style={{width: 'fit-content', cursor: 'pointer'}}
+                                spacing='xs'>
+                                <Avatar src={users[0].avatarImage} />
+                                <Text fw='bold'>{users[0].name}</Text>
+                            </Group>
+                            <Button onClick={signOut}>Đăng xuất</Button>
+                        </Group>
+                    ) : smScreen ? (
                         <ActionIcon ml='md' onClick={open}>
                             <UserCircle />
                         </ActionIcon>
