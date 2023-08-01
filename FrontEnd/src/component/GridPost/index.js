@@ -4,21 +4,23 @@ import {useMediaQuery} from '@mantine/hooks'
 
 import Link from 'next/link'
 import {Eye, Heart, ThumbUp} from 'tabler-icons-react'
+import {usePosts} from '@util'
 
-export function GridPost() {
-    const props = {}
-    props.posts = [1, 1, 1, 1, 1]
-
+export function GridPost({query}) {
+    // const [page, setPage] = useState(1)
+    const {posts, isLoading, size, setSize} = usePosts(query || '')
     const smScreen = useMediaQuery('(max-width: 48em)')
+    console.log(posts)
     return (
         <>
             <Grid m={0}>
-                {props.posts &&
-                    props.posts.map((post, index) => {
+                {posts.length != 0 &&
+                    posts.map((item, index) => {
                         let span = 4
                         if (smScreen) span = 12
                         return (
                             <Grid.Col
+                                key={index}
                                 span={span}
                                 p={smScreen ? 'sm' : 'md'}
                                 sx={(theme) => ({
@@ -48,7 +50,7 @@ export function GridPost() {
                                         },
                                     },
                                 })}>
-                                <Link href='/post/tam-cam'>
+                                <Link href={'/post/' + item.slug}>
                                     <Group
                                         grow={!smScreen && span == 12}
                                         spacing={!smScreen && span == 12 && '40px'}
@@ -56,40 +58,32 @@ export function GridPost() {
                                         <div
                                             style={{overflow: 'visible', position: 'relative'}}
                                             className='unset-overflow'>
-                                            <Image
-                                                fit='cover'
-                                                src='https://vnkings.com/wp-content/uploads/2021/04/maxresdefault.jpg'
-                                                alt=''
-                                            />
+                                            <Image fit='cover' src={item.featuredImage} alt='' />
 
                                             <Box className='content'>
-                                                <Title order={4} lineClamp={2} mb='md'>
-                                                    Phân tích nhân vật nhiếp ảnh gia Phùng trong truyện ngắn Chiếc
-                                                    thuyền ngoài xa.
+                                                <Title order={4} lineClamp={3} mb='md'>
+                                                    {item.title}
                                                 </Title>
-                                                <Text lineClamp={10}>
-                                                    Nhân vật Phùng trong truyện vừa là nhân vật chính đồng thời lại là
-                                                    người kể chuyện. Mọi diễn biến của câu chuyện về gia đình người đàn
-                                                    bà hàng chài đều xoay quanh các câu chuyện qua lời kể của nhân vật
-                                                    Phùng.
-                                                </Text>
+                                                <Text lineClamp={10}>{item.summary}</Text>
                                             </Box>
                                         </div>
                                         <Stack>
                                             <Title order={4} lineClamp={3} className='hide-on-hover'>
-                                                Phân tích nhân vật nhiếp ảnh gia Phùng trong truyện ngắn Chiếc thuyền
-                                                ngoài xa.
+                                                {item.title}
                                             </Title>
-                                            <ExtraInfo publisherName='Tuấn Hùng' publishedAt='05/09/2001' />
+                                            <ExtraInfo
+                                                publisherName={item.createdByUser.name}
+                                                publishedAt={item.createdAt}
+                                            />
                                             <Text color='dimmed'>
                                                 <Group spacing='xl'>
                                                     <Group spacing='xs'>
                                                         <Eye />
-                                                        <Text>113.6k</Text>
+                                                        <Text>{item.view}</Text>
                                                     </Group>
                                                     <Group spacing='xs'>
                                                         <ThumbUp />
-                                                        <Text>11.2k</Text>
+                                                        <Text>{item.likeCount}</Text>
                                                     </Group>
                                                 </Group>
                                             </Text>
@@ -100,7 +94,7 @@ export function GridPost() {
                         )
                     })}
             </Grid>
-            <Button w='200px' mt='xl' mx='auto' variant='outline'>
+            <Button w='200px' mt='xl' mx='auto' variant='outline' onClick={() => setSize(size + 1)}>
                 Xem Thêm
             </Button>
         </>

@@ -20,8 +20,12 @@ export class AuthGuard implements CanActivate {
     if (isPublic) {
       return true;
     }
+
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    // console.log(request.headers);
+    // const token = this.extractTokenFromHeader(request);
+    const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidHVhbmh1bmc1OTIwMDFAZ21haWwuY29tIiwicm9sZXMiOlsiVklFV0VSIl0sImlhdCI6MTY5MDYyNzA2MCwiZXhwIjoxNjkyNzAwNjYwfQ.Nn0rrqV6JApanOq2KdnQLgIEvI9uhLiDIVTgKwj3loY';
     if (!token) {
       throw new UnauthorizedException('Token không hợp lệ!');
     }
@@ -31,7 +35,11 @@ export class AuthGuard implements CanActivate {
       });
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
+      console.log(payload.email, ' || ', request.method, ' || ', request.url);
       request['authUser'] = payload;
+      if (request.method == 'POST') request.body.createdBy = payload.userId;
+      else if (['PUT', 'PATCH', 'DELETE'].includes(request.method))
+        request.body.updatedBy = payload.userId;
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }

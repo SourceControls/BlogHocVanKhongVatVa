@@ -3,47 +3,48 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model advertisement {
-  advertisementId                    Int      @id @default(autoincrement())
-  title                              String   @db.VarChar(200)
-  description                        String?  @db.VarChar(500)
-  image                              String?  @db.VarChar(500)
-  displayPosition                    String   @db.VarChar(50)
-  target                             String   @db.VarChar(500)
-  startDate                          DateTime @db.Date
-  endDate                            DateTime @db.Date
-  impressionCount                    Int      @default(0)
-  clickCount                         Int      @default(0)
-  visibility                         Boolean? @default(true)
-  price                              Decimal  @default(0.0000000) @db.Decimal(10, 7)
-  createdAt                          DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
-  createdBy                          Int?
-  updatedAt                          DateTime @updatedAt
-  updatedBy                          Int?
-  user_advertisement_createdByTouser user?    @relation("advertisement_createdByTouser", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "advertisement_ibfk_1")
-  user_advertisement_updatedByTouser user?    @relation("advertisement_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "advertisement_ibfk_2")
+  advertisementId                  Int                  @id @default(autoincrement())
+  title                            String               @db.VarChar(200)
+  description                      String?              @db.VarChar(500)
+  image                            String?              @db.VarChar(500)
+  displayPosition                  ad_display_position?
+  target                           String?              @db.VarChar(500)
+  startDate                        DateTime?            @db.Date
+  endDate                          DateTime?            @db.Date
+  impressionCount                  Int                  @default(0)
+  clickCount                       Int                  @default(0)
+  visibility                       Boolean?             @default(true)
+  price                            Decimal?             @default(0.0000000) @db.Decimal(10, 7)
+  createdAt                        DateTime             @default(now())
+  createdBy                        Int
+  updatedAt                        DateTime             @updatedAt
+  updatedBy                        Int?
+  user_advertisement_createdByUser user?                @relation("advertisement_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "advertisement_ibfk_1")
+  user_advertisement_updatedByUser user?                @relation("advertisement_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "advertisement_ibfk_2")
 
   @@index([createdBy], map: "createdBy")
   @@index([updatedBy], map: "updatedBy")
 }
 
 model category {
-  categoryId                    Int                @id @default(autoincrement())
-  categoryName                  String             @unique(map: "categoryName") @db.VarChar(200)
-  slug                          String             @unique(map: "slug") @db.VarChar(200)
-  description                   String?            @db.VarChar(200)
-  group                         String?            @db.VarChar(200)
-  createdAt                     DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
-  createdBy                     Int
-  updatedAt                     DateTime           @updatedAt
-  updatedBy                     Int?
-  user_category_updatedByTouser user?              @relation("category_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "category_ibfk_1")
-  user_category_createdByTouser user               @relation("category_createdByTouser", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "category_ibfk_2")
-  literarycategory              literarycategory[]
+  categoryId       Int                @id @default(autoincrement())
+  categoryName     String             @unique(map: "categoryName") @db.VarChar(200)
+  slug             String             @unique(map: "slug") @db.VarChar(200)
+  description      String?            @db.VarChar(200)
+  group            String?            @db.VarChar(200)
+  createdAt        DateTime           @default(now())
+  createdBy        Int
+  updatedAt        DateTime           @updatedAt
+  updatedBy        Int?
+  updatedByUser    user?              @relation("category_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "category_ibfk_1")
+  createdByUser    user?              @relation("category_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "category_ibfk_2")
+  literaryCategory literaryCategory[]
 
   @@index([createdBy], map: "createdBy")
   @@index([updatedBy], map: "updatedBy")
@@ -52,75 +53,80 @@ model category {
 model comment {
   commentId Int      @id @default(autoincrement())
   content   String   @db.VarChar(200)
-  createdAt DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
+  createdAt DateTime @default(now())
   postId    Int
   createdBy Int
-  post      post     @relation(fields: [postId], references: [postId], onDelete: NoAction, onUpdate: NoAction, map: "comment_ibfk_1")
-  user      user     @relation(fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "comment_ibfk_2")
+  post      post     @relation(fields: [postId], references: [postId], onDelete: Cascade, onUpdate: Cascade, map: "comment_ibfk_1")
+  user      user     @relation(fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "comment_ibfk_2")
 
   @@index([createdBy], map: "createdBy")
   @@index([postId], map: "postId")
 }
 
 model literary {
-  literaryId                    Int                @id @default(autoincrement())
-  title                         String             @unique(map: "title") @db.VarChar(200)
-  slug                          String             @unique(map: "slug") @db.VarChar(200)
-  intro                         String             @db.Text
-  summary                       String             @db.Text
-  authorName                    String?            @db.VarChar(200)
-  featured                      Boolean            @default(false)
-  visibility                    Boolean            @default(true)
-  timeOfCreation                String?            @db.VarChar(50)
-  image                         String?            @db.VarChar(500)
-  createdAt                     DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
-  createdBy                     Int
-  updatedAt                     DateTime           @updatedAt
-  updatedBy                     Int?
-  user_literary_updatedByTouser user?              @relation("literary_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "literary_ibfk_1")
-  user_literary_createdByTouser user               @relation("literary_createdByTouser", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "literary_ibfk_2")
-  literarycategory              literarycategory[]
-  post_post_literaryToliterary  post[]             @relation("post_literaryToliterary")
+  literaryId       Int                @id @default(autoincrement())
+  title            String             @unique(map: "title") @db.VarChar(200)
+  slug             String             @unique(map: "slug") @db.VarChar(200)
+  intro            String?            @db.Text
+  summary          String?            @db.Text
+  authorName       String?            @db.VarChar(200)
+  featured         Boolean            @default(false)
+  visibility       Boolean            @default(true)
+  timeOfCreation   String?            @db.VarChar(50)
+  image            String?            @db.VarChar(500)
+  createdAt        DateTime           @default(now())
+  createdBy        Int
+  updatedAt        DateTime           @updatedAt
+  updatedBy        Int?
+  view             Int                @default(0)
+  postCount        Int                @default(0)
+  updatedByUser    user?              @relation("literary_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "literary_ibfk_1")
+  createdByUser    user?              @relation("literary_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "literary_ibfk_2")
+  literaryCategory literaryCategory[]
+  literaryPosts    post[]             @relation("post_literaryToliterary")
 
   @@index([createdBy], map: "createdBy")
   @@index([updatedBy], map: "updatedBy")
 }
 
-model literarycategory {
+model literaryCategory {
   categoryId Int
   literaryId Int
-  category   category @relation(fields: [categoryId], references: [categoryId], onDelete: NoAction, onUpdate: NoAction, map: "literarycategory_ibfk_1")
-  literary   literary @relation(fields: [literaryId], references: [literaryId], onDelete: NoAction, onUpdate: NoAction, map: "literarycategory_ibfk_2")
+  category   category @relation(fields: [categoryId], references: [categoryId], onDelete: Cascade, onUpdate: Cascade, map: "literaryCategory_ibfk_1")
+  literary   literary @relation(fields: [literaryId], references: [literaryId], onDelete: Cascade, onUpdate: Cascade, map: "literaryCategory_ibfk_2")
 
   @@id([categoryId, literaryId])
   @@index([literaryId], map: "literaryId")
 }
 
 model post {
-  postId                           Int             @id @default(autoincrement())
-  title                            String          @db.VarChar(200)
-  slug                             String?         @unique(map: "slug") @default("") @db.VarChar(200)
-  subTitle                         String?         @default("") @db.VarChar(200)
-  summary                          String?         @default("") @db.VarChar(500)
-  htmlContent                      String?         @db.Text
-  featuredImage                    String?         @db.VarChar(500)
-  featured                         Boolean         @default(false)
-  status                           post_status     @default(DRAFT)
-  visibility                       post_visibility @default(PUBLIC)
-  view                             Int          @default(0)
-  createdBy                        Int
-  createdAt                        DateTime        @default(dbgenerated("(now())")) @db.DateTime(0)
-  updatedAt                        DateTime        @updatedAt
-  updatedBy                        Int?
-  publishedBy                      Int?
-  literary                         Int?
-  comment                          comment[]
-  user_post_updatedByTouser        user?           @relation("post_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "post_ibfk_1")
-  user_post_publishedByTouser      user?           @relation("post_publishedByTouser", fields: [publishedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "post_ibfk_2")
-  user_post_createdByTouser        user            @relation("post_createdByTouser", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "post_ibfk_3")
-  literary_post_literaryToliterary literary?       @relation("post_literaryToliterary", fields: [literary], references: [literaryId], onDelete: NoAction, onUpdate: NoAction, map: "post_ibfk_4")
-  postreaction                     postreaction[]
-  posttag                          posttag[]
+  postId          Int             @id @default(autoincrement())
+  title           String          @db.VarChar(200)
+  slug            String?         @unique(map: "slug") @default("") @db.VarChar(200)
+  subTitle        String?         @default("") @db.VarChar(200)
+  summary         String?         @default("") @db.VarChar(500)
+  htmlContent     String?         @db.Text
+  featuredImage   String?         @db.VarChar(500)
+  featured        Boolean         @default(false)
+  status          post_status     @default(DRAFT)
+  visibility      post_visibility @default(PUBLIC)
+  view            Int             @default(0)
+  createdBy       Int
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  updatedBy       Int?
+  publishedBy     Int?
+  literary        Int?
+  commentCount    Int             @default(0)
+  likeCount       Int             @default(0)
+  dislikeCount    Int             @default(0)
+  comment         comment[]
+  updatedByUser   user?           @relation("post_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "post_ibfk_1")
+  publishedByUser user?           @relation("post_publishedByUser", fields: [publishedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "post_ibfk_2")
+  createdByUser   user?           @relation("post_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "post_ibfk_3")
+  postLiterary    literary?       @relation("post_literaryToliterary", fields: [literary], references: [literaryId], onDelete: Cascade, onUpdate: Cascade, map: "post_ibfk_4")
+  postReaction    postReaction[]
+  postTag         postTag[]
 
   @@index([createdBy], map: "createdBy")
   @@index([literary], map: "literary")
@@ -128,94 +134,98 @@ model post {
   @@index([updatedBy], map: "updatedBy")
 }
 
-model postreaction {
+model postReaction {
   postId    Int
   createdBy Int
-  type      postreaction_type
-  createdAt DateTime          @default(dbgenerated("(now())")) @db.DateTime(0)
-  post      post              @relation(fields: [postId], references: [postId], onDelete: NoAction, onUpdate: NoAction, map: "postreaction_ibfk_1")
-  user      user              @relation(fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "postreaction_ibfk_2")
+  type      postReaction_type
+  createdAt DateTime          @default(now())
+  post      post              @relation(fields: [postId], references: [postId], onDelete: Cascade, onUpdate: Cascade, map: "postReaction_ibfk_1")
+  user      user              @relation(fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "postReaction_ibfk_2")
 
   @@id([postId, createdBy])
   @@index([createdBy], map: "createdBy")
 }
 
-model posttag {
+model postTag {
   postId    Int
   tagId     Int
-  createdAt DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
-  tag       tag      @relation(fields: [tagId], references: [tagId], onDelete: NoAction, onUpdate: NoAction, map: "posttag_ibfk_1")
-  post      post     @relation(fields: [postId], references: [postId], onDelete: NoAction, onUpdate: NoAction, map: "posttag_ibfk_2")
+  createdAt DateTime @default(now())
+  tag       tag      @relation(fields: [tagId], references: [tagId], onDelete: Cascade, onUpdate: Cascade, map: "postTag_ibfk_1")
+  post      post     @relation(fields: [postId], references: [postId], onDelete: Cascade, onUpdate: Cascade, map: "postTag_ibfk_2")
 
   @@id([postId, tagId])
   @@index([tagId], map: "tagId")
 }
 
 model setting {
-  settingId Int      @id @default(autoincrement())
-  group     String   @default("core") @db.VarChar(50)
-  key       String   @db.VarChar(50)
-  value     String?  @db.Text
-  type      String   @db.VarChar(50)
-  updatedAt DateTime @updatedAt
-  updatedBy Int?
-  user      user?    @relation(fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "setting_ibfk_1")
+  settingId        Int      @id @default(autoincrement())
+  fontFamily       String   @default("Mali") @db.VarChar(500)
+  primaryColor     String   @default("brown") @db.VarChar(500)
+  webTitle         String   @default("Vietnam Literary") @db.VarChar(500)
+  logo             String   @default("https://i.ibb.co/C9FV5Vq/logo.png") @db.VarChar(500)
+  favIcon          String   @default("https://i.ibb.co/xMZ5LBf/favIcon.png") @db.VarChar(500)
+  homeHeroTitle    String   @default("Bạn Đang Tìm Kiếm Tác Phẩm Nào?") @db.VarChar(500)
+  homeHeroSubtitle String   @default("Không Biết Bắt Đầu Từ Đầu? Khám Phá Ngay Những Bài Viết Hay Nhất Của Chúng Tôi") @db.VarChar(500)
+  homeHeroCover    String   @default("https://i.ibb.co/jTwVr1C/Thi-t-k-ch-a-c-t-n-1.png") @db.VarChar(500)
+  readPostCover    String   @default("https://i.ibb.co/9rHFrZq/Untitled.png") @db.VarChar(500)
+  updatedAt        DateTime @updatedAt
+  updatedBy        Int?
 
   @@index([updatedBy], map: "updatedBy")
 }
 
 model tag {
-  tagId                    Int       @id @default(autoincrement())
-  tagName                  String    @unique(map: "tagName") @db.VarChar(200)
-  slug                     String    @unique(map: "slug") @db.VarChar(200)
-  description              String?   @db.VarChar(500)
-  visibility               Boolean   @default(true)
-  createdAt                DateTime  @default(dbgenerated("(now())")) @db.DateTime(0)
-  createdBy                Int
-  updatedAt                DateTime  @updatedAt
-  updatedBy                Int?
-  posttag                  posttag[]
-  user_tag_updatedByTouser user?     @relation("tag_updatedByTouser", fields: [updatedBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "tag_ibfk_1")
-  user_tag_createdByTouser user      @relation("tag_createdByTouser", fields: [createdBy], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "tag_ibfk_2")
+  tagId         Int       @id @default(autoincrement())
+  tagName       String    @unique(map: "tagName") @db.VarChar(200)
+  slug          String?   @unique(map: "slug") @db.VarChar(200)
+  description   String?   @db.VarChar(500)
+  createdAt     DateTime  @default(now())
+  createdBy     Int
+  updatedAt     DateTime  @updatedAt
+  updatedBy     Int?
+  usedCount     Int?      @default(0)
+  postTag       postTag[]
+  updatedByUser user?     @relation("tag_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "tag_ibfk_1")
+  createdByUser user?     @relation("tag_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "tag_ibfk_2")
 
   @@index([createdBy], map: "createdBy")
   @@index([updatedBy], map: "updatedBy")
 }
 
 model user {
-  userId                                      Int             @id @default(autoincrement())
-  name                                        String          @db.VarChar(200)
-  slug                                        String?         @unique(map: "slug") @db.VarChar(200)
-  bio                                         String?         @db.Text
-  avatarImage                                 String?         @db.VarChar(500)
-  coverImage                                  String?         @db.VarChar(500)
-  status                                      user_status     @default(ACTIVE)
-  email                                       String          @unique(map: "email") @db.VarChar(200)
-  website                                     String?         @db.VarChar(500)
-  password                                    String          @db.VarChar(200)
-  role                                        user_role       @default(VIEWER)
-  createdAt                                   DateTime        @default(dbgenerated("(now())")) @db.DateTime(0)
-  updatedAt                                   DateTime        @updatedAt
-  updatedBy                                   Int?
-  advertisement_advertisement_createdByTouser advertisement[] @relation("advertisement_createdByTouser")
-  advertisement_advertisement_updatedByTouser advertisement[] @relation("advertisement_updatedByTouser")
-  category_category_updatedByTouser           category[]      @relation("category_updatedByTouser")
-  category_category_createdByTouser           category[]      @relation("category_createdByTouser")
-  comment                                     comment[]
-  literary_literary_updatedByTouser           literary[]      @relation("literary_updatedByTouser")
-  literary_literary_createdByTouser           literary[]      @relation("literary_createdByTouser")
-  post_post_updatedByTouser                   post[]          @relation("post_updatedByTouser")
-  post_post_publishedByTouser                 post[]          @relation("post_publishedByTouser")
-  post_post_createdByTouser                   post[]          @relation("post_createdByTouser")
-  postreaction                                postreaction[]
-  setting                                     setting[]
-  tag_tag_updatedByTouser                     tag[]           @relation("tag_updatedByTouser")
-  tag_tag_createdByTouser                     tag[]           @relation("tag_createdByTouser")
+  userId                                    Int             @id @default(autoincrement())
+  name                                      String          @db.VarChar(200)
+  slug                                      String?         @unique(map: "slug") @db.VarChar(200)
+  bio                                       String?         @db.Text
+  avatarImage                               String?         @db.VarChar(500)
+  coverImage                                String?         @db.VarChar(500)
+  status                                    user_status     @default(ACTIVE)
+  email                                     String          @unique(map: "email") @db.VarChar(200)
+  website                                   String?         @db.VarChar(500)
+  password                                  String          @db.VarChar(200)
+  role                                      user_role       @default(VIEWER)
+  createdAt                                 DateTime        @default(now())
+  updatedAt                                 DateTime        @updatedAt
+  updatedBy                                 Int?
+  advertisement_advertisement_createdByUser advertisement[] @relation("advertisement_createdByUser")
+  advertisement_advertisement_updatedByUser advertisement[] @relation("advertisement_updatedByUser")
+  category_category_updatedByUser           category[]      @relation("category_updatedByUser")
+  category_category_createdByUser           category[]      @relation("category_createdByUser")
+  comment                                   comment[]
+  literary_literary_updatedByUser           literary[]      @relation("literary_updatedByUser")
+  literary_literary_createdByUser           literary[]      @relation("literary_createdByUser")
+  post_post_updatedByUser                   post[]          @relation("post_updatedByUser")
+  post_post_publishedByUser                 post[]          @relation("post_publishedByUser")
+  createdPosts                              post[]          @relation("post_createdByUser")
+  postReaction                              postReaction[]
+  tag_tag_updatedByUser                     tag[]           @relation("tag_updatedByUser")
+  tag_tag_createdByUser                     tag[]           @relation("tag_createdByUser")
 }
 
-enum postreaction_type {
+enum postReaction_type {
   LIKE
   DISLIKE
+  NO
 }
 
 enum post_visibility {
@@ -227,6 +237,12 @@ enum post_visibility {
 enum user_status {
   ACTIVE
   BANNED
+}
+
+enum ad_display_position {
+  HOME
+  SEARCH
+  READ
 }
 
 enum post_status {

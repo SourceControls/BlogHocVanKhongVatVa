@@ -43,13 +43,16 @@ export function ImageDropzone(props) {
                 <div style={{position: 'relative'}}>
                     <Image
                         src={props.form.values[props.imageField]}
-                        radius='50%'
                         width={props.w || 300}
                         height={props.h || 300}
                         mx='auto'
-                        fit='cover'
+                        fit='contain'
                     />
-                    <ActionIcon style={{position: 'absolute', top: 0, right: '32px'}} onClick={handleRemoveFile}>
+                    <ActionIcon
+                        variant='filled'
+                        color='red'
+                        style={{position: 'absolute', top: '-20px', right: '16px'}}
+                        onClick={handleRemoveFile}>
                         <IconX />
                     </ActionIcon>
                 </div>
@@ -59,7 +62,6 @@ export function ImageDropzone(props) {
                         openRef={openRef}
                         onDrop={handleUpdateFile}
                         className={classes.dropzone}
-                        radius='md'
                         accept={[MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.webp]}
                         maxSize={30 * 1024 ** 2}>
                         <div style={{pointerEvents: 'none'}}>

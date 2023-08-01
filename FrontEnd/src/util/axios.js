@@ -10,8 +10,7 @@ var displayGlobalLoading, setDisplayGlobalLoading
 // }
 
 const instance = axios.create({
-    baseURL: '/api',
-    timeout: 15000,
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -20,9 +19,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     function (config) {
         // if (!displayGlobalLoading) setDisplayGlobalLoading(true)
-
-        console.log('Call API: ' + config.url)
-        if (typeof window !== 'undefined') config.headers.Authorization = localStorage.Authorization
+        console.log(config.method.toLocaleUpperCase() + ' || ' + config.url)
         return config
     },
     function (error) {
@@ -33,24 +30,27 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     async function (response) {
         // if (displayGlobalLoading) setTimeout(() => setDisplayGlobalLoading(false), 0)
-        // lưu lại auth token
-        if (response.headers.get('Authorization')) {
-            response.data['Authorization'] = response.headers.get('Authorization')
-        }
 
         // hiển thị message
         if (response.config.method != 'get' && response.data.message)
-            if (response.data.state) {
-                toast.success(response.data.message)
-            } else {
-                toast.error(response.data.message)
-            }
-        return response.data
+            // if (response.data.state) {
+            toast.success(response.data.message)
+        // } else {
+        // toast.error(response.data.message)
+        // }
+        if (response.config.method == 'get')
+            if (!response.data.data || response.data.data?.length == 0) toast.info('Không còn gì để xem!')
+        return response.data.data
     },
     function (error) {
         // setDisplayGlobalLoading(false)
-        console.log(error.message)
-        return toast.error(error.message)
+        let message = error.response.data?.message
+        if (Array.isArray(error.response.data?.message)) {
+            message = error.response.data.message[0]
+        }
+        console.log(message)
+
+        return toast.error(message)
     },
 )
 

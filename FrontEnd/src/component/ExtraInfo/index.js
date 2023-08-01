@@ -1,6 +1,6 @@
 import {Box, Divider, Flex, Group, Text} from '@mantine/core'
 import {IconClockHour4} from '@tabler/icons-react'
-
+import {formatDate} from '@util'
 export function ExtraInfo({publisherName = 'Khuyết Danh', publishedAt = '...', color = 'dimmed'}) {
     return (
         <Text color={color}>
@@ -12,7 +12,7 @@ export function ExtraInfo({publisherName = 'Khuyết Danh', publishedAt = '...',
                 {'-'}
                 <Group noWrap>
                     {/* <IconClockHour4 /> */}
-                    <Text lineClamp={1}>{'21 phút trước'}</Text>
+                    <Text lineClamp={1}>{formatDate(publishedAt)}</Text>
                 </Group>
             </Group>
         </Text>

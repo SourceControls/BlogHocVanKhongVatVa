@@ -1,16 +1,18 @@
 import {Box, Center, Image, Tabs} from '@mantine/core'
 import {getConfig} from '@util'
-import {useEffect} from 'react'
 import ForgotPassword from './ForgotPassword'
 import SignIn from './SignIn'
 import SignUp from './SignUp'
+import {useSettings} from '@util'
 
 export function Auth() {
     const tab = typeof window !== 'undefined' && window.location.hash // Lấy phần định danh từ URL
+    const {settings, isLoading} = useSettings()
+
     return (
         <Box>
             <Center h='200px'>
-                <Image src={getConfig().logo} />
+                <Image src={settings[1].logo} />
             </Center>
 
             <Tabs defaultValue={tab} pb='xl'>

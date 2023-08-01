@@ -1,21 +1,24 @@
-import {ActionIcon, Anchor, Button, Group, Modal, SegmentedControl, Select, Table, Text} from '@mantine/core'
+import {ActionIcon, Anchor, Badge, Button, Group, Modal, Select, Table, Text} from '@mantine/core'
 import {FloatingLabelInput} from '@comp'
 import Layout from '../Layout'
-import {Edit, PresentationAnalytics, Search, Plus, News, ExternalLink, Click} from 'tabler-icons-react'
+import {Edit, Search, Plus, ExternalLink, Trash} from 'tabler-icons-react'
 import {useRouter} from 'next/router'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import AdvertisementForm from './AdvertisementForm'
 import {useDisclosure} from '@mantine/hooks'
+import {useAdvertisements, deleteAdvertisement, formatDate} from '@util'
 
 function Advertisement() {
     const [opened, {open, close}] = useDisclosure(false)
-
-    const [advertisements, setAdvertisementForm] = useState([])
     const router = useRouter()
-    useEffect(() => {
-        setAdvertisementForm(router.query.searchKey ? [1, 1] : [1, 1, 1, 1])
-        console.log(router.asPath)
-    }, [router.query.searchKey, router.query.visibility, router.query.sort])
+    const {
+        advertisements: ads,
+        isLoading,
+        size,
+        setSize,
+        mutate,
+    } = useAdvertisements('&limit=6&' + router.asPath.split('?')[1])
+    const [modalContent, setModalContent] = useState()
     const changeQuery = (key, value) => {
         router.push({
             query: {
@@ -23,6 +26,13 @@ function Advertisement() {
                 [key]: value,
             },
         })
+    }
+    const handleDelete = async (id) => {
+        let rs = await deleteAdvertisement(id)
+        if (rs.advertisementId) {
+            const newItems = ads.filter((item) => item.advertisementId !== rs.advertisementId)
+            mutate(newItems, false)
+        }
     }
     return (
         <>
@@ -41,25 +51,31 @@ function Advertisement() {
                         }
                     }}
                 />
-                <SegmentedControl
+                <Select
+                    defaultValue=''
                     data={[
-                        {value: '1', label: 'Đang hiển thị'},
-                        {value: '0', label: 'Hàng chờ'},
+                        {value: '', label: 'Tất cả'},
+                        {value: 'true', label: 'Đang hiển thị'},
+                        {value: 'false', label: 'Hàng chờ'},
                     ]}
                     onChange={(val) => changeQuery('visibility', val)}
                 />
                 <Select
-                    defaultValue='publishedAt'
+                    defaultValue=''
                     data={[
-                        {value: 'publishedAt', label: 'Gần đây'},
-                        {value: 'click', label: 'Nhiều click'},
-                        {value: 'price', label: 'Giá tăng dần'},
-                        {value: 'price', label: 'Giá giảm dần'},
+                        {value: '', label: 'Gần đây'},
+                        {value: 'clickCount', label: 'Nhiều click'},
+                        {value: 'price', label: 'Giá giá cao nhất'},
                     ]}
-                    onChange={(val) => changeQuery('sort', val)}
+                    onChange={(val) => changeQuery('sortBy', val)}
                 />
 
-                <Button leftIcon={<Plus />} onClick={open}>
+                <Button
+                    leftIcon={<Plus />}
+                    onClick={() => {
+                        setModalContent(<AdvertisementForm close={close} mutate={mutate} ads={ads} />)
+                        open()
+                    }}>
                     Tạo
                 </Button>
             </Group>
@@ -68,44 +84,67 @@ function Advertisement() {
                     <tr>
                         <th>Tiêu đề</th>
                         <th>Vị trí</th>
-                        <th>Click</th>
+                        <th>Lượt click </th>
                         <th>Bắt đầu</th>
                         <th>Kết thúc</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {advertisements &&
-                        advertisements.map(() => (
-                            <tr w='100%' py='xs' style={{borderTop: '1px solid #ccc'}}>
+                    {ads &&
+                        ads.map((item, index) => (
+                            <tr key={index} w='100%' py='xs' style={{borderTop: '1px solid #ccc'}}>
                                 <td width='40%' style={{paddingRight: '32px'}}>
                                     <Anchor href='/search?tags=tam-cam' target='_blank'>
                                         <Text fw='bold' size='lg' lineClamp={1}>
                                             <Group spacing='xs'>
-                                                Học bổng Úc
+                                                {item.title}
                                                 <ExternalLink />
                                             </Group>
                                         </Text>
                                     </Anchor>
-                                    <Text>Học bổng úc 2 năm trị giá 10 tỷ vnđ, dành cho sinh viên đủ năng lực.</Text>
-                                </td>
-                                <td>Trang chủ</td>
-                                <td>115.801</td>
-                                <td>
-                                    <Text> 21-12-2023</Text>
-                                    <Text color='dimmed'> 6 ngày trước</Text>
+                                    <Text>{item.description}</Text>
                                 </td>
                                 <td>
-                                    <Text> 24-12-2023</Text>
-                                    <Text color='dimmed'> 2 ngày sau</Text>
+                                    {item.displayPosition == 'HOME'
+                                        ? 'Trang chủ'
+                                        : item.displayPosition == 'SEARCH'
+                                        ? 'Trang tìm kiếm'
+                                        : 'Trang đọc'}
+                                </td>
+                                <td>
+                                    <Badge color='green'>{item.clickCount}</Badge>
+                                    {/* <Badge color='green'>{item.impressionCount}</Badge>
+                                    <Text align='center'>
+                                        Rating: {(item.clickCount / item.impressionCount).toFixed(2)}
+                                    </Text> */}
+                                </td>
+                                <td>
+                                    <Text> {item.startDate}</Text>
+                                    <Text color='dimmed'> {formatDate(item.startDate)}</Text>
+                                </td>
+                                <td>
+                                    <Text> {item.endDate}</Text>
+                                    <Text color='dimmed'> {formatDate(item.endDate)}</Text>
                                 </td>
                                 <td>
                                     <Group ml='auto'>
-                                        <ActionIcon onClick={open}>
+                                        <ActionIcon
+                                            onClick={() => {
+                                                setModalContent(
+                                                    <AdvertisementForm
+                                                        close={close}
+                                                        ad={item}
+                                                        mutate={mutate}
+                                                        ads={ads}
+                                                    />,
+                                                )
+                                                open()
+                                            }}>
                                             <Edit />
                                         </ActionIcon>
-                                        <ActionIcon>
-                                            <PresentationAnalytics />
+                                        <ActionIcon color='red' onClick={() => handleDelete(item.advertisementId)}>
+                                            <Trash />
                                         </ActionIcon>
                                     </Group>
                                 </td>
@@ -113,8 +152,11 @@ function Advertisement() {
                         ))}
                 </tbody>
             </Table>
+            <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
+                Xem thêm
+            </Button>
             <Modal opened={opened} size='xl' onClose={close} centered yOffset='1vh' xOffset={0} title='Tags'>
-                <AdvertisementForm />
+                {modalContent}
             </Modal>
         </>
     )

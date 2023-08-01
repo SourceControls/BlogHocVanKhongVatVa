@@ -3,34 +3,66 @@ import {Button, Checkbox, Group, NumberInput, Select, Stack, Textarea, TextInput
 import {ImageDropzone} from '@comp'
 import {DateInput} from '@mantine/dates'
 
-import {transformToUrl} from '@util'
-function AdvertisementForm() {
+import {transformToUrl, createAdvertisement, uploadImg, updateAdvertisement} from '@util'
+function getInitialValues(ad) {
+    return ad
+        ? {
+              ...ad,
+              price: parseFloat(ad.price),
+              file: undefined,
+              startDate: new Date(ad.startDate),
+              endDate: new Date(ad.endDate),
+          }
+        : {
+              title: 'Học bổng Úc ' + Math.round(Math.random() * 1000),
+              description: 'Học bổng úc trọn gói, thi đánh giá năng lực',
+              image: '',
+              displayPosition: 'HOME',
+              target: '#hocbonguc',
+              startDate: new Date(),
+              endDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+              price: Math.round(Math.random() * 100),
+              createdBy: 1,
+              visibility: true,
+              file: undefined,
+          }
+}
+function AdvertisementForm({ad, close, mutate, ads}) {
     const form = useForm({
-        initialValues: {
-            advertisementId: '',
-            title: '',
-            description: '',
-            image: '',
-            displayPosition: '',
-            targetUrl: '',
-            startDate: '',
-            endDate: '',
-            impressionCount: '',
-            clickCount: '',
-            status: '',
-            price: '',
-            createdAt: '',
-            createdBy: '',
-            updatedAt: '',
-            updatedBy: '',
-        },
+        initialValues: getInitialValues(ad),
     })
-    const handleSubmit = () => {
-        console.log(form.values)
+    const handleSubmit = async () => {
+        if (form.values.file) form.values.image = await uploadImg(form.values.file)
+
+        if (!ad) {
+            //create new
+            createAdvertisement(form.values).then((rs) => {
+                if (rs.advertisementId) {
+                    mutate([rs, ...ads], false)
+                    close()
+                }
+            })
+        } else {
+            //update
+            const rs = await updateAdvertisement(form.values)
+            form.setValues(getInitialValues(rs))
+            const newItems = ads.map((item) => (item.advertisementId == rs.advertisementId ? rs : item))
+            mutate(newItems, false)
+        }
     }
     return (
         <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Group grow align='flex-start'>
+            <Group align='center' position='right'>
+                <Checkbox
+                    checked={form.values.visibility}
+                    onChange={(e) => form.setValues({visibility: e.target.checked == 1})}
+                    label='Hiển thị'
+                />
+                <Button type='submit' display='inline-block'>
+                    Lưu
+                </Button>
+            </Group>
+            <Group grow align='flex-start' my='xl'>
                 <Stack>
                     <TextInput
                         label='Tiêu đề'
@@ -43,11 +75,11 @@ function AdvertisementForm() {
                         label='URL đích'
                         placeholder='Trang đích khi người dùng click'
                         required
-                        {...form.getInputProps('targetUrl')}
+                        {...form.getInputProps('target')}
                     />
 
-                    <DateInput valueFormat='YYYY MMM DD' label='Ngày bắt đầu' />
-                    <DateInput valueFormat='YYYY MMM DD' label='Ngày kết thúc' />
+                    <DateInput valueFormat='DD - MM - YYYY' label='Ngày bắt đầu' {...form.getInputProps('startDate')} />
+                    <DateInput valueFormat='DD - MM - YYYY' label='Ngày kết thúc' {...form.getInputProps('endDate')} />
                     <Select
                         label='Vị trí hiển thị'
                         data={[
@@ -58,18 +90,12 @@ function AdvertisementForm() {
                     />
                     <NumberInput
                         {...form.getInputProps('price')}
+                        precision={4}
                         defaultValue={0}
                         min={0}
                         placeholder='Nhập tiền hoa hồng'
                         label='Hoa hồng'
                     />
-                    <Checkbox
-                        label='Cho phép hiển thị'
-                        checked={form.values.visibility}
-                        {...form.getInputProps('visibility')}
-                    />
-
-                    <Button type='submit'>Lưu</Button>
                 </Stack>
                 <Stack>
                     <ImageDropzone form={form} imageField='image' />

@@ -1,5 +1,6 @@
 import {Button, PasswordInput, Stack, TextInput} from '@mantine/core'
 import {useForm} from '@mantine/form'
+import {signUp} from '@util'
 function SignUp() {
     const form = useForm({
         initialValues: {
@@ -9,8 +10,13 @@ function SignUp() {
             confirmPassword: '',
         },
     })
+    const handleSignUp = () => {
+        signUp(form.values).then((rs) => {
+            console.log(rs)
+        })
+    }
     return (
-        <form onSubmit={form.onSubmit(console.log)}>
+        <form onSubmit={form.onSubmit(handleSignUp)}>
             <Stack>
                 <TextInput {...form.getInputProps('name')} label='Họ Tên' placeHolder='Nhập họ tên của bạn' required />
                 <TextInput

@@ -1,5 +1,4 @@
 import {IconChevronDown} from '@tabler/icons-react'
-import {getConfig} from './service'
 
 const inputStyle = {
     defaultProps: {
@@ -21,26 +20,23 @@ const inputStyle = {
     },
 }
 
-export function style() {
-    const config = getConfig()
-    return config
+export function style(settings) {
+    return settings[1]
         ? {
-              fontFamily: config.fontFamily,
-              primaryColor: config.primaryColor,
+              fontFamily: settings[1].fontFamily,
+              primaryColor: settings[1].primaryColor,
               globalStyles: (theme) => {
-                  //   '--primary-color-='theme.colors[config.primaryColor]
-                  //   theme.backgroundColor = '--primary-color-0'
                   return {
                       ':root': {
-                          '--primary-color-0': theme.colors[config.primaryColor][0],
-                          '--primary-color-1': theme.colors[config.primaryColor][1],
-                          '--primary-color-2': theme.colors[config.primaryColor][2],
-                          '--primary-color-3': theme.colors[config.primaryColor][3],
-                          '--primary-color-4': theme.colors[config.primaryColor][4],
-                          '--primary-color-5': theme.colors[config.primaryColor][5],
-                          '--primary-color-6': theme.colors[config.primaryColor][6],
-                          '--primary-color-7': theme.colors[config.primaryColor][7],
-                          '--primary-color-8': theme.colors[config.primaryColor][8],
+                          '--primary-color-0': theme.colors[settings[1].primaryColor][0],
+                          '--primary-color-1': theme.colors[settings[1].primaryColor][1],
+                          '--primary-color-2': theme.colors[settings[1].primaryColor][2],
+                          '--primary-color-3': theme.colors[settings[1].primaryColor][3],
+                          '--primary-color-4': theme.colors[settings[1].primaryColor][4],
+                          '--primary-color-5': theme.colors[settings[1].primaryColor][5],
+                          '--primary-color-6': theme.colors[settings[1].primaryColor][6],
+                          '--primary-color-7': theme.colors[settings[1].primaryColor][7],
+                          '--primary-color-8': theme.colors[settings[1].primaryColor][8],
                       },
                   }
               },
@@ -97,6 +93,15 @@ export function style() {
                   Select: inputStyle,
                   MultiSelect: inputStyle,
                   PasswordInput: inputStyle,
+                  Avatar: {
+                      defaultProps: {
+                          radius: '50%',
+                          p: '4px',
+                          style: {
+                              border: '1px solid black',
+                          },
+                      },
+                  },
                   Tabs: {
                       styles: (theme) => ({
                           tab: {

@@ -1,6 +1,6 @@
 // prisma/seed.ts
 
-import { PrismaClient } from '@prisma/client';
+import { ad_display_position, PrismaClient } from '@prisma/client';
 
 // initialize Prisma Client
 const prisma = new PrismaClient();
@@ -73,89 +73,203 @@ const content = `<p class="description">Bộ Th&ocirc;ng tin v&agrave; Truyền 
 </article>
 </div>
 </article>`;
+
+const comments = [
+  'Nhân vật Phùng trong truyện Chiếc thuyền ngoài xa tạo cho tôi một cảm giác đồng cảm mạnh mẽ, với cuộc đời bất hạnh nhưng vẫn kiên cường và lạc quan.',
+  'Phùng là một nhân vật đầy sâu sắc, hành trình tìm kiếm hạnh phúc của cô làm tôi suy tư về ý nghĩa thực sự của cuộc sống.',
+  'Từng trải qua biết bao khó khăn và thử thách, Phùng đã giúp tôi nhận ra rằng cuộc sống không phải lúc nào cũng suôn sẻ, nhưng quan trọng là không bỏ cuộc.',
+  'Sự mạnh mẽ và quyết tâm của Phùng khiến tôi không thể không ngưỡng mộ, cô là một nguồn động lực lớn cho tôi.',
+  'Nhân vật Phùng trong truyện thể hiện tình yêu thương chân thành và sự hi sinh vô điều kiện, điều đó khiến tôi cảm động.',
+  'Trái tim ấm áp và tấm lòng nhân hậu của Phùng đã khiến tôi xem lại bản thân và suy tư về ý nghĩa thực sự của cuộc sống.',
+  'Cuộc sống của Phùng là một hành trình đầy biến đổi, nhưng cô luôn kiên nhẫn và kiên định đi đến cuối con đường.',
+  'Tôi yêu thích nhân vật Phùng bởi cách cô luôn tìm thấy niềm vui và ý nghĩa trong những điều giản đơn nhất.',
+  'Nhân vật Phùng trong truyện đã làm tôi nhận ra rằng không có gì quý giá hơn gia đình và tình thương thân mật.',
+  'Phùng là một nhân vật vô cùng thú vị và đáng yêu, tôi đã rơi vào câu chuyện của cô và không thể dứt ra khỏi.',
+];
+
 async function main() {
   // create two dummy articles
+  await prisma.setting.deleteMany();
+  await prisma.literaryCategory.deleteMany();
+  await prisma.postReaction.deleteMany();
+  await prisma.postTag.deleteMany();
+  await prisma.comment.deleteMany();
   await prisma.category.deleteMany();
-  await prisma.literary.deleteMany();
   await prisma.post.deleteMany();
+  await prisma.literary.deleteMany();
+  await prisma.tag.deleteMany();
   await prisma.user.deleteMany();
+  const tmpArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-  const tmpArr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
   await prisma.user.createMany({
     data: tmpArr.map((e, i) => ({
       userId: ++i,
-      name: 'Tuấn Hùng',
-      slug: 'tuan-hung-' + ++i,
-      email: 'tuanhung592001@gmail.com' + ++i,
-      password: '1234567',
+      name: 'Tuấn Hùng ' + (i == 1 ? '' : i),
+      slug: 'tuan-hung-' + (i == 1 ? '' : i),
+      role: Math.random() > 0.8 ? 'ADMIN' : 'VIEWER',
+      status: Math.random() > 0.8 ? 'BANNED' : 'ACTIVE',
+      email: (i == 1 ? '' : i) + 'tuanhung592001@gmail.com',
+      password: '$2b$10$O/UxP2LOsMpGuPFc2DE0AeSiYFIVZ2e8GSzMDcUUAQtGhENhnXqxy',
     })),
+  });
+  await prisma.literary.createMany({
+    data: tmpArr.map((e, i) => ({
+      literaryId: ++i,
+      title: 'Tấm cám ' + i,
+      timeOfCreation: 'Mùa thu 1975',
+      authorName: 'Khuyết danh',
+      intro: `Tấm Cám (chữ Nôm: 糝𥽇) là một câu chuyện cổ tích Việt Nam thuộc thể loại truyện cổ
+      tích thần kì. Dù có nhiều dị bản, câu chuyện này phản ánh những mâu thuẫn trong gia
+      đình, đặc biệt là mối quan hệ mẹ kế - con chồng.`,
+      summary: `Tấm Cám là câu chuyện dân gian kể về hai chị em Tấm Cám. Tấm mồ côi mẹ từ nhỏ sống với mẹ
+                con dì ghẻ và Cám. Mẹ con Cám thường xuyên hành hạ đối xử bất công với Tấm. Khi thì cướp hết
+                cá mà Tấm bắt được, khi thì lại giết hại cả bống bạn của Tấm, lúc lại không cho Tấm đi trẩy
+                hội, bắt Tấm ở nhà nhặt thóc và gạo. Tuy nhiên khi được Bụt giúp đỡ Tấm đã được đi chơi hội
+                và gặp gỡ nhà vua. Khi trở về từ dạ tiệc Tấm đánh rơi chiếc hài và nhà vua theo đó mà tìm
+                được người để cưới về làm vợ. Tấm trở thành hoàng hậu, điều đó làm mẹ con Cám ganh ghét và
+                lập mưu giết hại Tấm. Nhưng Tấm đã hóa thành chim vàng anh, cây xoan đào, khung cửi, quả
+                thị. Và cuối cùng Tấm gặp lại nhà vua và sống trong cung hạnh phúc đến suốt đời. Còn mẹ con
+                Cám phải chịu báo ứng vì những tội ác mà mình đã gây ra.`,
+      slug: 'tam-cam' + i,
+      image: 'https://i.ibb.co/W2zv6HF/T-m-C-m-1-removebg-preview.png',
+      featured: Math.random() > 0.8,
+      visibility: Math.random() > 0.3,
+      createdAt: new Date(new Date().getTime() + i * 100000),
+      updatedAt: new Date(new Date().getTime() + i * 100000),
+      view: Math.round(Math.random() * 1000000),
+      postCount: Math.round(Math.random() * 100),
+      createdBy: 1,
+    })),
+  });
+  await prisma.tag.createMany({
+    data: [
+      {
+        tagId: 1,
+        tagName: 'tam',
+        slug: 'tam',
+        createdAt: new Date(new Date().getTime() - 1 * 100000),
+        updatedAt: new Date(new Date().getTime() - 1 * 100000),
+        usedCount: 32,
+        createdBy: 1,
+      },
+      {
+        tagId: 2,
+        tagName: 'cam',
+        slug: 'cam',
+        createdAt: new Date(new Date().getTime() + 2 * 100000),
+        updatedAt: new Date(new Date().getTime() + 2 * 100000),
+        usedCount: 25,
+        createdBy: 1,
+      },
+    ],
+  });
+
+  await prisma.category.createMany({
+    data: [
+      {
+        categoryId: 1,
+        categoryName: 'Truyện cổ tích',
+        slug: 'truyen-co-tich',
+        createdAt: new Date(new Date().getTime() - 1 * 100000),
+        updatedAt: new Date(new Date().getTime() - 1 * 100000),
+        createdBy: 1,
+      },
+      {
+        categoryId: 2,
+        categoryName: 'Truyện ngắn',
+        slug: 'truyen-ngan',
+        createdAt: new Date(new Date().getTime() + 2 * 100000),
+        updatedAt: new Date(new Date().getTime() + 2 * 100000),
+        createdBy: 1,
+      },
+    ],
   });
   await prisma.post.createMany({
     data: tmpArr.map((e, i) => ({
       postId: ++i,
       title:
         'Phân tích nhân vật nhiếp ảnh gia Phùng trong truyện ngắn Chiếc thuyền ngoài xa.' +
-        ++i,
+        i,
       summary:
         'Phân tích nhân vật nhiếp ảnh gia Phùng trong truyện ngắn Chiếc thuyền ngoài xa.Phân tích nhân vật nhiếp ảnh gia Phùng trong truyện ngắn Chiếc thuyền ngoài xa.Phân tích nhân vật nhiếp ảnh gia Phùng trong truyện ngắn Chiếc thuyền ngoài xa.',
-      slug: 'phan-tich-nhan-vat-phung-' + ++i,
+      slug: 'phan-tich-nhan-vat-phung-' + i,
       htmlContent: content,
       featuredImage:
         'https://vnkings.com/wp-content/uploads/2021/04/maxresdefault.jpg',
-      featured: Math.random() > 0.5,
-      view: Math.round(Math.random() * 10000),
+      featured: Math.random() > 0.8,
+      status: Math.random() > 0.9 ? 'DRAFT' : 'PUBLISHED',
+      createdAt: new Date(new Date().getTime() + -i * 10000000),
+      updatedAt: new Date(new Date().getTime() + -i * 10000000),
+      view: Math.round(Math.random() * 1000000),
+      likeCount: Math.round(Math.random() * 10000),
+      dislikeCount: Math.round(Math.random() * 5000),
+      commentCount: Math.round(Math.random() * 100),
       createdBy: 1,
+      literary: Math.random() > 0.5 ? tmpArr.length : tmpArr.length - 1,
     })),
   });
 
-  tmpArr.map(async () => {
-    await prisma.postreaction.createMany({
-      data: tmpArr.map((e, i) => ({
-        createdBy: ++i,
-        postId: ++i,
-        type: Math.random() > 0.5 ? 'LIKE' : 'DISLIKE',
+  tmpArr.map(async (e, k) => {
+    await prisma.comment.createMany({
+      data: comments.map((cmt, i) => ({
+        commentId: k * 10 + ++i,
+        content: cmt,
+        createdBy: k + 1,
+        postId: k + 1,
       })),
     });
   });
-  // postreaction: {
-  //               createMany: {
-  //                 data: tmpArr.map((e, i) => ({
-  //                   createdBy: index,
-  //                   postId: parseInt(index.toString() + i),
-  //                 })),
-  //               },
-  //             },
 
-  // category_category_createdByTouser: {
-  //   createMany: {
-  //     data: [
-  //       {
-  //         categoryId: 1,
-  //         categoryName: 'Lớp 10',
-  //         slug: 'lop-10',
-  //       },
-  //       {
-  //         categoryId: 2,
-  //         categoryName: 'Lớp 11',
-  //         slug: 'Lớp 11',
-  //       },
-  //     ],
-  //   },
-  // },
-  // literary_literary_createdByTouser: {
-  //   createMany: {
-  //     data: [
-  //       {
-  //         title: 'Chiếc thuyền ngoài xa',
-  //         slug: 'chiec-thuyen-ngoai-xa',
-  //         intro:
-  //           'Chiếc thuyền ngoài xa là tên một truyện ngắn của nhà văn Nguyễn Minh Châu. Đây là tác phẩm tiêu biểu cho đề tài đời tư – thế sự của Nguyễn Minh Châu sau năm 1975.[1] Tạp chí Văn nghệ Quân đội (số 1 tháng 10 năm 2007) cũng chọn và coi đây là tác phẩm hay nhất của nhà văn.[2] Tác phẩm này đã được đưa vào giảng dạy ở chương trình chính thức Sách giáo khoa môn Ngữ văn lớp 12 bắt đầu từ năm học 2008–2009 qua một đoạn trích phần giữa truyện. Bài này cũng được đưa vào đề thi môn Ngữ văn Kì thi tốt nghiệp Trung học phổ thông quốc gia vào các năm 2015, 2018 và 2022.',
-  //         summary:
-  //           'Phóng viên Phùng, một nghệ sĩ nhiếp ảnh tài hoa, có niềm đam mê với nghề và có một tâm hồn nhạy cảm, được trưởng phòng giao nhiệm vụ đi chụp một tấm ảnh về cảnh biển có sương để bổ sung vào bộ ảnh lịch. Anh đến một vùng biển miền Trung vào giữa tháng 7. Ngoài Đẩu, người đồng đội cũ giờ làm chánh án tòa án huyện, anh đã quen thân với Phác, một cậu bé thường đi cùng ông ngoại chở gỗ từ trên rừng về bán cho xưởng đóng tàu. Sau khoảng tuần lễ chưa chụp được bức ảnh ưng ý, tình cờ anh thấy cảnh một chiếc thuyền ngoài xa, đang lái vó trong làn sương sớm "mũi thuyền in một nét mơ hồ lòe nhòe vào bầu sương mù trắng như sữa pha đôi chút màu hồng hồng do ánh mặt trời chiếu vào, vài bóng người ngồi yên phăng phắc như tượng trên chiếc mui khum khum đang hướng mặt vào bờ" tạo nên một khung cảnh "từ đường nét đến ánh sáng đều hài hòa và đẹp, một vẻ đẹp thực đơn giản và toàn bích". Phùng nhanh chóng bấm liên thanh một hồi, thu vào chiếc máy ảnh của anh "cái đẹp tuyệt đỉnh của ngoại cảnh", một vẻ đẹp thật đơn giản nhưng đạt đến sự hoàn mỹ và toàn bích khiến cho tâm hồn Phùng như được gội rửa và trong ngần trong khoảnh khắc.',
-  //       },
-  //     ],
-  //   },
-  // },
+  await prisma.postTag.createMany({
+    data: tmpArr.map((e, i) => ({
+      postId: ++i,
+      tagId: (i % 2) + 1,
+    })),
+  });
+  await prisma.literaryCategory.createMany({
+    data: tmpArr.map((e, i) => ({
+      literaryId: ++i,
+      categoryId: (i % 2) + 1,
+    })),
+  });
+  await prisma.advertisement.createMany({
+    data: [
+      {
+        advertisementId: 1,
+        title: 'Học bổng Úc',
+        description: 'Học bổng úc trọn gói, thi đánh giá năng lực',
+        image: '',
+        displayPosition: ad_display_position.HOME,
+        target: '#hocbonguc',
+        startDate: new Date(),
+        endDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+        impressionCount: 723462,
+        clickCount: 24561,
+        price: Math.random().toFixed(3),
+        createdBy: 1,
+      },
+      {
+        advertisementId: 2,
+        title: 'Học bổng Anh',
+        description: 'Học bổng Anh trọn gói, thi đánh giá năng lực',
+        image: '',
+        displayPosition: ad_display_position.SEARCH,
+        target: '#hocbonganh',
+        startDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+        endDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+        impressionCount: 165353,
+        clickCount: 23411,
+        visibility: false,
+
+        price: Math.random().toFixed(3),
+        createdBy: 1,
+      },
+    ],
+  });
+
+  await prisma.setting.createMany({
+    data: [{ settingId: 1 }, { settingId: 2 }],
+  });
 }
 
 // execute the main function

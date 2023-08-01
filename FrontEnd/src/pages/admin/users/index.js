@@ -1,17 +1,14 @@
-import {ActionIcon, Anchor, Avatar, Badge, Group, SegmentedControl, Select, Table, Text} from '@mantine/core'
+import {ActionIcon, Anchor, Avatar, Badge, Button, Group, SegmentedControl, Select, Table, Text} from '@mantine/core'
 import {FloatingLabelInput} from '@comp'
 import Layout from '../Layout'
 import {Edit, PresentationAnalytics, Search, News, ExternalLink} from 'tabler-icons-react'
 import {useRouter} from 'next/router'
-import {useEffect, useState} from 'react'
-
+import Link from 'next/link'
+import {useUsers, formatDate} from '@util'
 function Users() {
-    const [users, setUser] = useState([])
     const router = useRouter()
-    useEffect(() => {
-        setUser(router.query.searchKey ? [1, 1] : [1, 1, 1, 1])
-        console.log(router.asPath)
-    }, [router.query.searchKey, router.query.visibility, router.query.sort])
+    const {users, isLoading, size, setSize} = useUsers('&limit=6&' + router.asPath.split('?')[1])
+
     const changeQuery = (key, value) => {
         router.push({
             query: {
@@ -33,7 +30,7 @@ function Users() {
                     icon={<Search />}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                            changeQuery('searchKey', e.target.value)
+                            changeQuery('key', e.target.value)
                         }
                     }}
                 />
@@ -58,8 +55,7 @@ function Users() {
             <Table w='100%' verticalSpacing='md'>
                 <thead>
                     <tr>
-                        <th>Tổng thành viên: 6</th>
-                        <th>URL</th>
+                        <th>Tên</th>
                         <th>Hoạt động</th>
                         <th>Ngày đăng kí</th>
                         <th></th>
@@ -67,54 +63,66 @@ function Users() {
                 </thead>
                 <tbody>
                     {users &&
-                        users.map(() => (
-                            <tr w='100%' py='xs' style={{borderTop: '1px solid #ccc'}}>
-                                <td width='40%'>
+                        users.map((item, index) => (
+                            <tr w='100%' py='xs' style={{borderTop: '1px solid #ccc'}} key={index}>
+                                <td width='60%'>
                                     <Group>
-                                        <Avatar src='https://cdn-icons-png.flaticon.com/512/3001/3001764.png' />
+                                        <Avatar
+                                            radius='50%'
+                                            size='3rem'
+                                            style={{border: '1px solid black'}}
+                                            src={
+                                                item.avatarImage ||
+                                                'https://cdn-icons-png.flaticon.com/512/3001/3001764.png'
+                                            }
+                                            alt={item.name}
+                                        />
                                         <div>
                                             <Text size='lg' fw='bold'>
-                                                Bùi Tuấn Hùng
-                                                <Badge ml='md' color='grape'>
-                                                    super admin
-                                                </Badge>
-                                                {/* <Badge ml='md' color='teal'>
-                                                    admin
-                                                </Badge>
-                                                <Badge ml='md' color='orange'>
-                                                    contributor
-                                                </Badge>
-                                                <Badge ml='md' color='dark'>
-                                                    viewer
-                                                </Badge> */}
+                                                {item.name}
+                                                {item.role == 'SUPERADMIN' && (
+                                                    <Badge ml='md' color='grape'>
+                                                        Trùm
+                                                    </Badge>
+                                                )}
+                                                {item.role == 'ADMIN' && (
+                                                    <Badge ml='md' color='teal'>
+                                                        Quản trị viên
+                                                    </Badge>
+                                                )}
+                                                {item.role == 'CONTRIBUTOR' && (
+                                                    <Badge ml='md' color='orange'>
+                                                        Cộng tác viên
+                                                    </Badge>
+                                                )}
+                                                {item.role == 'VIEWER' && (
+                                                    <Badge ml='md' color='dark'>
+                                                        Người xem
+                                                    </Badge>
+                                                )}
                                             </Text>
-                                            <Text>admin@vietlit.edu.vn</Text>
+                                            <Text>{item.email}</Text>
                                         </div>
                                     </Group>
                                 </td>
-                                <td>
-                                    <Anchor href='/search?tags=tam-cam' target='_blank'>
-                                        <Group spacing='xs'>
-                                            vietlit-admin
-                                            <ExternalLink />
-                                        </Group>
-                                    </Anchor>
-                                </td>
+
                                 <td>
                                     <Group spacing='xs'>
                                         <News />
-                                        12 bài viết
+                                        <Text> {item._count?.createdPosts} bài viết</Text>
                                     </Group>
                                 </td>
                                 <td>
-                                    <Text> 21-12-2023</Text>
-                                    <Text color='dimmed'> 12 ngày trước</Text>
+                                    <Text> {item.createdAt}</Text>
+                                    <Text color='dimmed'>{formatDate(item.createdAt)}</Text>
                                 </td>
                                 <td>
                                     <Group ml='auto'>
-                                        <ActionIcon onClick={open}>
-                                            <Edit />
-                                        </ActionIcon>
+                                        <Link href={'/admin/users/' + item.userId}>
+                                            <ActionIcon>
+                                                <Edit />
+                                            </ActionIcon>
+                                        </Link>
                                         <ActionIcon>
                                             <PresentationAnalytics />
                                         </ActionIcon>
@@ -124,6 +132,9 @@ function Users() {
                         ))}
                 </tbody>
             </Table>
+            <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
+                Xem thêm
+            </Button>
         </>
     )
 }

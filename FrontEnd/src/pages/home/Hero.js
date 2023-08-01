@@ -1,21 +1,19 @@
-import {ActionIcon, Button, Group, Image, Modal, Stack, Text, TextInput, Title} from '@mantine/core'
-import {getConfig} from '@util'
+import {Button, Group, Image, Modal, Stack, Text, Title} from '@mantine/core'
 import {useMediaQuery, useDisclosure} from '@mantine/hooks'
-import {IconArrowRight, IconSearch} from '@tabler/icons-react'
-import {useState} from 'react'
-import {Mail, MailForward} from 'tabler-icons-react'
+import {MailForward} from 'tabler-icons-react'
 import RequestPostForm from './RequestPostForm'
+import {useSettings} from '@util'
 
 function Hero() {
     const [opened, {open, close}] = useDisclosure(false)
-
+    const {settings, isLoading} = useSettings()
     const smScreen = useMediaQuery('(max-width: 48em)')
     return (
         <>
             <Group grow={!smScreen} w='100%' className='limit-w' mx='auto' px='md'>
                 <Stack>
-                    <Title order={1}>{getConfig().homeHeroTitle} </Title>
-                    <Text>{getConfig().homeHeroSubtitle}</Text>
+                    <Title order={1}>{settings[1].homeHeroTitle} </Title>
+                    <Text>{settings[1].homeHeroSubtitle}</Text>
                     <Stack>
                         <Text size='xl' fw='bold'>
                             Hoặc
@@ -25,7 +23,7 @@ function Hero() {
                         </Button>
                     </Stack>
                 </Stack>
-                {!smScreen && <Image src={getConfig().homeHeroCover}></Image>}
+                {!smScreen && <Image src={settings[1].homeHeroCover}></Image>}
             </Group>
             <Modal opened={opened} onClose={close}>
                 <RequestPostForm />

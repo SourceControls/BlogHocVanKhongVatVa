@@ -27,7 +27,7 @@ export function LiteraryContainer(props) {
             })}>
             <Group noWrap={!smScreen} align='flex-start'>
                 <Link
-                    href='/literary/tam-cam'
+                    href={'/literary/' + props.literary.slug}
                     style={{
                         display: 'block',
                         position: 'relative',
@@ -35,41 +35,32 @@ export function LiteraryContainer(props) {
                     }}
                     className='bookContainer'>
                     <Box className='shadow' ml='4px' w='97%' h='97%' pos='absolute'></Box>
-                    <Image src='https://i.ibb.co/W2zv6HF/T-m-C-m-1-removebg-preview.png' alt='' radius='12px' />
+                    <Image src={props.literary.image} alt='' radius='12px' />
                 </Link>
                 {props.showContent && (
                     <Stack w={smScreen ? '100%' : '80%'} ml={'xs'} h='100%' spacing='xs'>
-                        <Link href='/literary/tam-cam'>
-                            <Title order={2}>Tấm Cám</Title>
+                        <Link href={'/literary/' + props.literary.slug}>
+                            <Title order={2}>{props.literary.title}</Title>
                             <Text size='xs' color='dimmed'>
-                                Khuyết Danh
+                                {props.literary.author || 'Khuyết Danh'}
                             </Text>
                         </Link>
                         <ScrollArea h={160}>
                             <Spoiler maxHeight={125} showLabel='...Xem thêm' align='justify'>
-                                Tấm Cám là câu chuyện dân gian kể về hai chị em Tấm Cám. Tấm mồ côi mẹ từ nhỏ sống với
-                                mẹ con dì ghẻ và Cám. Mẹ con Cám thường xuyên hành hạ đối xử bất công với Tấm. Khi thì
-                                cướp hết cá mà Tấm bắt được, khi thì lại giết hại cả bống bạn của Tấm, lúc lại không cho
-                                Tấm đi trẩy hội, bắt Tấm ở nhà nhặt thóc và gạo. Tuy nhiên khi được Bụt giúp đỡ Tấm đã
-                                được đi chơi hội và gặp gỡ nhà vua. Khi trở về từ dạ tiệc Tấm đánh rơi chiếc hài và nhà
-                                vua theo đó mà tìm được người để cưới về làm vợ. Tấm trở thành hoàng hậu, điều đó làm mẹ
-                                con Cám ganh ghét và lập mưu giết hại Tấm. Nhưng Tấm đã hóa thành chim vàng anh, cây
-                                xoan đào, khung cửi, quả thị. Và cuối cùng Tấm gặp lại nhà vua và sống trong cung hạnh
-                                phúc đến suốt đời. Còn mẹ con Cám phải chịu báo ứng vì những tội ác mà mình đã gây ra.
+                                {props.literary.summary}
                             </Spoiler>
                         </ScrollArea>
                         <Group spacing='md' align='flex-start' noWrap>
                             <Group spacing='6px'>
                                 <Eye />
-                                <Text>96.6k</Text>
-                            </Group>
-                            <Group spacing='6px'>
-                                <ThumbUp />
-                                <Text>11.2k</Text>
+                                <Text>{props.literary.view}</Text>
                             </Group>
                             <Group spacing='6px'>
                                 <News />
-                                <Text>18 bài viết</Text>
+                                <Text>
+                                    {props.literary.postCount + ' '}
+                                    bài viết
+                                </Text>
                             </Group>
                         </Group>
                     </Stack>

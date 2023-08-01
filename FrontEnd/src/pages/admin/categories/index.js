@@ -1,22 +1,22 @@
-import {ActionIcon, Anchor, Button, Group, Modal, SegmentedControl, Select, Table, Text} from '@mantine/core'
+import {ActionIcon, Anchor, Button, Group, Modal, Select, Table, Text} from '@mantine/core'
 import {FloatingLabelInput} from '@comp'
 import Layout from '../Layout'
-import {Edit, PresentationAnalytics, Search, Plus, News, ExternalLink} from 'tabler-icons-react'
+import {Edit, PresentationAnalytics, Search, Plus, ExternalLink, Trash} from 'tabler-icons-react'
 import {useRouter} from 'next/router'
-import {useEffect, useState} from 'react'
-import CategoriesForm from './CategoriesForm'
+import {useState} from 'react'
+import CategoryForm from './CategoryForm'
 import {useDisclosure} from '@mantine/hooks'
 import {IconBook2} from '@tabler/icons-react'
+import {useCategories, deleteCategory} from '@util'
 
 function Categories() {
-    const [opened, {open, close}] = useDisclosure(false)
-
-    const [categories, setCategories] = useState([])
     const router = useRouter()
-    useEffect(() => {
-        setCategories(router.query.searchKey ? [1, 1] : [1, 1, 1, 1])
-        console.log(router.asPath)
-    }, [router.query.searchKey, router.query.visibility, router.query.sort])
+    const [opened, {open, close}] = useDisclosure(false)
+    const {categories, isLoading, size, setSize, mutate} = useCategories('&limit=6&' + router.asPath.split('?')[1])
+    const [modalContent, setModalContent] = useState(
+        <CategoryForm close={close} mutate={mutate} categories={categories} />,
+    )
+
     const changeQuery = (key, value) => {
         router.push({
             query: {
@@ -25,6 +25,14 @@ function Categories() {
             },
         })
     }
+    const handleDelete = async (id) => {
+        let rs = await deleteCategory(id)
+        if (rs.categoryId) {
+            const newItems = categories.filter((item) => item.categoryId !== rs.categoryId)
+            mutate(newItems, false)
+        }
+    }
+    console.log(1)
     return (
         <>
             <Group mb='38px' noWrap align='flex-end'>
@@ -47,12 +55,17 @@ function Categories() {
                     defaultValue='publishedAt'
                     data={[
                         {value: 'publishedAt', label: 'Gần đây'},
-                        {value: 'literary', label: 'Nhiều tác phẩm'},
+                        {value: 'literaryCount', label: 'Nhiều tác phẩm'},
                     ]}
-                    onChange={(val) => changeQuery('sort', val)}
+                    onChange={(val) => changeQuery('sortBy', val)}
                 />
 
-                <Button leftIcon={<Plus />} onClick={open}>
+                <Button
+                    leftIcon={<Plus />}
+                    onClick={() => {
+                        setModalContent(<CategoryForm close={close} mutate={mutate} categories={categories} />)
+                        open()
+                    }}>
                     Tạo
                 </Button>
             </Group>
@@ -67,21 +80,22 @@ function Categories() {
                 </thead>
                 <tbody>
                     {categories &&
-                        categories.map(() => (
-                            <tr w='100%' py='xs' style={{borderTop: '1px solid #ccc'}}>
-                                <td width='60%'>
+                        categories.map((item, index) => (
+                            <tr key={index} w='100%' py='xs' style={{borderTop: '1px solid #ccc'}}>
+                                <td width='50%'>
                                     <Text fw='bold' size='lg' lineClamp={1}>
-                                        Thơ lục bát
+                                        {item.categoryName}
                                     </Text>
-                                    <Text lineClamp={3} pr='xl'>
-                                        Truyện cổ tích thần kỳ là tập hợp những câu chuyện cổ tích được người dân Việt
-                                        Nam sáng tạo và lưu truyền từ hàng trăm năm nay.
+                                    <Text lineClamp={2} pr='xl'>
+                                        {item.description}
                                     </Text>
                                 </td>
                                 <td>
-                                    <Anchor href='/search?category=tho-luc-bat' target='_blank'>
+                                    <Anchor href={'/search?category=' + item.slug} target='_blank'>
                                         <Group spacing='xs'>
-                                            tho-luc-bat
+                                            <Text lineClamp={1} maw='230px'>
+                                                {item.slug}
+                                            </Text>
                                             <ExternalLink />
                                         </Group>
                                     </Anchor>
@@ -89,16 +103,28 @@ function Categories() {
                                 <td>
                                     <Group spacing='xs'>
                                         <IconBook2 />
-                                        18 Tác Phẩm
+                                        {item.literaryCategory?.length + ' '}
+                                        Tác Phẩm
                                     </Group>
                                 </td>
                                 <td>
                                     <Group ml='auto'>
-                                        <ActionIcon onClick={open}>
+                                        <ActionIcon
+                                            onClick={() => {
+                                                setModalContent(
+                                                    <CategoryForm
+                                                        close={close}
+                                                        category={item}
+                                                        mutate={mutate}
+                                                        categories={categories}
+                                                    />,
+                                                )
+                                                open()
+                                            }}>
                                             <Edit />
                                         </ActionIcon>
-                                        <ActionIcon>
-                                            <PresentationAnalytics />
+                                        <ActionIcon color='red' onClick={() => handleDelete(item.categoryId)}>
+                                            <Trash />
                                         </ActionIcon>
                                     </Group>
                                 </td>
@@ -106,8 +132,11 @@ function Categories() {
                         ))}
                 </tbody>
             </Table>
+            <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
+                Xem thêm
+            </Button>
             <Modal opened={opened} onClose={close} centered yOffset='1vh' xOffset={0} title='Danh Mục'>
-                <CategoriesForm />
+                {modalContent}
             </Modal>
         </>
     )

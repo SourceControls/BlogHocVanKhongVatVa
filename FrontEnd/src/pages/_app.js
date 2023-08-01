@@ -1,35 +1,29 @@
 import './globalStyle.css'
 import {MantineProvider} from '@mantine/core'
-import {useEffect, useState} from 'react'
-import {getConfigAsync, style, initWebInfo} from '@util'
+import {useEffect} from 'react'
+import {style} from '@util'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import {useSettings} from '@util'
 
 function EmptyLayout({children}) {
     return <>{children}</>
 }
 
 export default function MyApp({Component, pageProps}) {
-    const [config, setConfig] = useState()
-    useEffect(() => {
-        getConfigAsync().then((rs) => {
-            setConfig(rs)
-            initWebInfo(rs.favIcon, rs.webTitle)
-        })
-    }, [])
-
+    const {settings, isLoading} = useSettings()
     const Layout = Component.Layout || EmptyLayout
-
+    if (!settings[1]) return <></>
     return (
         <>
-            {config && (
-                <MantineProvider theme={style()} withGlobalStyles withNormalizeCSS withCSSVariables>
+            {
+                <MantineProvider theme={style(settings)} withGlobalStyles withNormalizeCSS withCSSVariables>
                     <Layout>
                         <Component {...pageProps} />
                     </Layout>
                 </MantineProvider>
-            )}
-            <ToastContainer position='top-left' autoClose={1000} />
+            }
+            <ToastContainer position='top-left' autoClose={5000} limit={3} />
             {/* <GlobalLoading /> */}
         </>
     )

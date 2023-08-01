@@ -7,6 +7,10 @@ const nextConfig = {
                 source: '/',
                 destination: '/home',
             },
+            // {
+            //     source: '/api/:path*',
+            //     destination:  + '/:path*',
+            // },
         ]
     },
 }

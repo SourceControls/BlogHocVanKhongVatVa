@@ -1,21 +1,18 @@
 import {ActionIcon, Anchor, Button, Group, Modal, SegmentedControl, Select, Table, Text} from '@mantine/core'
 import {FloatingLabelInput} from '@comp'
 import Layout from '../Layout'
-import {Edit, PresentationAnalytics, Search, Plus, News, ExternalLink} from 'tabler-icons-react'
+import {Edit, PresentationAnalytics, Search, Plus, News, ExternalLink, Trash} from 'tabler-icons-react'
 import {useRouter} from 'next/router'
-import {useEffect, useState} from 'react'
-import TagsForm from './TagsForm'
+import TagForm from './TagForm'
 import {useDisclosure} from '@mantine/hooks'
+import {useTags, deleteTag} from '@util'
+import {useState} from 'react'
 
 function Tags() {
     const [opened, {open, close}] = useDisclosure(false)
-
-    const [tags, setTags] = useState([])
     const router = useRouter()
-    useEffect(() => {
-        setTags(router.query.searchKey ? [1, 1] : [1, 1, 1, 1])
-        console.log(router.asPath)
-    }, [router.query.searchKey, router.query.visibility, router.query.sort])
+    const {tags, isLoading, size, setSize, mutate} = useTags('&limit=6&' + router.asPath.split('?')[1])
+    const [modalContent, setModalContent] = useState(<TagForm close={close} mutate={mutate} tags={tags} />)
     const changeQuery = (key, value) => {
         router.push({
             query: {
@@ -23,6 +20,14 @@ function Tags() {
                 [key]: value,
             },
         })
+    }
+
+    const handleDelete = async (id) => {
+        let rs = await deleteTag(id)
+        if (rs.tagId) {
+            const newItems = tags.filter((item) => item.tagId !== rs.tagId)
+            mutate(newItems, false)
+        }
     }
     return (
         <>
@@ -41,23 +46,22 @@ function Tags() {
                         }
                     }}
                 />
-                <SegmentedControl
-                    data={[
-                        {value: '1', label: 'Công Khai'},
-                        {value: '0', label: 'Đã Ẩn'},
-                    ]}
-                    onChange={(val) => changeQuery('visibility', val)}
-                />
+
                 <Select
-                    defaultValue='publishedAt'
+                    defaultValue=''
                     data={[
-                        {value: 'publishedAt', label: 'Gần đây'},
+                        {value: '', label: 'Gần đây'},
                         {value: 'usedCount', label: 'Nhiều Lượt Sử Dụng'},
                     ]}
-                    onChange={(val) => changeQuery('sort', val)}
+                    onChange={(val) => changeQuery('sortBy', val)}
                 />
 
-                <Button leftIcon={<Plus />} onClick={open}>
+                <Button
+                    leftIcon={<Plus />}
+                    onClick={() => {
+                        setModalContent(<TagForm close={close} mutate={mutate} tags={tags} />)
+                        open()
+                    }}>
                     Tạo
                 </Button>
             </Group>
@@ -66,23 +70,26 @@ function Tags() {
                     <tr>
                         <th>Tên thẻ</th>
                         <th>URL</th>
-                        <th>Posts</th>
+                        <th>Hoạt động</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {tags &&
-                        tags.map(() => (
-                            <tr w='100%' py='xs' style={{borderTop: '1px solid #ccc'}}>
+                        tags.map((item, index) => (
+                            <tr w='100%' py='xs' style={{borderTop: '1px solid #ccc'}} key={index}>
                                 <td width='60%'>
                                     <Text fw='bold' size='lg' lineClamp={1}>
-                                        Tấm Cám
+                                        {item.tagName}
+                                    </Text>
+                                    <Text lineClamp={2} pr='xl'>
+                                        {item.description}
                                     </Text>
                                 </td>
                                 <td>
                                     <Anchor href='/search?tags=tam-cam' target='_blank'>
                                         <Group spacing='xs'>
-                                            tam-cam
+                                            {item.slug}
                                             <ExternalLink />
                                         </Group>
                                     </Anchor>
@@ -90,16 +97,22 @@ function Tags() {
                                 <td>
                                     <Group spacing='xs'>
                                         <News />
-                                        128 bài viết
+                                        <Text>{item.usedCount} lượt sử dụng</Text>
                                     </Group>
                                 </td>
                                 <td>
                                     <Group ml='auto'>
-                                        <ActionIcon onClick={open}>
+                                        <ActionIcon
+                                            onClick={() => {
+                                                setModalContent(
+                                                    <TagForm close={close} tag={item} mutate={mutate} tags={tags} />,
+                                                )
+                                                open()
+                                            }}>
                                             <Edit />
                                         </ActionIcon>
-                                        <ActionIcon>
-                                            <PresentationAnalytics />
+                                        <ActionIcon color='red' onClick={() => handleDelete(item.tagId)}>
+                                            <Trash />
                                         </ActionIcon>
                                     </Group>
                                 </td>
@@ -107,8 +120,11 @@ function Tags() {
                         ))}
                 </tbody>
             </Table>
+            <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
+                Xem thêm
+            </Button>
             <Modal opened={opened} onClose={close} centered yOffset='1vh' xOffset={0} title='Tags'>
-                <TagsForm />
+                {modalContent}
             </Modal>
         </>
     )

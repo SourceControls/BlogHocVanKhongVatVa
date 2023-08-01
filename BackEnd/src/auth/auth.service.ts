@@ -56,8 +56,7 @@ export class AuthService {
       };
       const token = await this.jwtService.signAsync(payload);
       delete user.password;
-
-      res.setHeader('authentication', token);
+      res.setHeader('Authorization', token);
       return res.json({ data: user, message: 'Hello!! ' + user.name + ' !' });
     } catch (error) {
       throw new UnauthorizedException(error.message);

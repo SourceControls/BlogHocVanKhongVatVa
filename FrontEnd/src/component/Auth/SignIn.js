@@ -1,15 +1,22 @@
 import {Button, PasswordInput, Stack, TextInput} from '@mantine/core'
 import {useForm} from '@mantine/form'
+import {signIn} from '@util'
 
-function SignIn() {
+function SignIn({closeModal}) {
     const form = useForm({
         initialValues: {
             email: '',
             password: '',
         },
     })
+
+    const handleSignIn = () => {
+        signIn(form.values).then((rs) => {
+            console.log(rs)
+        })
+    }
     return (
-        <form onSubmit={form.onSubmit(console.log)}>
+        <form onSubmit={form.onSubmit(handleSignIn)}>
             <Stack>
                 <TextInput
                     {...form.getInputProps('email')}

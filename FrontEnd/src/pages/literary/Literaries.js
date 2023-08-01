@@ -11,22 +11,6 @@ function Literaries({heading}) {
     const [sortBy, setSortBy] = useState('publishedAt')
     const [genre, setGenre] = useState()
 
-    const handleRemoveQuery = () => {
-        router.push(
-            {
-                pathname: router.pathname, // Keep the current pathname
-                query: {}, // Set an empty object as the query
-            },
-            undefined,
-            {replace: true},
-        )
-    }
-    useEffect(() => {
-        handleRemoveQuery()
-    }, [])
-    useEffect(() => {
-        setKey('')
-    }, [router.query.category])
     const smScreen = useMediaQuery('(max-width: 48em)')
     return (
         <Box pt='48px' px='md'>

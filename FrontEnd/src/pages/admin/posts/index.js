@@ -5,17 +5,15 @@ import {Edit, Eye, PresentationAnalytics, Search, ThumbUp, ThumbDown, Plus} from
 import MyEditor from './MyEditor'
 import {useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
-import {useEffect, useState} from 'react'
-
+import {usePosts, useUsers} from '@util'
+import {useState} from 'react'
 function Posts() {
     const [opened, {open, close}] = useDisclosure(false)
-
-    const [posts, setPosts] = useState([])
     const router = useRouter()
-    useEffect(() => {
-        setPosts(router.query.searchKey ? [1, 1] : [1, 1, 1, 1, 1, 1])
-        console.log(router.asPath)
-    }, [router.query.searchKey, router.query.visibility, router.query.sort])
+    const [modalContent, setModalContent] = useState(<MyEditor close={close} />)
+    const {posts, isLoading, size, setSize, mutate} = usePosts('&limit=6&' + router.asPath.split('?')[1])
+    const {users} = useUsers('&limit=0&role=NOTVIEWER')
+
     const changeQuery = (key, value) => {
         router.push({
             query: {
@@ -42,14 +40,14 @@ function Posts() {
                     }}
                 />
                 <Select
-                    defaultValue='publishedAt'
+                    defaultValue=''
                     data={[
-                        {value: 'publishedAt', label: 'Mới nhất'},
+                        {value: '', label: 'Mới nhất'},
                         {value: 'view', label: 'Nhiều Lượt Xem'},
                         {value: 'like', label: 'Nhiều Lượt Like '},
                         {value: 'dislike', label: 'Nhiều Lượt Dislike '},
                     ]}
-                    onChange={(val) => changeQuery('sort', val)}
+                    onChange={(val) => changeQuery('sortBy', val)}
                 />
                 <Select
                     defaultValue=''
@@ -59,7 +57,6 @@ function Posts() {
                         {value: 'pending', label: 'Chờ Duyệt'},
                         {value: 'published', label: 'Công Khai'},
                         {value: 'hide', label: 'Đã Ẩn'},
-                        {value: 'featured', label: 'Nổi Bật'},
                     ]}
                     onChange={(val) => changeQuery('status', val)}
                 />
@@ -70,48 +67,59 @@ function Posts() {
                     maxDropdownHeight={280}
                     data={[
                         {value: '', label: 'Tất Cả Tác Giả'},
-                        {value: 'author1', label: 'Tuấn Hùng'},
-                        {value: 'author2', label: 'Mỹ Linh'},
+                        ...users.map((item) => ({value: item.slug, label: item.name})),
                     ]}
                     onChange={(val) => changeQuery('author', val)}
                 />
 
-                <Button leftIcon={<Plus />} onClick={open}>
+                <Button
+                    leftIcon={<Plus />}
+                    onClick={() => {
+                        setModalContent(<MyEditor close={close} mutate={mutate} posts={posts} />)
+                        open()
+                    }}>
                     Tạo
                 </Button>
             </Group>
             <div>
                 {posts &&
-                    posts.map(() => (
-                        <Group w='100%' py='md' style={{borderTop: '1px solid #ccc'}}>
+                    posts.map((item, index) => (
+                        <Group key={index} w='100%' py='md' style={{borderTop: '1px solid #ccc'}}>
                             <Stack spacing='4px'>
                                 <Text fw='bold' size='lg' lineClamp={1}>
-                                    Phân tích nhân vật nhiếp ảnh gia Phùng trong truyện ngắn Chiếc thuyền ngoài xa.
+                                    {item.title}
                                 </Text>
                                 <Text>
-                                    <ExtraInfo publisherName='Tuấn Hùng' publishedAt='02/11/2021' color='dimmed' />
+                                    <ExtraInfo publisherName={item.createdByUser.name} publishedAt={item.createdAt} />
                                 </Text>
                                 <Text color='dimmed'>
                                     <Group>
-                                        <Text color='red'>Published</Text>
+                                        <Text color='red'>{item.status}</Text>
                                         {'-'}
                                         <Group spacing='xs'>
                                             <Eye />
-                                            113.6k
+                                            <Text>{item.view}</Text>
                                         </Group>
                                         <Group spacing='xs'>
                                             <ThumbUp />
-                                            <Text>11.2k</Text>
+                                            <Text> {item.likeCount}</Text>
                                         </Group>
                                         <Group spacing='xs'>
                                             <ThumbDown />
-                                            <Text>2.4k</Text>
+                                            <Text> {item.dislikeCount}</Text>
                                         </Group>
                                     </Group>
                                 </Text>
                             </Stack>
                             <Group ml='auto'>
-                                <ActionIcon size='xl' onClick={open}>
+                                <ActionIcon
+                                    size='xl'
+                                    onClick={() => {
+                                        setModalContent(
+                                            <MyEditor close={close} post={item} mutate={mutate} posts={posts} />,
+                                        )
+                                        open()
+                                    }}>
                                     <Edit />
                                 </ActionIcon>
 
@@ -122,15 +130,18 @@ function Posts() {
                         </Group>
                     ))}
             </div>
+            <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
+                Xem thêm
+            </Button>
             <Modal
-                size={1100}
+                size={1300}
                 opened={opened}
                 onClose={close}
                 centered
                 yOffset='1vh'
                 xOffset={0}
                 title='Soạn Thảo Bài Viết'>
-                <MyEditor />
+                {modalContent}
             </Modal>
         </>
     )

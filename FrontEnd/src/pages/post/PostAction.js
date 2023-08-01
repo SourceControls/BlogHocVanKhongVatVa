@@ -18,26 +18,28 @@ function PostAction(props) {
                     <ActionIcon title='Lượt Xem'>
                         <Eye size='1.8rem' />
                     </ActionIcon>
-                    <Text color='grey'>312.6k</Text>
+                    <Text color='grey'>{props.post.view}</Text>
                 </Flex>
                 <Flex direction={props.direction || 'column'} align='center'>
                     <ActionIcon title='Thích'>
                         <ThumbUp size='1.8rem' />
                     </ActionIcon>
-                    <Text color='grey'>112.3k</Text>
+                    <Text color='grey'>{props.post.likeCount}</Text>
                 </Flex>
                 <Flex direction={props.direction || 'column'} align='center'>
                     <ActionIcon title='Không Thích'>
                         <ThumbDown size='1.8rem' />
                     </ActionIcon>
-                    <Text color='grey'>1.3k</Text>
+                    <Text color='grey'>{props.post.dislikeCount}</Text>
                 </Flex>
             </Flex>
             <Flex direction={props.direction || 'column'} align='center' gap='xs'>
                 <ActionIcon title='Lưu bài viết'>
                     <IconBookmarks size='1.8rem' />
                 </ActionIcon>
-                <ActionIcon title='Lấy đường liên kết chia sẻ'>
+                <ActionIcon
+                    title='Lấy đường liên kết chia sẻ'
+                    onClick={() => navigator.clipboard.writeText(window.location.href)}>
                     <IconLink size='1.8rem' />
                 </ActionIcon>
             </Flex>

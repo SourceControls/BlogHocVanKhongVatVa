@@ -1,7 +1,9 @@
 import {Button, Center, Image, PasswordInput, Stack, Text, Textarea, TextInput} from '@mantine/core'
 import {useForm} from '@mantine/form'
-import {getConfig} from '@util'
+import {useSettings} from '@util'
 function RequestPostForm() {
+    const {settings, isLoading} = useSettings()
+
     const form = useForm({
         initialValues: {
             title: '',
@@ -11,7 +13,7 @@ function RequestPostForm() {
     return (
         <>
             <Center h='200px'>
-                <Image src={getConfig().logo} />
+                <Image src={settings[1].logo} />
             </Center>
             <Text size='xl' mb='md'>
                 Gửi Yêu Cầu Viết Bài

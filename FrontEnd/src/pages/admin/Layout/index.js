@@ -12,7 +12,7 @@ import {
     IconAd2,
 } from '@tabler/icons-react'
 import {UserButton, LinksGroup} from '@comp'
-import {getConfig} from '@util'
+import {useSettings} from '@util'
 
 const mockdata = [
     // {label: 'Dashboard', icon: IconGauge},
@@ -56,11 +56,12 @@ const mockdata = [
 export function Layout({children}) {
     const {classes} = useStyles()
     const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />)
+    const {settings, isLoading} = useSettings()
 
     return (
         <MantineProvider
             theme={{
-                fontFamily: getConfig().fontFamily,
+                fontFamily: settings[1].fontFamily,
                 primaryColor: 'dark',
                 globalStyles: (theme) => {
                     theme.primaryColors = theme.colors['dark']
@@ -73,7 +74,7 @@ export function Layout({children}) {
                     <Navbar height={'100vh'} width={{sm: 300}} p='md' className={classes.navbar}>
                         <Navbar.Section className={classes.header}>
                             <Group position='apart'>
-                                <Image src={getConfig().logo} width={rem(120)} />
+                                <Image src={settings[1].logo} width={rem(120)} />
                             </Group>
                         </Navbar.Section>
 

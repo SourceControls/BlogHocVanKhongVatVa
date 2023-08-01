@@ -1,7 +1,6 @@
 import {useForm} from '@mantine/form'
 import {Button, Divider, Group, Image, Radio, Select, SimpleGrid, Text, TextInput} from '@mantine/core'
 import Layout from '../Layout'
-import {getConfig} from '@util'
 
 const listFontFamily = [
     'Mali',
@@ -34,16 +33,24 @@ const listColor = [
     'yellow',
     'orange',
 ]
-
+import {useSettings, updateConfig} from '@util'
+import {useEffect} from 'react'
+import {IconRefresh} from '@tabler/icons-react'
 function Settings() {
+    const {settings, isLoading} = useSettings()
+
     const form = useForm({
-        initialValues: {
-            ...getConfig(),
-        },
+        initialValues: {},
     })
+
+    useEffect(() => {
+        form.setValues(settings[1])
+    }, [settings[1]])
+
     const handleSubmit = () => {
-        console.log(form.values)
+        updateConfig(form.values)
     }
+
     return (
         <>
             <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -51,9 +58,14 @@ function Settings() {
                     <Text mr='auto' size='xl' fw='bold'>
                         Cấu hình website
                     </Text>
-                    <Button type='submit' ml='auto '>
-                        Lưu
+                    <Button
+                        variant='outline'
+                        onClick={() => form.setValues(settings[0])}
+                        ml='auto'
+                        leftIcon={<IconRefresh />}>
+                        Khôi phục
                     </Button>
+                    <Button type='submit'>Lưu</Button>
                 </Group>
                 <Text mr='auto' size='lg' fw='bold'>
                     Chung
@@ -73,7 +85,7 @@ function Settings() {
                         withAsterisk
                         label='Tiêu đề web'
                         description='Mô tả ngắn về trang web được hiển thị trên tab trình duyệt'
-                        {...form.getInputProps('pageTitle')}></TextInput>
+                        {...form.getInputProps('webTitle')}></TextInput>
 
                     <TextInput
                         withAsterisk
@@ -85,8 +97,8 @@ function Settings() {
                         label='Icon'
                         {...form.getInputProps('favIcon')}
                         description='Hiển thị trên tab trình duyệt'
-                        leftIcon={<Image src={form.values.favIcon} mx='8px' />}
-                        iconWidth={44}></TextInput>
+                        icon={<Image src={form.values.favIcon} mx='8px' />}
+                        iconWidth={38}></TextInput>
                 </SimpleGrid>
                 <Divider size='md' my='xl' />
                 <Text mr='auto' size='lg' fw='bold'>
@@ -97,17 +109,18 @@ function Settings() {
                         withAsterisk
                         label='Tiêu đề chính'
                         description='Hiển thị ở khu vực đầu tiên của trang chủ'
-                        {...form.getInputProps('homeDescription')}></TextInput>
+                        {...form.getInputProps('homeHeroTitle')}></TextInput>
                     <TextInput
                         withAsterisk
                         label='Tiêu đề phụ'
                         description='Hiển thị ngay bên dưới tiêu đề chính'
-                        {...form.getInputProps('homeSubDescription')}></TextInput>
+                        {...form.getInputProps('homeHeroSubtitle')}></TextInput>
                     <TextInput
                         withAsterisk
                         label='Ảnh bìa'
-                        {...form.getInputProps('homePublicatorCover')}
+                        {...form.getInputProps('homeHeroCover')}
                         description='Hiển thị ngay đầu trang chủ'></TextInput>
+                    <br />
                 </SimpleGrid>
                 <Divider size='md' my='xl' />
 
@@ -118,9 +131,10 @@ function Settings() {
                     <TextInput
                         withAsterisk
                         label='Ảnh bìa'
-                        {...form.getInputProps('categoryCover')}
+                        {...form.getInputProps('readPostCover')}
                         description='Hiển thị ngay đầu trang đọc bài viết'></TextInput>
-                    <Radio.Group label='Home Hero' withAsterisk {...form.getInputProps('homePageHero')}>
+                    <Image src={form.values.readPostCover} fit='contain' width='100%' mx='auto' />
+                    {/* <Radio.Group label='Home Hero' withAsterisk {...form.getInputProps('homePageHero')}>
                         <Group mt='xs'>
                             <Radio value='grid' label='Grid' />
                             <Radio value='carousel' label='Carousel' />
@@ -131,7 +145,7 @@ function Settings() {
                             <Radio value='grid' label='Grid' />
                             <Radio value='carousel' label='Carousel' />
                         </Group>
-                    </Radio.Group>
+                    </Radio.Group> */}
                 </SimpleGrid>
             </form>
         </>

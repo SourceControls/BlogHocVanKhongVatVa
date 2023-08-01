@@ -8,23 +8,16 @@ import GridLiterary from './GridLiterary'
 import GridPostWithFilter from './GridPostWithFilter'
 function SearchPage({heading}) {
     const router = useRouter()
-    const [key, setKey] = useState(router.query.key)
-    const handleRemoveQuery = () => {
-        router.push(
-            {
-                pathname: router.pathname, // Keep the current pathname
-                query: {}, // Set an empty object as the query
+    const handleQuery = (type) => {
+        router.push({
+            query: {
+                type,
+                key: router.query?.key,
+                tag: router.query?.tag,
             },
-            undefined,
-            {replace: true},
-        )
+        })
     }
-    useEffect(() => {
-        handleRemoveQuery()
-    }, [])
-    useEffect(() => {
-        setKey('')
-    }, [router.query.category])
+    if (!router.query.type) handleQuery('literary')
     return (
         <Box pt='48px' px='md'>
             {/* <Section title='Tác phẩm tiêu biểu' titlePosition='center'>
@@ -32,21 +25,20 @@ function SearchPage({heading}) {
             </Section> */}
             {/* <Image alt='' src={getConfig().categoryCover} my='xl' fit='cover' imageProps={{objectPotition: 'center'}} /> */}
 
-            <Tabs defaultValue='literary' pb='xl'>
+            <Tabs value={router.query?.type} pb='xl'>
                 <Tabs.List mb='md'>
-                    <Tabs.Tab value='literary'>Tác Phẩm</Tabs.Tab>
-                    <Tabs.Tab value='post'>Bài Viết</Tabs.Tab>
-                    <Tabs.Tab value='user'>Người Dùng</Tabs.Tab>
+                    <Tabs.Tab value='literary' onClick={() => handleQuery('literary')}>
+                        Tác phẩm
+                    </Tabs.Tab>
+                    <Tabs.Tab value='post' onClick={() => handleQuery('post')}>
+                        Bài Viết
+                    </Tabs.Tab>
+                    <Tabs.Tab value='user' onClick={() => handleQuery('user')}>
+                        Người Dùng
+                    </Tabs.Tab>
                 </Tabs.List>
-                <Tabs.Panel value='literary'>
-                    <GridLiterary />
-                </Tabs.Panel>
-                <Tabs.Panel value='post'>
-                    <GridPostWithFilter />
-                </Tabs.Panel>
-                <Tabs.Panel value='Quên Mật Khẩu'>
-                    <p>Người dùng </p>
-                </Tabs.Panel>
+                <Tabs.Panel value='literary'>{router.query.type == 'literary' && <GridLiterary />}</Tabs.Panel>
+                <Tabs.Panel value='post'>{router.query.type == 'post' && <GridPostWithFilter />}</Tabs.Panel>
             </Tabs>
         </Box>
     )
