@@ -217,6 +217,7 @@ export class PostService {
           },
         },
       });
+      //delete reaction
       if (reaction?.type === type) {
         const deletedReaction = await this.prisma.postReaction.delete({
           where: {
@@ -236,9 +237,12 @@ export class PostService {
           data: {
             [field]: { decrement: 1 },
           },
+          select,
         });
-        return { data: deletedReaction, message: 'DeReacted' };
+        return { data: updatedPost, message: 'DeReacted' };
       }
+
+      //update reaction
       const upsertedReaction = await this.prisma.postReaction.upsert({
         where: {
           postId_createdBy: {
@@ -255,6 +259,33 @@ export class PostService {
           type,
         },
       });
+      //re-count added reaction
+      let field = 'likeCount';
+      if (type == 'DISLIKE') field = 'dislikeCount';
+      let updatedPost = await this.prisma.post.update({
+        where: {
+          postId: post.postId,
+        },
+        data: {
+          [field]: { increment: 1 },
+        },
+        select,
+      });
+
+      //re-count removed reaction
+      if (reaction) {
+        let field = 'likeCount';
+        if (type == 'DISLIKE') field = 'dislikeCount';
+        updatedPost = await this.prisma.post.update({
+          where: {
+            postId: post.postId,
+          },
+          data: {
+            [field]: { decrement: 1 },
+          },
+          select,
+        });
+      }
 
       return { data: upsertedReaction, message: 'Reacted' };
     } catch (error) {

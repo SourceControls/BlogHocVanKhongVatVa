@@ -116,10 +116,10 @@ export class PostController {
     return this.postService.reaction(slug, +req.body.updatedBy, type);
   }
 
-  // @Put(':slug/view')
-  // view(@Param('id') id: string, @Req() req: Request) {
-  //   return this.postService.updateAction(+id, req.body['updatedBy']);
-  // }
+  @Put(':slug/view')
+  view(@Param('slug') slug: string, @Req() req: Request) {
+    return this.postService.countView(slug);
+  }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(+id, updatePostDto);
