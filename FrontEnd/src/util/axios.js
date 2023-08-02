@@ -44,11 +44,12 @@ instance.interceptors.response.use(
     },
     function (error) {
         // setDisplayGlobalLoading(false)
-        let message = error.response.data?.message
-        if (Array.isArray(error.response.data?.message)) {
-            message = error.response.data.message[0]
+        console.log(error)
+
+        let message = error.response?.data?.message
+        if (Array.isArray(message)) {
+            message = message[0]
         }
-        console.log(message)
 
         return toast.error(message)
     },

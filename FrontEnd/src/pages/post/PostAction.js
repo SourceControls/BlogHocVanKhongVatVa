@@ -15,9 +15,7 @@ function PostAction(props) {
             w={props.direction == 'row' ? '100%' : '80px'}>
             <Flex direction={props.direction || 'column'} gap='md'>
                 <Flex direction={props.direction || 'column'} align='center'>
-                    <ActionIcon title='Lượt Xem'>
-                        <Eye size='1.8rem' />
-                    </ActionIcon>
+                    <Eye size='1.8rem' color='var(--primary-color-7)' />
                     <Text color='grey'>{props.post.view}</Text>
                 </Flex>
                 <Flex direction={props.direction || 'column'} align='center'>

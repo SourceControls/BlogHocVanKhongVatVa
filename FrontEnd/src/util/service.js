@@ -8,6 +8,9 @@ export async function updateConfig(data) {
 export async function signIn(form) {
     return axios.post('/api/auth/sign-in', form)
 }
+export async function signOut() {
+    return axios.post('/api/auth/sign-out')
+}
 export async function signUp(form) {
     return axios.post('/api/auth/sign-up', form)
 }
@@ -89,4 +92,10 @@ export async function uploadImg(file) {
 
 export async function updateUser(form) {
     return axios.patch('/api/user/' + form.userId, form)
+}
+export async function createComment(content, slug = '') {
+    return axios.post(`/api/post/${slug}/comment`, {content})
+}
+export async function deleteComment(id, slug = '') {
+    return axios.delete(`/api/post/${slug}/comment/` + id)
 }

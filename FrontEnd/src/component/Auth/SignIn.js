@@ -2,17 +2,20 @@ import {Button, PasswordInput, Stack, TextInput} from '@mantine/core'
 import {useForm} from '@mantine/form'
 import {signIn} from '@util'
 
-function SignIn({closeModal}) {
+function SignIn({closeModal, userMutate}) {
     const form = useForm({
         initialValues: {
-            email: '',
-            password: '',
+            email: 'tuanhung592001@gmail.com',
+            password: '123456',
         },
     })
 
     const handleSignIn = () => {
         signIn(form.values).then((rs) => {
-            console.log(rs)
+            if (rs.userId) {
+                userMutate([rs], false)
+                closeModal()
+            }
         })
     }
     return (
@@ -22,13 +25,13 @@ function SignIn({closeModal}) {
                     {...form.getInputProps('email')}
                     type='email'
                     label='Email'
-                    placeHolder='Nhập email của bạn'
+                    placeholder='Nhập email của bạn'
                     required
                 />
                 <PasswordInput
                     {...form.getInputProps('password')}
                     label='Mật khẩu'
-                    placeHolder='Nhập mật khẩu'
+                    placeholder='Nhập mật khẩu'
                     required
                 />
                 <Button type='submit' mx='auto'>

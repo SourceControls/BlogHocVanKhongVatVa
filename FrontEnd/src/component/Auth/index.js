@@ -5,7 +5,7 @@ import SignIn from './SignIn'
 import SignUp from './SignUp'
 import {useSettings} from '@util'
 
-export function Auth() {
+export function Auth({closeModal, userMutate}) {
     const tab = typeof window !== 'undefined' && window.location.hash // Lấy phần định danh từ URL
     const {settings, isLoading} = useSettings()
 
@@ -22,7 +22,7 @@ export function Auth() {
                     <Tabs.Tab value='Quên Mật Khẩu'>Quên Mật Khẩu</Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value='#signIn'>
-                    <SignIn />
+                    <SignIn closeModal={closeModal} userMutate={userMutate} />
                 </Tabs.Panel>
                 <Tabs.Panel value='#signUp'>
                     <SignUp />

@@ -23,7 +23,7 @@ export class LiteraryController {
   create(@Body() createLiteraryDto: CreateLiteraryDto) {
     return this.literaryService.create(createLiteraryDto);
   }
-
+  @Public()
   @Get()
   @ApiQuery({ name: 'key', required: false, type: String })
   @ApiQuery({ name: 'visibility', required: false, type: Boolean })

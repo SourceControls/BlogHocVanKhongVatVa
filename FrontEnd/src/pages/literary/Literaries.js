@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router'
 import {Box, Button, Grid, Group, Select, TextInput} from '@mantine/core'
-import {LiteraryContainer, Section, FeaturedLiterarySection} from '@comp'
+import {LiteraryContainer, Section, FeaturedLiterary} from '@comp'
 import {Search} from 'tabler-icons-react'
 import {useMediaQuery} from '@mantine/hooks'
 import {useEffect, useState} from 'react'
@@ -15,7 +15,7 @@ function Literaries({heading}) {
     return (
         <Box pt='48px' px='md'>
             <Section title='Tác phẩm tiêu biểu' titlePosition='center'>
-                <FeaturedLiterarySection />
+                <FeaturedLiterary />
             </Section>
             {/* <Image alt='' src={getConfig().categoryCover} my='xl' fit='cover' imageProps={{objectPotition: 'center'}} /> */}
             <Section title='Tác phẩm văn học'>

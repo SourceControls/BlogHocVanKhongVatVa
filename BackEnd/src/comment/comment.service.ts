@@ -4,6 +4,23 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 
+const select = {
+  commentId: true,
+  content: true,
+  createdAt: true,
+  user: {
+    select: {
+      userId: true,
+      name: true,
+      slug: false,
+      bio: false,
+      avatarImage: true,
+      coverImage: false,
+      email: false,
+      role: true,
+    },
+  },
+};
 @Injectable()
 export class CommentService {
   constructor(private prisma: PrismaService) {}
@@ -18,6 +35,7 @@ export class CommentService {
           ...createCommentDto,
           postId,
         },
+        select,
       });
       return { data: createdComment };
     } catch (error) {
@@ -29,6 +47,7 @@ export class CommentService {
   async findAll(query) {
     const comments = await this.prisma.comment.findMany({
       ...query,
+      select,
     });
     return { data: comments };
   }
@@ -48,7 +67,7 @@ export class CommentService {
           commentId,
         },
       });
-      return { data: createdComment };
+      return { data: createdComment, message: 'Đã xóa bình luận!' };
     } catch (error) {
       console.log(error.message);
       throw new InternalServerErrorException('Có lỗi khi xóa bình luận!');

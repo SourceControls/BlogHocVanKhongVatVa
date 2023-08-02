@@ -4,7 +4,7 @@ import {
   ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common/exceptions';
-import { post_status } from '@prisma/client';
+import { postReaction_type, post_status } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -54,7 +54,6 @@ const select = {
 @Injectable()
 export class PostService {
   constructor(private prisma: PrismaService) {}
-
   async create(createPostDto: CreatePostDto) {
     const postTag = createPostDto.postTag
       ? createPostDto.postTag.map((tag) => ({
@@ -203,6 +202,83 @@ export class PostService {
     }
   }
 
+  async reaction(slug: string, createdBy: number, type: postReaction_type) {
+    try {
+      const post = await this.prisma.post.findUnique({
+        where: {
+          slug,
+        },
+      });
+      const reaction = await this.prisma.postReaction.findUnique({
+        where: {
+          postId_createdBy: {
+            createdBy,
+            postId: post.postId,
+          },
+        },
+      });
+      if (reaction?.type === type) {
+        const deletedReaction = await this.prisma.postReaction.delete({
+          where: {
+            postId_createdBy: {
+              createdBy,
+              postId: post.postId,
+            },
+          },
+        });
+        //update likeCoutnt
+        let field = 'likeCount';
+        if (deletedReaction.type == 'DISLIKE') field = 'dislikeCount';
+        const updatedPost = await this.prisma.post.update({
+          where: {
+            postId: post.postId,
+          },
+          data: {
+            [field]: { decrement: 1 },
+          },
+        });
+        return { data: deletedReaction, message: 'DeReacted' };
+      }
+      const upsertedReaction = await this.prisma.postReaction.upsert({
+        where: {
+          postId_createdBy: {
+            postId: post.postId,
+            createdBy,
+          },
+        },
+        create: {
+          postId: post.postId,
+          createdBy,
+          type,
+        },
+        update: {
+          type,
+        },
+      });
+
+      return { data: upsertedReaction, message: 'Reacted' };
+    } catch (error) {
+      console.error(error.message);
+      throw new InternalServerErrorException('Có lỗi xảy ra!');
+    }
+  }
+  async countView(slug: string) {
+    try {
+      const post = await this.prisma.post.update({
+        where: {
+          slug,
+        },
+        data: {
+          view: { increment: 1 },
+        },
+      });
+
+      return { data: post, message: 'Reacted' };
+    } catch (error) {
+      console.error(error.message);
+      throw new InternalServerErrorException('Có lỗi xảy ra!');
+    }
+  }
   remove(id: number) {
     return `This action removes a #${id} post`;
   }

@@ -4,7 +4,7 @@ export class CreateCommentDto {
   @IsNumber()
   createdBy: number;
 
-  @IsNotEmpty({ message: 'Không được để trổng nội dung!' })
+  @IsNotEmpty({ message: 'Hãy nhập nội dung muốn bình luận!' })
   @IsString()
   content: string;
 }

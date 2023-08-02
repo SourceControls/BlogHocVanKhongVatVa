@@ -7,10 +7,10 @@ const nextConfig = {
                 source: '/',
                 destination: '/home',
             },
-            // {
-            //     source: '/api/:path*',
-            //     destination:  + '/:path*',
-            // },
+            {
+                source: '/profile/:path*',
+                destination: '/admin/users/:path*',
+            },
         ]
     },
 }

@@ -7,19 +7,19 @@ import {useMediaQuery, useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
 import {IconHome, IconSearch} from '@tabler/icons-react'
 import {useState} from 'react'
-import {useSettings, useUsers} from '@util'
+import {useSettings, useUsers, signOut} from '@util'
 function Header({categories, active, setActive}) {
     const router = useRouter()
     const [searchKey, setSearchKey] = useState('')
     const [opened, {open, close}] = useDisclosure(false)
     const smScreen = useMediaQuery('(max-width: 48em)')
     const {settings, isLoading} = useSettings()
-    const {users, mutate} = useUsers(undefined, '/profile')
+    const {users, mutate: userMutate} = useUsers(undefined, '/profile')
     const closeModal = (props) => {
         close(props)
         router.push(router.asPath, undefined, {shallow: true})
     }
-    const signOut = () => {}
+
     return (
         <>
             <Paper
@@ -64,11 +64,17 @@ function Header({categories, active, setActive}) {
                                 ml='auto'
                                 align='center'
                                 style={{width: 'fit-content', cursor: 'pointer'}}
-                                spacing='xs'>
-                                <Avatar src={users[0].avatarImage} />
+                                spacing='0'>
+                                <Avatar size='lg' src={users[0].avatarImage} />
                                 <Text fw='bold'>{users[0].name}</Text>
                             </Group>
-                            <Button onClick={signOut}>Đăng xuất</Button>
+                            <Button
+                                onClick={async () => {
+                                    await signOut()
+                                    userMutate([], false)
+                                }}>
+                                Đăng xuất
+                            </Button>
                         </Group>
                     ) : smScreen ? (
                         <ActionIcon ml='md' onClick={open}>
@@ -93,7 +99,7 @@ function Header({categories, active, setActive}) {
                     content: {backgroundColor: theme.backgroundColor},
                     header: {backgroundColor: theme.backgroundColor},
                 })}>
-                <Auth closeModal={closeModal}></Auth>
+                <Auth closeModal={closeModal} userMutate={userMutate}></Auth>
             </Modal>
         </>
     )

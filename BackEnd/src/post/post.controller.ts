@@ -17,12 +17,13 @@ import { Put, Req } from '@nestjs/common/decorators';
 import { Request } from 'express';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles, ROLES_KEY } from 'src/auth/roles.decorator';
-import { post_status, user_role } from '@prisma/client';
+import { postReaction_type, post_status, user_role } from '@prisma/client';
 @Controller('post')
 @ApiTags('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @Public()
   @Get()
   @ApiQuery({ name: 'key', required: false, type: String })
   @ApiQuery({ name: 'tag', required: false, type: String })
@@ -83,8 +84,8 @@ export class PostController {
   publish(@Param('id') id: string, @Req() req: Request) {
     return this.postService.updateStatus(
       +id,
-      req.body['userId'],
-      req.body['userId'],
+      req.body['updatedBy'],
+      req.body['updatedBy'],
       post_status.PUBLISHED,
     );
   }
@@ -92,7 +93,7 @@ export class PostController {
   hide(@Param('id') id: string, @Req() req: Request) {
     return this.postService.updateStatus(
       +id,
-      req.body['userId'],
+      req.body['updatedBy'],
       null,
       post_status.HIDE,
     );
@@ -101,11 +102,24 @@ export class PostController {
   requestPublish(@Param('id') id: string, @Req() req: Request) {
     return this.postService.updateStatus(
       +id,
-      req.body['userId'],
+      req.body['updatedBy'],
       null,
       post_status.PENDING,
     );
   }
+  @Put(':slug/reaction/:type') //type  == like, dislike
+  like(
+    @Param('slug') slug: string,
+    @Param('type') type: postReaction_type,
+    @Req() req: Request,
+  ) {
+    return this.postService.reaction(slug, +req.body.updatedBy, type);
+  }
+
+  // @Put(':slug/view')
+  // view(@Param('id') id: string, @Req() req: Request) {
+  //   return this.postService.updateAction(+id, req.body['updatedBy']);
+  // }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(+id, updatePostDto);

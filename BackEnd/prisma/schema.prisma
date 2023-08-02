@@ -117,7 +117,6 @@ model post {
   updatedBy       Int?
   publishedBy     Int?
   literary        Int?
-  commentCount    Int             @default(0)
   likeCount       Int             @default(0)
   dislikeCount    Int             @default(0)
   comment         comment[]

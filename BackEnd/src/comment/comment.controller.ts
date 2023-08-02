@@ -9,11 +9,13 @@ import {
 } from '@nestjs/common';
 import { Query } from '@nestjs/common/decorators';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/auth/public.decorator';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 @ApiTags('comment')
 @Controller('/post/:postSlug/comment')
+// @Public()
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -43,23 +45,6 @@ export class CommentController {
       where: {
         post: {
           slug: postSlug,
-        },
-      },
-      select: {
-        commentId: true,
-        content: true,
-        createdAt: true,
-        user: {
-          select: {
-            userId: false,
-            name: true,
-            slug: false,
-            bio: false,
-            avatarImage: true,
-            coverImage: false,
-            email: false,
-            role: true,
-          },
         },
       },
     });
