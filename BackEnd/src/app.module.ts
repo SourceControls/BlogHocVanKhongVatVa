@@ -17,6 +17,7 @@ import { RemoveUndefinedQueryMiddleware } from './app.middleware';
 import { TagModule } from './tag/tag.module';
 import { AdvertisementModule } from './advertisement/advertisement.module';
 import { SettingModule } from './setting/setting.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SettingModule } from './setting/setting.module';
     TagModule,
     AdvertisementModule,
     SettingModule,
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
