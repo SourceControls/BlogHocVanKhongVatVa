@@ -30,6 +30,18 @@ export async function publishPost(id) {
 export async function hidePost(id) {
     return axios.put('/api/post/' + id + '/hide')
 }
+export async function reaction(slug, like = true) {
+    return axios.put(`/api/post/${slug}/reaction/${like ? 'LIKE' : 'DISLIKE'}`)
+}
+export async function getOwnReaction(slug) {
+    return axios.get(`/api/post/${slug}/own-reaction`)
+}
+export async function countPostView(slug) {
+    return axios.put(`/api/post/${slug}/count-view`)
+}
+export async function countLiterayView(slug) {
+    return axios.put(`/api/literary/${slug}/count-view`)
+}
 
 export async function createTag(form) {
     return axios.post('/api/tag', form)

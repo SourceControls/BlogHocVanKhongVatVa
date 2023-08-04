@@ -10,6 +10,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Public } from './public.decorator';
 import { Response as Res } from 'express';
+import { user_status } from '@prisma/client';
 @Public()
 @Injectable()
 export class AuthService {
@@ -49,10 +50,10 @@ export class AuthService {
       if (!matchPassword)
         throw new UnauthorizedException('Thông tin đăng nhập không chính xác!');
       //generate token
+      if (user.status === user_status.BANNED)
+        throw new UnauthorizedException('Tài khoản đã bị cấm');
       const payload = {
         userId: user.userId,
-        email: user.email,
-        roles: [user.role],
       };
       const token = await this.jwtService.signAsync(payload);
       delete user.password;

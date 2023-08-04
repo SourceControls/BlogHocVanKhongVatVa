@@ -20,6 +20,7 @@ const hexToRgb = (hex, opacity = 1) => {
 }
 
 export function Decorate({align}) {
+    return <></>
     return (
         <Stack spacing={0} my='xl' w='100%'>
             <Box

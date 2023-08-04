@@ -5,17 +5,21 @@ const inputStyle = {
         inputWrapperOrder: ['label', 'input', 'description', 'error'],
     },
     styles: {
-        input: {padding: '1.2rem 1rem'},
         label: {
-            transform: 'translate(1rem, 50%)',
+            transform: 'translate(.5rem, 50%)',
             zIndex: '1 !important',
             lineHeight: '1rem',
             position: 'relative',
             backgroundColor: 'var(--primary-color-0)',
+            borderRadius: '8px',
             padding: '0 8px',
         },
         description: {
             transform: 'translate(1rem, 0)',
+        },
+        visibilityToggle: {
+            borderRadius: '50%',
+            marginRight: '8px',
         },
     },
 }
@@ -97,8 +101,8 @@ export function style(settings) {
                       defaultProps: {
                           radius: '50%',
                           color: 'var(--primary-color-7)',
-                          size: 'lg',
-                          //   p: '4px',
+                          size: 'md',
+                          m: '6px',
                           style: {
                               //   border: '2px solid grey',
                           },

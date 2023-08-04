@@ -8,8 +8,8 @@ export class SettingService {
 
   async findAll() {
     try {
-      const categories = await this.prisma.setting.findMany({});
-      return { data: categories };
+      const setting = await this.prisma.setting.findMany({});
+      return { data: setting };
     } catch (error) {
       console.log(error.message);
     }

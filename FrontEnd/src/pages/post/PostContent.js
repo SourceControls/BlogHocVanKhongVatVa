@@ -12,7 +12,18 @@ function Postcontent(props) {
         <Stack>
             <Title>Phân Tích Nhân Vật Phùng Trong Tấm Cám</Title>
             <Text
-                align='justify'
+                // className='client-post-content'
+                sx={{
+                    '& .image': {
+                        width: '90% !important',
+                        display: 'block',
+                        margin: '2rem auto 0.3rem',
+                    },
+                    '& img': {
+                        width: '100% !important',
+                    },
+                }}
+                // align='justify'
                 style={{overflow: 'hidden', letterSpacing: '0.05rem', wordSpacing: '0.2rem', lineHeight: '1.6rem'}}>
                 {parsedContent}
             </Text>

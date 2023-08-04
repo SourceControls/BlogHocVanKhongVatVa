@@ -4,12 +4,26 @@ import {Box, Group, Image, Select, Skeleton, Spoiler, Stack, Text, TextInput, Ti
 import {Section, GridPost, Decorate} from '@comp'
 import {Eye, News, Search, ThumbUp} from 'tabler-icons-react'
 import {useMediaQuery} from '@mantine/hooks'
-import {useLiteries} from '@util'
+import {useLiteries, countLiterayView} from '@util'
+import ViewCountTracker from './ViewCountTracker'
+import {useState} from 'react'
 function Category() {
     const router = useRouter()
     const smScreen = useMediaQuery('(max-width: 48em)')
-    const {literaries, isLoading} = useLiteries('', `/${router.query.slug}`)
-    if (isLoading) return <Skeleton height='400'></Skeleton>
+    const [viewed, setViewed] = useState(false)
+
+    const {literaries, isLoading, mutate} = useLiteries('', `/${router.query.slug}`)
+    const handleCountView = () => {
+        setViewed(true)
+        countLiterayView(literaries[0].slug).then((rs) => {
+            if (rs?.literaryId) {
+                mutate([rs], false)
+            }
+        })
+    }
+    if (!literaries[0]?.literaryId) {
+        return <p>Loading...</p>
+    }
     return (
         <Box px='xs'>
             <Group>
@@ -94,6 +108,8 @@ function Category() {
                 </Box>
             </Group>
             <Decorate />
+            {!viewed && <ViewCountTracker literaryId={literaries[0]?.literaryId} onComponentInView={handleCountView} />}
+
             <Section title={'Bài Viết Về: ' + literaries[0].title}>
                 <GridPost query={'&status=published&literarySlug=' + router.query.slug} />
             </Section>

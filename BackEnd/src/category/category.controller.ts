@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/auth/roles.decorator';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -19,6 +20,7 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
+  @Roles('ADMIN', 'SUPERADMIN')
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
@@ -70,6 +72,7 @@ export class CategoryController {
   }
 
   @Patch(':id')
+  @Roles('ADMIN', 'SUPERADMIN')
   update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -78,6 +81,7 @@ export class CategoryController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN', 'SUPERADMIN')
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);
   }

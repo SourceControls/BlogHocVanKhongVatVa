@@ -6,6 +6,7 @@ import {useEffect, useState} from 'react'
 import Layout from '../Layout'
 import GridLiterary from './GridLiterary'
 import GridPostWithFilter from './GridPostWithFilter'
+import {toast} from 'react-toastify'
 function SearchPage({heading}) {
     const router = useRouter()
     const handleQuery = (type) => {
@@ -33,7 +34,11 @@ function SearchPage({heading}) {
                     <Tabs.Tab value='post' onClick={() => handleQuery('post')}>
                         Bài Viết
                     </Tabs.Tab>
-                    <Tabs.Tab value='user' onClick={() => handleQuery('user')}>
+                    <Tabs.Tab
+                        value='user'
+                        onClick={async () => {
+                            toast.info('Coming soon')
+                        }}>
                         Người Dùng
                     </Tabs.Tab>
                 </Tabs.List>

@@ -9,22 +9,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
-const select = {
-  postId: true,
-  title: true,
-  slug: true,
-  featuredImage: true,
-  htmlContent: true,
-  summary: true,
-  status: true,
-  featured: true,
-  view: true,
-  likeCount: true,
-  dislikeCount: true,
-  commentCount: true,
-  createdAt: true,
-  updatedAt: true,
-  literary: true,
+const include = {
   createdByUser: {
     select: {
       name: true,
@@ -70,7 +55,7 @@ export class PostService {
             create: postTag,
           },
         },
-        select,
+        include,
       });
       return {
         data: newPost,
@@ -79,10 +64,12 @@ export class PostService {
     } catch (error) {
       if (error.code === 'P2002')
         throw new ConflictException('Vui lòng sử dụng URL khác!');
-      else
+      else {
+        console.log(error.message);
         throw new InternalServerErrorException(
           'Có lỗi xảy ra khi tạo bài viết!',
         );
+      }
     }
   }
 
@@ -90,7 +77,7 @@ export class PostService {
     try {
       const posts = await this.prisma.post.findMany({
         ...query,
-        select,
+        include,
       });
       return { data: posts };
     } catch (error) {
@@ -102,7 +89,7 @@ export class PostService {
     const query = isNaN(+data) ? { slug: data } : { postId: +data };
     const posts = await this.prisma.post.findUnique({
       where: query,
-      select,
+      include,
     });
     return { data: posts };
   }
@@ -151,7 +138,7 @@ export class PostService {
           publishedBy,
           updatedBy,
         },
-        select,
+        include,
       });
 
       return {
@@ -191,7 +178,7 @@ export class PostService {
           },
         },
 
-        select,
+        include,
       });
       return { data: updatedPost, message: 'Cập nhật bài viết thành công' };
     } catch (error) {
@@ -202,6 +189,26 @@ export class PostService {
     }
   }
 
+  async getOwnReaction(slug: string, createdBy: number) {
+    try {
+      const post = await this.prisma.post.findUnique({
+        where: {
+          slug,
+        },
+      });
+      const reaction = await this.prisma.postReaction.findUnique({
+        where: {
+          postId_createdBy: {
+            createdBy,
+            postId: post.postId,
+          },
+        },
+      });
+      return { data: reaction };
+    } catch (error) {
+      return { data: [], message: error.message };
+    }
+  }
   async reaction(slug: string, createdBy: number, type: postReaction_type) {
     try {
       const post = await this.prisma.post.findUnique({
@@ -237,7 +244,7 @@ export class PostService {
           data: {
             [field]: { decrement: 1 },
           },
-          select,
+          include,
         });
         return { data: updatedPost, message: 'DeReacted' };
       }
@@ -269,13 +276,13 @@ export class PostService {
         data: {
           [field]: { increment: 1 },
         },
-        select,
+        include,
       });
 
       //re-count removed reaction
       if (reaction) {
         let field = 'likeCount';
-        if (type == 'DISLIKE') field = 'dislikeCount';
+        if (type == 'LIKE') field = 'dislikeCount';
         updatedPost = await this.prisma.post.update({
           where: {
             postId: post.postId,
@@ -283,11 +290,10 @@ export class PostService {
           data: {
             [field]: { decrement: 1 },
           },
-          select,
+          include,
         });
       }
-
-      return { data: upsertedReaction, message: 'Reacted' };
+      return { data: updatedPost, message: 'Reacted' };
     } catch (error) {
       console.error(error.message);
       throw new InternalServerErrorException('Có lỗi xảy ra!');
@@ -295,16 +301,17 @@ export class PostService {
   }
   async countView(slug: string) {
     try {
-      const post = await this.prisma.post.update({
+      const updatedPost = await this.prisma.post.update({
         where: {
           slug,
         },
         data: {
           view: { increment: 1 },
         },
+        include,
       });
 
-      return { data: post, message: 'Reacted' };
+      return { data: updatedPost, message: 'Viewed' };
     } catch (error) {
       console.error(error.message);
       throw new InternalServerErrorException('Có lỗi xảy ra!');

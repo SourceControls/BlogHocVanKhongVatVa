@@ -1,5 +1,5 @@
 export function Decorate({align}) {
-    // return <></>
+    return <></>
     const style = {
         width: '100vw',
         position: 'relative',

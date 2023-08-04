@@ -18,7 +18,7 @@ export class RolesGuard implements CanActivate {
     }
     const { authUser } = context.switchToHttp().getRequest();
 
-    if (!requiredRoles.some((role) => authUser.roles?.includes(role)))
+    if (!requiredRoles.includes(authUser.role))
       throw new ForbiddenException('Không có quyền truy cập');
 
     return true;

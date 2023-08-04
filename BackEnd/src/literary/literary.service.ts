@@ -78,6 +78,22 @@ export class LiteraryService {
       throw new ForbiddenException(error.message);
     }
   }
+  async countView(data: string | number) {
+    try {
+      const query =
+        typeof data === 'number' ? { literaryId: data } : { slug: data };
+      const updatedLiterary = await this.prisma.literary.update({
+        where: query,
+        data: {
+          view: { increment: 1 },
+        },
+        select,
+      });
+      return { data: updatedLiterary, message: 'counted' };
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
+  }
 
   async update(id: number, updateLiteraryDto: UpdateLiteraryDto) {
     delete updateLiteraryDto.createdBy;

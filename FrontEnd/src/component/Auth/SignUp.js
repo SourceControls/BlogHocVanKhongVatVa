@@ -18,27 +18,27 @@ function SignUp() {
     return (
         <form onSubmit={form.onSubmit(handleSignUp)}>
             <Stack>
-                <TextInput {...form.getInputProps('name')} label='Họ Tên' placeHolder='Nhập họ tên của bạn' required />
+                <TextInput {...form.getInputProps('name')} label='Họ Tên' placeholder='Nhập họ tên của bạn' required />
                 <TextInput
                     {...form.getInputProps('email')}
                     type='email'
                     label='Email'
-                    placeHolder='Nhập email của bạn'
+                    placeholder='Nhập email của bạn'
                     required
                 />
                 <PasswordInput
                     {...form.getInputProps('password')}
                     label='Mật khẩu'
-                    placeHolder='Nhập mật khẩu'
+                    placeholder='Nhập mật khẩu'
                     required
                 />
                 <PasswordInput
                     {...form.getInputProps('confirmPassword')}
                     label='Nhập lại mật khẩu'
-                    placeHolder='Nhập lại mật khẩu'
+                    placeholder='Nhập lại mật khẩu'
                     required
                 />
-                <Button type='submit' mx='auto'>
+                <Button type='submit' mx='auto' mt='lg'>
                     Đăng Ký
                 </Button>
             </Stack>

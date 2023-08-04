@@ -12,7 +12,7 @@ function SignIn({closeModal, userMutate}) {
 
     const handleSignIn = () => {
         signIn(form.values).then((rs) => {
-            if (rs.userId) {
+            if (rs?.userId) {
                 userMutate([rs], false)
                 closeModal()
             }
@@ -34,7 +34,7 @@ function SignIn({closeModal, userMutate}) {
                     placeholder='Nhập mật khẩu'
                     required
                 />
-                <Button type='submit' mx='auto'>
+                <Button type='submit' mx='auto' mt='lg'>
                     Đăng Nhập
                 </Button>
             </Stack>

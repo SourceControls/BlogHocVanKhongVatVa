@@ -9,13 +9,13 @@
     font-size: 18px;
 }
 
-html {
-    width: 100vw;
-    overflow-x: hidden;
-}
+html {}
 
 body {
     background-color: var(--primary-color-0) !important;
+    width: 100vw;
+    position: 'relative';
+    overflow-x: hidden;
 }
 
 .limit-w {

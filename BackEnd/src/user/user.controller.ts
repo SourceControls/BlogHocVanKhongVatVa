@@ -14,6 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { user_role, user_status } from '@prisma/client';
+import { Roles } from 'src/auth/roles.decorator';
 
 @Controller('user')
 @ApiTags('user')
@@ -27,6 +28,7 @@ export class UserController {
   }
 
   @Get()
+  @Roles('ADMIN', 'SUPERADMIN')
   @ApiQuery({ name: 'key', required: false, type: String })
   @ApiQuery({ name: 'status', required: false, enum: user_status })
   @ApiQuery({ name: 'role', required: false, type: String })
@@ -64,18 +66,18 @@ export class UserController {
       },
     });
   }
-
+  @Roles('SUPERADMIN')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
-
   @Post()
+  @Roles('SUPERADMIN')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
-
   @Patch(':id')
+  @Roles('SUPERADMIN')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }

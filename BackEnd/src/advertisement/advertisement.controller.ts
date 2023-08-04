@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/auth/roles.decorator';
 import { AdvertisementService } from './advertisement.service';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
@@ -18,6 +19,7 @@ export class AdvertisementController {
   constructor(private readonly advertisementService: AdvertisementService) {}
 
   @Post()
+  @Roles('ADMIN', 'SUPERADMIN')
   create(@Body() createAdvertisementDto: CreateAdvertisementDto) {
     return this.advertisementService.create(createAdvertisementDto);
   }
@@ -56,6 +58,7 @@ export class AdvertisementController {
   }
 
   @Patch(':id')
+  @Roles('ADMIN', 'SUPERADMIN')
   update(
     @Param('id') id: string,
     @Body() updateAdvertisementDto: UpdateAdvertisementDto,
@@ -64,6 +67,7 @@ export class AdvertisementController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN', 'SUPERADMIN')
   remove(@Param('id') id: string) {
     return this.advertisementService.remove(+id);
   }

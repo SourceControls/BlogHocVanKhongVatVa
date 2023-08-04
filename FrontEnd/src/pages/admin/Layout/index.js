@@ -13,8 +13,10 @@ import {
 } from '@tabler/icons-react'
 import {UserButton, LinksGroup} from '@comp'
 import {useSettings, useUsers} from '@util'
+import {useEffect, useState} from 'react'
+import Link from 'next/link'
 
-const mockdata = [
+let mockContributor = [
     // {label: 'Dashboard', icon: IconGauge},
     {
         label: 'Bài Viết',
@@ -28,6 +30,9 @@ const mockdata = [
             {label: 'Đã Ẩn', link: '/admin/posts'},
         ],
     },
+]
+
+let mockAdmin = [
     {
         label: 'Văn Học',
         icon: IconBook2,
@@ -38,6 +43,11 @@ const mockdata = [
         ],
     },
     {label: 'Tags', link: '/admin/tags', icon: IconTags},
+    {label: 'Quảng cáo', link: '/admin/advertisement', icon: IconAd2},
+    {label: 'Phân Tích', link: '/admin/analytics', icon: IconPresentationAnalytics},
+    {label: 'Cài đặt', link: '/admin/settings', icon: IconAdjustments},
+]
+let mockSuperAdmin = [
     {
         label: 'Người Dùng',
         icon: IconUsersGroup,
@@ -48,22 +58,28 @@ const mockdata = [
             {label: 'Admin', link: '/admin/users'},
         ],
     },
-    {label: 'Quảng cáo', link: '/admin/advertisement', icon: IconAd2},
-    {label: 'Phân Tích', link: '/admin/analytics', icon: IconPresentationAnalytics},
-    {label: 'Cài đặt', link: '/admin/settings', icon: IconAdjustments},
 ]
-
 export function Layout({children}) {
     const {classes} = useStyles()
-    const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />)
-    const {settings, isLoading} = useSettings()
     const {users, mutate, isLoading: isUserLoading} = useUsers(undefined, '/profile')
-    if (isUserLoading) {
-        return <Text>Loading...</Text>
-    }
-    if (!users[0]?.userId) {
-        return <Text>404 Error</Text>
-    }
+
+    const [links, setLinks] = useState()
+    const {settings, isLoading} = useSettings()
+
+    useEffect(() => {
+        let mockData = []
+        if (users[0]?.role !== 'VIEWER') mockData = [...mockData, ...mockContributor]
+        if (users[0]?.role === 'ADMIN' || users[0]?.role === 'SUPERADMIN') mockData = [...mockData, ...mockAdmin]
+        if (users[0]?.role === 'SUPERADMIN') mockData = [...mockData, ...mockSuperAdmin]
+        setLinks(
+            <>
+                {mockData.map((item) => (
+                    <LinksGroup {...item} key={item.label} />
+                ))}
+            </>,
+        )
+    }, [users[0]?.role])
+    if (!links) return <></>
     return (
         <MantineProvider
             theme={{
@@ -79,9 +95,9 @@ export function Layout({children}) {
                 navbar={
                     <Navbar height={'100vh'} width={{sm: 300}} p='md' className={classes.navbar}>
                         <Navbar.Section className={classes.header}>
-                            <Group position='apart'>
+                            <Link href='/home'>
                                 <Image src={settings[1].logo} width={rem(120)} />
-                            </Group>
+                            </Link>
                         </Navbar.Section>
 
                         <Navbar.Section grow className={classes.links} component={ScrollArea}>

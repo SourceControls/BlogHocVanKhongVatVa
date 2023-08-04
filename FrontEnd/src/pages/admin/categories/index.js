@@ -8,6 +8,7 @@ import CategoryForm from './CategoryForm'
 import {useDisclosure} from '@mantine/hooks'
 import {IconBook2} from '@tabler/icons-react'
 import {useCategories, deleteCategory} from '@util'
+import AuthGuard from '../AuthGuard'
 
 function Categories() {
     const router = useRouter()
@@ -32,9 +33,9 @@ function Categories() {
             mutate(newItems, false)
         }
     }
-    console.log(1)
+
     return (
-        <>
+        <AuthGuard allowedRoles={['ADMIN', 'SUPERADMIN']}>
             <Group mb='38px' noWrap align='flex-end'>
                 <Text mr='auto' size='xl' fw='bold'>
                     Danh Mục & Thể Loại
@@ -138,7 +139,7 @@ function Categories() {
             <Modal opened={opened} onClose={close} centered yOffset='1vh' xOffset={0} title='Danh Mục'>
                 {modalContent}
             </Modal>
-        </>
+        </AuthGuard>
     )
 }
 Categories.Layout = Layout

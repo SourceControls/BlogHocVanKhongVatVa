@@ -60,14 +60,22 @@ export class CommentService {
     return `This action updates a #${id} comment`;
   }
 
-  async remove(commentId: number) {
+  async remove(commentId: number, userId: number) {
+    const comment = await this.prisma.comment.findUnique({
+      where: {
+        commentId,
+      },
+    });
+    if (comment.createdBy != userId) {
+      throw new InternalServerErrorException('Không có quyền!');
+    }
     try {
-      const createdComment = await this.prisma.comment.delete({
+      const deletedComment = await this.prisma.comment.delete({
         where: {
           commentId,
         },
       });
-      return { data: createdComment, message: 'Đã xóa bình luận!' };
+      return { data: deletedComment, message: 'Đã xóa bình luận!' };
     } catch (error) {
       console.log(error.message);
       throw new InternalServerErrorException('Có lỗi khi xóa bình luận!');

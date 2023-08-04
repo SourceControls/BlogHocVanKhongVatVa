@@ -28,13 +28,56 @@ export class PostController {
   @ApiQuery({ name: 'key', required: false, type: String })
   @ApiQuery({ name: 'tag', required: false, type: String })
   @ApiQuery({ name: 'featured', required: false, type: Boolean })
+  @ApiQuery({ name: 'literarySlug', required: false, type: String })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiQuery({ name: 'sortBy', required: false, type: String })
+  clientFindAll(
+    @Query('key') key?: string,
+    @Query('tag') tag?: string,
+    @Query('featured') featured?: string,
+    @Query('literarySlug') literarySlug?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @Query('sortBy') sortBy?: string,
+  ) {
+    return this.postService.findAll({
+      skip: (+page - 1 || 0) * (+limit || 3),
+      take: +limit || 3,
+      orderBy: {
+        [sortBy || 'postId']: 'desc',
+      },
+      where: {
+        title: {
+          contains: key,
+        },
+        featured: featured && featured === 'true',
+        status: 'PUBLISHED',
+        postLiterary: { slug: literarySlug },
+        postTag: tag && {
+          some: {
+            tag: {
+              tagName: tag,
+            },
+          },
+        },
+      },
+    });
+  }
+
+  @Get('admin')
+  @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
+  @ApiQuery({ name: 'key', required: false, type: String })
+  @ApiQuery({ name: 'tag', required: false, type: String })
+  @ApiQuery({ name: 'featured', required: false, type: Boolean })
   @ApiQuery({ name: 'status', required: false, enum: post_status })
   @ApiQuery({ name: 'literarySlug', required: false, type: String })
   @ApiQuery({ name: 'userSlug', required: false, type: String })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'sortBy', required: false, type: String })
-  findAll(
+  adminFindAll(
+    @Req() req: Request,
     @Query('key') key?: string,
     @Query('tag') tag?: string,
     @Query('featured') featured?: string,
@@ -45,6 +88,14 @@ export class PostController {
     @Query('limit') limit?: string,
     @Query('sortBy') sortBy?: string,
   ) {
+    // console.log(request.headers.referer);  //http://localhost:3001/home
+
+    //call from admin page, then rs will check role to return rs
+    //không thể thấy được thư mục draft của
+    if (req['authUser'].role === 'CONTRIBUTOR') {
+      author = req['authUser'].slug;
+    }
+
     return this.postService.findAll({
       skip: (+page - 1 || 0) * (+limit || 3),
       take: +limit || 3,
@@ -74,12 +125,13 @@ export class PostController {
   findOne(@Param('slug') slug: string) {
     return this.postService.findOne(slug);
   }
-
+  @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
     return this.postService.create(createPostDto);
   }
-  @Roles(user_role.VIEWER, user_role.SUPERADMIN, user_role.ADMIN)
+
+  @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
   @Put(':id/publish')
   publish(@Param('id') id: string, @Req() req: Request) {
     return this.postService.updateStatus(
@@ -89,6 +141,7 @@ export class PostController {
       post_status.PUBLISHED,
     );
   }
+  @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
   @Put(':id/hide')
   hide(@Param('id') id: string, @Req() req: Request) {
     return this.postService.updateStatus(
@@ -98,6 +151,7 @@ export class PostController {
       post_status.HIDE,
     );
   }
+  @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
   @Put(':id/request-publish')
   requestPublish(@Param('id') id: string, @Req() req: Request) {
     return this.postService.updateStatus(
@@ -107,24 +161,32 @@ export class PostController {
       post_status.PENDING,
     );
   }
-  @Put(':slug/reaction/:type') //type  == like, dislike
-  like(
-    @Param('slug') slug: string,
-    @Param('type') type: postReaction_type,
-    @Req() req: Request,
-  ) {
-    return this.postService.reaction(slug, +req.body.updatedBy, type);
-  }
 
-  @Put(':slug/view')
-  view(@Param('slug') slug: string, @Req() req: Request) {
+  @Public()
+  @Put(':slug/count-view')
+  countView(@Param('slug') slug: string) {
     return this.postService.countView(slug);
   }
+
+  @Put(':slug/reaction/:reactionType') //reactionType  == like, dislike
+  like(
+    @Param('slug') slug: string,
+    @Param('reactionType') reactionType: postReaction_type,
+    @Req() req: Request,
+  ) {
+    return this.postService.reaction(slug, +req.body.updatedBy, reactionType);
+  }
+
+  @Get(':slug/own-reaction')
+  getOwnReaction(@Param('slug') slug: string, @Req() req: Request) {
+    return this.postService.getOwnReaction(slug, req['authUser'].userId);
+  }
+  @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(+id, updatePostDto);
   }
-
+  @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.postService.remove(+id);

@@ -7,6 +7,7 @@ import {useState} from 'react'
 import AdvertisementForm from './AdvertisementForm'
 import {useDisclosure} from '@mantine/hooks'
 import {useAdvertisements, deleteAdvertisement, formatDate} from '@util'
+import AuthGuard from '../AuthGuard'
 
 function Advertisement() {
     const [opened, {open, close}] = useDisclosure(false)
@@ -35,7 +36,7 @@ function Advertisement() {
         }
     }
     return (
-        <>
+        <AuthGuard allowedRoles={['ADMIN', 'SUPERADMIN']}>
             <Group mb='38px' noWrap align='flex-end'>
                 <Text mr='auto' size='xl' fw='bold'>
                     Quảng cáo
@@ -158,7 +159,7 @@ function Advertisement() {
             <Modal opened={opened} size='xl' onClose={close} centered yOffset='1vh' xOffset={0} title='Tags'>
                 {modalContent}
             </Modal>
-        </>
+        </AuthGuard>
     )
 }
 Advertisement.Layout = Layout

@@ -1,22 +1,31 @@
-import {createStyles, Text, Avatar, Group, rem, Button, Textarea, Divider, Stack, ActionIcon, Box} from '@mantine/core'
+import {Text, Avatar, Group, Button, Textarea, Divider, Stack, ActionIcon, Box, Modal} from '@mantine/core'
+import {useMediaQuery, useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
 import {Send, Trash} from 'tabler-icons-react'
 import {useComments, useUsers, formatDate, createComment, deleteComment} from '@util'
 import {useState} from 'react'
+import {toast} from 'react-toastify'
 
 export default function CommentSection() {
+    const [opened, {open, close}] = useDisclosure(false)
     const router = useRouter()
     const [cmt, setCmt] = useState('')
+
     const {users} = useUsers('', '/profile')
     const {comments, isLoading, size, setSize, mutate} = useComments(router.query.slug)
     const handleComment = () => {
+        if (!users[0]?.userId) return toast.info('Cần đăng nhập để sử dụng')
+
         createComment(cmt, router.query.slug).then((rs) => {
-            if (rs.commentId) mutate([rs, ...comments], false)
+            if (rs?.commentId) {
+                setCmt('')
+                mutate([rs, ...comments], false)
+            }
         })
     }
     const handleDelete = (id) => {
         deleteComment(id, router.query.slug).then((rs) => {
-            if (rs.commentId) {
+            if (rs?.commentId) {
                 mutate(
                     comments.filter((item) => item.commentId != rs.commentId),
                     false,
@@ -33,12 +42,14 @@ export default function CommentSection() {
                     value={cmt}
                     onChange={(e) => setCmt(e.target.value)}
                     rightSection={
-                        <ActionIcon h='100%' w='50px' onClick={handleComment}>
-                            <Send />
-                        </ActionIcon>
+                        cmt && (
+                            <ActionIcon radius='50%' w='50px' onClick={handleComment} mr='xl'>
+                                <Send />
+                            </ActionIcon>
+                        )
                     }></Textarea>
             </form>
-            {comments &&
+            {comments[0]?.user &&
                 comments.map((item) => (
                     <div key={item.commentId}>
                         <Group noWrap align='flex-start' spacing='xs'>
@@ -56,9 +67,26 @@ export default function CommentSection() {
                                 <Text size='sm'>{item.content}</Text>
                             </Stack>
                             {users[0]?.userId == item.user.userId && (
-                                <ActionIcon color='red' ml={'auto'} onClick={() => handleDelete(item.commentId)}>
-                                    <Trash />
-                                </ActionIcon>
+                                <>
+                                    <ActionIcon color='red' ml={'auto'} onClick={open}>
+                                        <Trash />
+                                    </ActionIcon>
+                                    <Modal opened={opened} onClose={close} size='xs' title=' Xóa bình luận?' centered>
+                                        {/* <Text fw='bold' align='center' mb='xl'></Text> */}
+                                        <Group align='center' position='apart' px='xl' mt='md'>
+                                            <Button variant='outline' onClick={close}>
+                                                Hủy
+                                            </Button>
+                                            <Button
+                                                onClick={() => {
+                                                    handleDelete(item.commentId)
+                                                    close()
+                                                }}>
+                                                Xác nhận
+                                            </Button>
+                                        </Group>
+                                    </Modal>
+                                </>
                             )}
                         </Group>
                         <Divider my='md'></Divider>

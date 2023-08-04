@@ -8,6 +8,7 @@ import {useRouter} from 'next/router'
 import {useState} from 'react'
 import {useLiteries, deleteLiterary} from '@util'
 import {IconStarFilled} from '@tabler/icons-react'
+import AuthGuard from '../AuthGuard'
 
 function Literaries() {
     const [opened, {open, close}] = useDisclosure(false)
@@ -33,7 +34,7 @@ function Literaries() {
         }
     }
     return (
-        <>
+        <AuthGuard allowedRoles={['ADMIN', 'SUPERADMIN']}>
             <Group mb='38px' noWrap align='flex-end'>
                 <Title mr='auto' order={2} style={{whiteSpace: 'noWrap'}}>
                     Tác Phẩm
@@ -136,7 +137,7 @@ function Literaries() {
             <Modal size={1100} opened={opened} onClose={close} centered yOffset='1vh' xOffset={0} title='Tác Phẩm'>
                 {modalContent}
             </Modal>
-        </>
+        </AuthGuard>
     )
 }
 Literaries.Layout = Layout

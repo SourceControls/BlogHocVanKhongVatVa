@@ -8,7 +8,7 @@ function Home() {
     return (
         <Stack pt='xl'>
             <Hero></Hero>
-            <Decorate />
+            {/* <Decorate /> */}
             <Section title='Tác Phẩm Tiêu Biểu' titlePosition='center'>
                 <FeaturedLiterary />
             </Section>

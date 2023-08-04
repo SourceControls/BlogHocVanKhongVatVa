@@ -36,6 +36,7 @@ const listColor = [
 import {useSettings, updateConfig} from '@util'
 import {useEffect} from 'react'
 import {IconRefresh} from '@tabler/icons-react'
+import AuthGuard from '../AuthGuard'
 function Settings() {
     const {settings, isLoading} = useSettings()
 
@@ -52,7 +53,7 @@ function Settings() {
     }
 
     return (
-        <>
+        <AuthGuard allowedRoles={['ADMIN', 'SUPERADMIN']}>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Group mb='38px' noWrap align='flex-end'>
                     <Text mr='auto' size='xl' fw='bold'>
@@ -148,7 +149,7 @@ function Settings() {
                     </Radio.Group> */}
                 </SimpleGrid>
             </form>
-        </>
+        </AuthGuard>
     )
 }
 Settings.Layout = Layout

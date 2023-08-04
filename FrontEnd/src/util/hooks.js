@@ -31,6 +31,7 @@ export function usePosts(query, slug = '') {
         mutate,
     }
 }
+
 export function useLiteries(query, slug = '') {
     const {data, error, isLoading, size, setSize, mutate} = useSWRInfinite(
         (index) => `/api/literary${slug}?page=${index + 1}` + query,
@@ -86,6 +87,8 @@ export function useCategories(query, slug = '') {
 }
 
 export function useUsers(query, slug = '') {
+    if (query == -1) return {users: []}
+
     const {data, error, isLoading, size, setSize, mutate} = useSWRInfinite(
         (index) => `/api/user${slug}?page=${index + 1}` + query,
         axios.get,

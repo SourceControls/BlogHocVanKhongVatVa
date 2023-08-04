@@ -12,12 +12,14 @@ import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/auth/roles.decorator';
 @ApiTags('tag')
 @Controller('tag')
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Post()
+  @Roles('ADMIN', 'SUPERADMIN')
   create(@Body() createTagDto: CreateTagDto) {
     return this.tagService.create(createTagDto);
   }
@@ -54,11 +56,13 @@ export class TagController {
   }
 
   @Patch(':id')
+  @Roles('ADMIN', 'SUPERADMIN')
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagService.update(+id, updateTagDto);
   }
 
   @Delete(':id')
+  @Roles('ADMIN', 'SUPERADMIN')
   remove(@Param('id') id: string) {
     return this.tagService.remove(+id);
   }

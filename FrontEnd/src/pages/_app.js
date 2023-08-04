@@ -23,7 +23,7 @@ export default function MyApp({Component, pageProps}) {
                     </Layout>
                 </MantineProvider>
             }
-            <ToastContainer position='top-left' autoClose={5000} limit={3} />
+            <ToastContainer position='top-left' autoClose={3000} limit={3} />
             {/* <GlobalLoading /> */}
         </>
     )

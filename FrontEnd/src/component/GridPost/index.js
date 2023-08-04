@@ -10,7 +10,6 @@ export function GridPost({query}) {
     // const [page, setPage] = useState(1)
     const {posts, isLoading, size, setSize} = usePosts(query || '')
     const smScreen = useMediaQuery('(max-width: 48em)')
-    console.log(posts)
     return (
         <>
             <Grid m={0}>

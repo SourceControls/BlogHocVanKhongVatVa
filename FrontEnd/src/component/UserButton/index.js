@@ -1,5 +1,6 @@
-import {UnstyledButton, UnstyledButtonProps, Group, Avatar, Text, createStyles} from '@mantine/core'
-import {IconChevronRight} from '@tabler/icons-react'
+import {UnstyledButton, UnstyledButtonProps, Group, Avatar, Tooltip, Text, createStyles} from '@mantine/core'
+import {IconChevronRight, IconLogout} from '@tabler/icons-react'
+import {useSettings, useUsers, signOut} from '@util'
 
 const useStyles = createStyles((theme) => ({
     user: {
@@ -16,6 +17,7 @@ const useStyles = createStyles((theme) => ({
 
 export function UserButton({image, name, email, icon, ...others}) {
     const {classes} = useStyles()
+    const {users, mutate: userMutate} = useUsers('', '/profile')
 
     return (
         <UnstyledButton className={classes.user} {...others}>
@@ -32,7 +34,18 @@ export function UserButton({image, name, email, icon, ...others}) {
                     </Text>
                 </div>
 
-                {icon || <IconChevronRight size='0.9rem' stroke={1.5} />}
+                {
+                    <Tooltip label='Đăng xuất'>
+                        <IconLogout
+                            size='1.5rem'
+                            stroke={1.5}
+                            onClick={async () => {
+                                await signOut()
+                                userMutate([], false)
+                            }}
+                        />
+                    </Tooltip>
+                }
             </Group>
         </UnstyledButton>
     )

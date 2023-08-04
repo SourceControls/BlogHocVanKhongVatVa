@@ -7,6 +7,7 @@ import TagForm from './TagForm'
 import {useDisclosure} from '@mantine/hooks'
 import {useTags, deleteTag} from '@util'
 import {useState} from 'react'
+import AuthGuard from '../AuthGuard'
 
 function Tags() {
     const [opened, {open, close}] = useDisclosure(false)
@@ -30,7 +31,7 @@ function Tags() {
         }
     }
     return (
-        <>
+        <AuthGuard allowedRoles={['ADMIN', 'SUPERADMIN']}>
             <Group mb='38px' noWrap align='flex-end'>
                 <Text mr='auto' size='xl' fw='bold'>
                     Tags
@@ -126,7 +127,7 @@ function Tags() {
             <Modal opened={opened} onClose={close} centered yOffset='1vh' xOffset={0} title='Tags'>
                 {modalContent}
             </Modal>
-        </>
+        </AuthGuard>
     )
 }
 Tags.Layout = Layout

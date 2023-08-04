@@ -32,7 +32,8 @@ export default function handler(req, res) {
                 try {
                     const isSuccess = proxyRes.statusCode && proxyRes.statusCode >= 200 && proxyRes.statusCode < 300
                     if (!isSuccess) {
-                        res.status(proxyRes.statusCode || 500).json(body)
+                        console.log(body)
+                        res.status(proxyRes.statusCode || 500).json(JSON.parse(body))
                         return resolve(true)
                     }
                     // Get the Authorization header from proxyRes

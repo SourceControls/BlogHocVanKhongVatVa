@@ -1,24 +1,23 @@
 'use client'
-import {ActionIcon, Avatar, Box, Button, Flex, Group, Image, Modal, Paper, Text, TextInput} from '@mantine/core'
+import {ActionIcon, Avatar, Box, Button, Flex, Group, Image, Menu, Modal, Paper, Text, TextInput} from '@mantine/core'
 import Link from 'next/link'
-import {UserCircle} from 'tabler-icons-react'
+import {ArrowBarToRight, Logout, MailOpened, User, UserCircle} from 'tabler-icons-react'
 import {Auth, FloatingLabelInput} from '@comp'
 import {useMediaQuery, useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
-import {IconHome, IconSearch} from '@tabler/icons-react'
+import {IconHome, IconMessageCircle, IconSearch, IconSettings, IconTrash} from '@tabler/icons-react'
 import {useState} from 'react'
 import {useSettings, useUsers, signOut} from '@util'
+import {toast} from 'react-toastify'
+import ContributorForm from './ContributorForm'
 function Header({categories, active, setActive}) {
     const router = useRouter()
+    const [openedContributorForm, {open: openContributorForm, close: closeContributorForm}] = useDisclosure(false)
+
     const [searchKey, setSearchKey] = useState('')
-    const [opened, {open, close}] = useDisclosure(false)
     const smScreen = useMediaQuery('(max-width: 48em)')
     const {settings, isLoading} = useSettings()
-    const {users, mutate: userMutate} = useUsers(undefined, '/profile')
-    const closeModal = (props) => {
-        close(props)
-        router.push(router.asPath, undefined, {shallow: true})
-    }
+    const {users, mutate: userMutate} = useUsers('', '/profile')
 
     return (
         <>
@@ -60,21 +59,59 @@ function Header({categories, active, setActive}) {
                     />
                     {users[0]?.userId ? (
                         <Group style={{flex: 1}}>
-                            <Group
-                                ml='auto'
-                                align='center'
-                                style={{width: 'fit-content', cursor: 'pointer'}}
-                                spacing='0'>
-                                <Avatar size='lg' src={users[0].avatarImage} />
-                                <Text fw='bold'>{users[0].name}</Text>
-                            </Group>
-                            <Button
-                                onClick={async () => {
-                                    await signOut()
-                                    userMutate([], false)
-                                }}>
-                                Đăng xuất
-                            </Button>
+                            <Menu shadow='md' width={200}>
+                                <Menu.Target>
+                                    <Group
+                                        ml='auto'
+                                        align='center'
+                                        style={{width: 'fit-content', cursor: 'pointer'}}
+                                        spacing='0'>
+                                        <Avatar src={users[0].avatarImage} />
+                                        <Text fw='bold'>{users[0].name}</Text>
+                                    </Group>
+                                </Menu.Target>
+
+                                <Menu.Dropdown>
+                                    {/* <Menu.Label>Menu</Menu.Label> */}
+                                    <Menu.Item
+                                        icon={<User size='1.2rem' />}
+                                        onClick={async () => {
+                                            toast.info('Coming soon')
+                                        }}>
+                                        Tài khoản
+                                    </Menu.Item>
+                                    {users[0].role !== 'VIEWER' && (
+                                        <Menu.Item
+                                            icon={<ArrowBarToRight size='1.2rem' />}
+                                            onClick={() => router.push('/admin/posts')}>
+                                            Quản lý
+                                        </Menu.Item>
+                                    )}
+                                    {users[0].role === 'VIEWER' && (
+                                        <Menu.Item icon={<MailOpened size='1.2rem' />} onClick={openContributorForm}>
+                                            Trở thành cộng tác viên
+                                        </Menu.Item>
+                                    )}
+
+                                    <Menu.Item
+                                        icon={<Logout size='1.2rem' />}
+                                        onClick={async () => {
+                                            await signOut()
+                                            userMutate([], false)
+                                        }}>
+                                        Đăng xuất
+                                    </Menu.Item>
+                                    <Menu.Divider />
+                                    <Menu.Item
+                                        color='red'
+                                        icon={<IconTrash size='1.2rem' />}
+                                        onClick={async () => {
+                                            toast.info('Coming soon')
+                                        }}>
+                                        Xóa tài khoản
+                                    </Menu.Item>
+                                </Menu.Dropdown>
+                            </Menu>
                         </Group>
                     ) : smScreen ? (
                         <ActionIcon ml='md' onClick={open}>
@@ -82,10 +119,10 @@ function Header({categories, active, setActive}) {
                         </ActionIcon>
                     ) : (
                         <Group style={{flex: 1}} position='right' spacing='xl'>
-                            <Button component='a' href='#signIn' variant='filled' onClick={open}>
+                            <Button variant='filled' onClick={() => router.push(router.asPath + '#signIn')}>
                                 Đăng nhập
                             </Button>
-                            <Button component='a' href='#signUp' variant='outline' onClick={open}>
+                            <Button variant='outline' onClick={() => router.push(router.asPath + '#signUp')}>
                                 Đăng kí
                             </Button>
                         </Group>
@@ -93,13 +130,28 @@ function Header({categories, active, setActive}) {
                 </Flex>
             </Paper>
             <Modal
-                opened={opened}
-                onClose={closeModal}
+                opened={router.asPath.includes('#signIn') || router.asPath.includes('#signUp')}
+                onClose={() => {
+                    router.push({pathname: router.pathname, query: {...router.query}}, undefined, {scroll: false})
+                }}
                 styles={(theme) => ({
                     content: {backgroundColor: theme.backgroundColor},
                     header: {backgroundColor: theme.backgroundColor},
                 })}>
-                <Auth closeModal={closeModal} userMutate={userMutate}></Auth>
+                <Auth
+                    closeModal={() => {
+                        router.push({pathname: router.pathname, query: {...router.query}}, undefined, {scroll: false})
+                    }}
+                    userMutate={userMutate}></Auth>
+            </Modal>
+            <Modal
+                opened={openedContributorForm}
+                onClose={closeContributorForm}
+                styles={(theme) => ({
+                    content: {backgroundColor: theme.backgroundColor},
+                    header: {backgroundColor: theme.backgroundColor},
+                })}>
+                <ContributorForm closeModal={closeContributorForm} />
             </Modal>
         </>
     )

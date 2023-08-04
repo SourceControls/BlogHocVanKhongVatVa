@@ -22,20 +22,9 @@ function GridLiterary() {
     return (
         <Stack>
             <Group align='flex-end' mb='3rem' spacing='xl'>
-                <Title order={3}>Kết quả tìm kiếm tác phẩm cho: {"'" + router.query.tag + "'"}</Title>
-                {/* <FloatingLabelInput
-                    label='Tìm kiếm'
-                    w='30%'
-                    miw='300px'
-                    required
-                    icon={<Search />}
-                    placeholder='Nhập tên tác phẩm, tác giả...'
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            changeQuery('key', e.target.value)
-                        }
-                    }}
-                /> */}
+                <Title order={3}>
+                    Kết quả tìm kiếm tác phẩm cho: {"'" + (router.query.key || router.query.tag) + "'"}
+                </Title>
 
                 <Select
                     ml='auto'

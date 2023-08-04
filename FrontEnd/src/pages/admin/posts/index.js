@@ -7,12 +7,17 @@ import {useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
 import {usePosts, useUsers} from '@util'
 import {useState} from 'react'
+import AuthGuard from '../AuthGuard'
 function Posts() {
     const [opened, {open, close}] = useDisclosure(false)
     const router = useRouter()
     const [modalContent, setModalContent] = useState(<MyEditor close={close} />)
-    const {posts, isLoading, size, setSize, mutate} = usePosts('&limit=6&' + router.asPath.split('?')[1])
-    const {users} = useUsers('&limit=0&role=NOTVIEWER')
+    const {posts, isLoading, size, setSize, mutate} = usePosts('&limit=6&' + router.asPath.split('?')[1], '/admin')
+    const {users: authUsers} = useUsers('', '/profile')
+    // const {users} = useUsers(
+    //     authUsers[0]?.role && authUsers[0]?.role === 'CONTRIBUTOR' ? '' : '&limit=0&role=NOTVIEWER',
+    //     authUsers[0]?.role && authUsers[0]?.role === 'CONTRIBUTOR' ? '/profile' : '',
+    // )
 
     const changeQuery = (key, value) => {
         router.push({
@@ -23,7 +28,7 @@ function Posts() {
         })
     }
     return (
-        <>
+        <AuthGuard allowedRoles={['CONTRIBUTOR', 'ADMIN', 'SUPERADMIN']}>
             <Group mb='38px' noWrap align='flex-end'>
                 <Text mr='auto' size='xl' fw='bold'>
                     Bài Viết
@@ -44,8 +49,8 @@ function Posts() {
                     data={[
                         {value: '', label: 'Mới nhất'},
                         {value: 'view', label: 'Nhiều Lượt Xem'},
-                        {value: 'like', label: 'Nhiều Lượt Like '},
-                        {value: 'dislike', label: 'Nhiều Lượt Dislike '},
+                        {value: 'likeCount', label: 'Nhiều Lượt Like '},
+                        {value: 'dislikeCount', label: 'Nhiều Lượt Dislike '},
                     ]}
                     onChange={(val) => changeQuery('sortBy', val)}
                 />
@@ -60,17 +65,19 @@ function Posts() {
                     ]}
                     onChange={(val) => changeQuery('status', val)}
                 />
-                <Select
-                    defaultValue=''
-                    searchable
-                    nothingFound='Không tìm thấy'
-                    maxDropdownHeight={280}
-                    data={[
-                        {value: '', label: 'Tất Cả Tác Giả'},
-                        ...users.map((item) => ({value: item.slug, label: item.name})),
-                    ]}
-                    onChange={(val) => changeQuery('author', val)}
-                />
+                {/* {authUsers[0]?.role && authUsers[0]?.role !== 'CONTRIBUTOR' && (
+                    <Select
+                        defaultValue=''
+                        searchable
+                        nothingFound='Không tìm thấy'
+                        maxDropdownHeight={280}
+                        data={[
+                            {value: '', label: 'Tất Cả Tác Giả'},
+                            ...users.map((item) => ({value: item.slug, label: item.name})),
+                        ]}
+                        onChange={(val) => changeQuery('author', val)}
+                    />
+                )} */}
 
                 <Button
                     leftIcon={<Plus />}
@@ -82,7 +89,7 @@ function Posts() {
                 </Button>
             </Group>
             <div>
-                {posts &&
+                {posts[0]?.postId &&
                     posts.map((item, index) => (
                         <Group key={index} w='100%' py='md' style={{borderTop: '1px solid #ccc'}}>
                             <Stack spacing='4px'>
@@ -143,7 +150,7 @@ function Posts() {
                 title='Soạn Thảo Bài Viết'>
                 {modalContent}
             </Modal>
-        </>
+        </AuthGuard>
     )
 }
 Posts.Layout = Layout

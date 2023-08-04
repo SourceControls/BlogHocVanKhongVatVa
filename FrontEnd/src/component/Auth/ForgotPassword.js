@@ -18,7 +18,7 @@ function ForgotPassword() {
                     description='Chúng tôi sẽ gửi đường dẫn đổi mật khẩu đến mail của bạn!'
                     required
                 />
-                <Button type='submit' mx='auto'>
+                <Button type='submit' mx='auto' mt='lg'>
                     Xác Nhận
                 </Button>
             </Stack>

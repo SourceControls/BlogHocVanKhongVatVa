@@ -44,14 +44,15 @@ instance.interceptors.response.use(
     },
     function (error) {
         // setDisplayGlobalLoading(false)
-        console.log(error)
+        const hideAlert = ['/api/user/profile?page=1']
 
         let message = error.response?.data?.message
         if (Array.isArray(message)) {
             message = message[0]
         }
 
-        return toast.error(message)
+        if (hideAlert.includes(error.response?.config.url)) return
+        toast.error(message)
     },
 )
 

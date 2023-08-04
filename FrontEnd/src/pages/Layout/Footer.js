@@ -1,6 +1,7 @@
 import {ActionIcon, Anchor, Box, Button, Divider, Grid, Group, Stack, Text, TextInput} from '@mantine/core'
 import {IconBrandFacebook, IconBrandTwitter, IconBrandYoutube} from '@tabler/icons-react'
 import Link from 'next/link'
+import {toast} from 'react-toastify'
 import {ArrowNarrowRight} from 'tabler-icons-react'
 
 function Footer() {
@@ -16,7 +17,13 @@ function Footer() {
                                 Đăng ký nhận thông báo những bài viết mới Nhất
                             </Text>
                             <TextInput placeholder='Nhập Email của bạn' icon={<ArrowNarrowRight />} w='320px' />
-                            <Button w='200px'>Xác Nhận</Button>
+                            <Button
+                                w='200px'
+                                onClick={async () => {
+                                    toast.info('Coming soon')
+                                }}>
+                                Xác Nhận
+                            </Button>
                         </Stack>
                     </Grid.Col>
                     <Grid.Col xs={6} sm={6} lg={3}>

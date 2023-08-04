@@ -6,8 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from '@nestjs/common';
-import { Query } from '@nestjs/common/decorators';
+import { Query, Req } from '@nestjs/common/decorators';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/public.decorator';
 import { CommentService } from './comment.service';
@@ -26,7 +27,7 @@ export class CommentController {
   ) {
     return this.commentService.create(postSlug, createCommentDto);
   }
-
+  @Public()
   @Get()
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
@@ -49,7 +50,7 @@ export class CommentController {
       },
     });
   }
-
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.commentService.findOne(+id);
@@ -61,7 +62,7 @@ export class CommentController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    return this.commentService.remove(+id, req['authUser'].userId);
   }
 }
