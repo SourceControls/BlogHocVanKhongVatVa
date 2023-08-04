@@ -89,7 +89,7 @@ export class LiteraryService {
         },
         select,
       });
-      return { data: updatedLiterary, message: 'counted' };
+      return { data: updatedLiterary };
     } catch (error) {
       throw new ForbiddenException(error.message);
     }

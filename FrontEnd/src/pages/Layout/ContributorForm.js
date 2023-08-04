@@ -1,20 +1,23 @@
 import {Button, Center, Image, PasswordInput, Stack, Text, Textarea, TextInput} from '@mantine/core'
 import {useForm} from '@mantine/form'
-import {useSettings} from '@util'
-function ContributorForm({closeContributorForm}) {
+import {useSettings, contributorRegister} from '@util'
+function ContributorForm({close}) {
     const {settings, isLoading} = useSettings()
 
     const form = useForm({
         initialValues: {
-            name: '',
-            email: '',
-            phone: '',
-            address: '',
-            website: '',
-            career: '',
-            note: '',
+            name: 'Thu Huyền',
+            phone: '0973343541',
+            address: 'Phủ Lý, Hà Nam',
+            career: 'Giáo viên văn học',
+            intro: 'Tôi là một người đam mê về văn học, sinh năm 1998 và hiện đang là một giảng viên về môn này. Từ khi còn nhỏ, tôi đã luôn mê mải đắm chìm trong thế giới của các tác phẩm văn học, từ những cuốn sách kinh điển cho đến những bài viết ngắn đầy cảm xúc. Được trải qua những hành trình tinh tế trong các trang sách, tôi đã thấu hiểu được sức mạnh của từng câu chữ, từng dòng văn, và tầm ảnh hưởng của chúng đối với cuộc sống của mỗi người.',
         },
     })
+    const handleSubmit = () => {
+        contributorRegister(form.values).then((rs) => {
+            if (rs) close()
+        })
+    }
     return (
         <>
             <Center h='200px'>
@@ -23,31 +26,18 @@ function ContributorForm({closeContributorForm}) {
             <Text size='xl' mb='md' fw='bold'>
                 Đăng kí trở thành cộng tác viên
             </Text>
-            <form onSubmit={form.onSubmit(console.log)}>
+            <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack>
-                    <TextInput
-                        {...form.getInputProps('name')}
-                        label='Họ tên'
-                        placeHolder='Đầy đủ họ tên của bạn'
-                        required
-                    />
-                    <TextInput {...form.getInputProps('email')} label='Email' placeHolder='Email của bạn' required />
                     <TextInput
                         {...form.getInputProps('phone')}
                         label='Số điện thoại'
-                        placeHolder='Số điện thoại'
+                        placeHolder='Số điện thoại của bạn'
                         required
                     />
                     <TextInput
                         {...form.getInputProps('address')}
                         label='Địa chỉ'
-                        placeHolder='Địa chỉ hiện tại của bạn'
-                        required
-                    />
-                    <TextInput
-                        {...form.getInputProps('website')}
-                        label='Website'
-                        placeHolder='Website hoặc trang cá nhân của bạn'
+                        placeHolder='Tỉnh hoặc thành phố bạn đang ở'
                         required
                     />
                     <TextInput
@@ -57,7 +47,7 @@ function ContributorForm({closeContributorForm}) {
                         required
                     />
                     <Textarea
-                        {...form.getInputProps('node')}
+                        {...form.getInputProps('intro')}
                         autosize
                         minRows={5}
                         label='Giới thiệu'

@@ -1,14 +1,20 @@
 import {Button, Stack, TextInput} from '@mantine/core'
 import {useForm} from '@mantine/form'
+import {forgotPassword} from '@util'
 
-function ForgotPassword() {
+function ForgotPassword({close}) {
     const form = useForm({
         initialValues: {
             email: '',
         },
     })
+    const handleSubmit = () => {
+        forgotPassword(form.values).then((rs) => {
+            if (rs) close()
+        })
+    }
     return (
-        <form onSubmit={form.onSubmit(console.log)}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
             <Stack>
                 <TextInput
                     {...form.getInputProps('email')}

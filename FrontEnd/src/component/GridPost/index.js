@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Grid, Group, Image, Stack, Text, Title} from '@mantine/core'
+import {Box, Button, Divider, Grid, Group, Image, LoadingOverlay, Stack, Text, Title} from '@mantine/core'
 import {ExtraInfo} from '@comp'
 import {useMediaQuery} from '@mantine/hooks'
 
@@ -10,6 +10,7 @@ export function GridPost({query}) {
     // const [page, setPage] = useState(1)
     const {posts, isLoading, size, setSize} = usePosts(query || '')
     const smScreen = useMediaQuery('(max-width: 48em)')
+    if (!posts[0]?.postId) return <LoadingOverlay />
     return (
         <>
             <Grid m={0}>

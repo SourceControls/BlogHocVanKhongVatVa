@@ -12,7 +12,7 @@ function Layout({children}) {
             <Header active={active} setActive={setActive} />
             <Box className='limit-w ' mx='auto'>
                 {children}
-                {/* <Decorate align='left' /> */}
+                <Decorate />
             </Box>
             <Footer></Footer>
             <CustomAffix />

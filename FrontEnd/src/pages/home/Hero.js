@@ -33,7 +33,7 @@ function Hero() {
             </Group>
             {users[0]?.userId ? (
                 <Modal opened={opened} onClose={close}>
-                    <RequestPostForm />
+                    <RequestPostForm close={close} />
                 </Modal>
             ) : (
                 <Dialog

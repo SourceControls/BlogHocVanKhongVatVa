@@ -11,13 +11,8 @@ export function FeaturedLiterary(props) {
     const autoplay = useRef(Autoplay({delay: 3000}))
     const smScreen = useMediaQuery('(max-width: 48em)')
     const {literaries, isLoading} = useLiteries('&featured=true&limit=8')
-    if (isLoading) return <LoadingOverlay visible={true} overlayBlur={2} />
-    // if (!literaries || literaries.length === 0)
-    //     return (
-    //         <Text fw='bold' size='xl' my='xl' align='center'>
-    //             Oops!!...
-    //         </Text>
-    //     )
+    if (!literaries[0]?.literaryId) return <LoadingOverlay />
+
     return (
         <Box pos='relative' mb='xl'>
             <Carousel

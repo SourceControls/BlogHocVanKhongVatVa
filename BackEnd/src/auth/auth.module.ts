@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt/dist';
 import { JwtModule } from '@nestjs/jwt/dist/jwt.module';
+import { MailerModule } from 'src/mailer/mailer.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
@@ -16,6 +17,7 @@ import { RolesGuard } from './roles.guard';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '24d' },
     }),
+    MailerModule,
   ],
   controllers: [AuthController],
   providers: [

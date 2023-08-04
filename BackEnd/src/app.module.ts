@@ -18,6 +18,7 @@ import { TagModule } from './tag/tag.module';
 import { AdvertisementModule } from './advertisement/advertisement.module';
 import { SettingModule } from './setting/setting.module';
 import { ConfigModule } from '@nestjs/config';
+import { MailerService } from './mailer/mailer.service';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MailerService],
 })
 export class AppModule implements NestModule {
   // Sử dụng MiddlewareConsumer và RequestMethod

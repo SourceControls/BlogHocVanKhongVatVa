@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Response } from '@nestjs/common';
+import { Body, Controller, Post, Query, Req, Response } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/signIn.dto';
 import { SignUpDto } from './dto/signUp.dto';
@@ -19,5 +19,18 @@ export class AuthController {
   @Post('sign-up')
   signUp(@Body() dto: SignUpDto) {
     return this.authService.signUp(dto);
+  }
+  @Public()
+  @Post('forgot-password')
+  forgotPassword(@Body() body) {
+    return this.authService.forgotPassword(body.email);
+  }
+  @Public()
+  @Post('change-password-case-forgot')
+  changePasswordCaseForgot(@Body() body) {
+    return this.authService.changePasswordCaseForgot(
+      body.token,
+      body.newPassword,
+    );
   }
 }

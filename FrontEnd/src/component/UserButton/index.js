@@ -1,7 +1,7 @@
-import {UnstyledButton, UnstyledButtonProps, Group, Avatar, Tooltip, Text, createStyles} from '@mantine/core'
-import {IconChevronRight, IconLogout} from '@tabler/icons-react'
-import {useSettings, useUsers, signOut} from '@util'
-
+import {UnstyledButton, Group, Avatar, Tooltip, Text, createStyles} from '@mantine/core'
+import {IconLogout} from '@tabler/icons-react'
+import {useUsers, signOut} from '@util'
+import {useRouter} from 'next/router'
 const useStyles = createStyles((theme) => ({
     user: {
         display: 'block',
@@ -18,7 +18,7 @@ const useStyles = createStyles((theme) => ({
 export function UserButton({image, name, email, icon, ...others}) {
     const {classes} = useStyles()
     const {users, mutate: userMutate} = useUsers('', '/profile')
-
+    const router = useRouter()
     return (
         <UnstyledButton className={classes.user} {...others}>
             <Group>
@@ -42,6 +42,7 @@ export function UserButton({image, name, email, icon, ...others}) {
                             onClick={async () => {
                                 await signOut()
                                 userMutate([], false)
+                                router.push('/home')
                             }}
                         />
                     </Tooltip>

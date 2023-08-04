@@ -18,10 +18,14 @@ import { Request } from 'express';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles, ROLES_KEY } from 'src/auth/roles.decorator';
 import { postReaction_type, post_status, user_role } from '@prisma/client';
+import { MailerService } from 'src/mailer/mailer.service';
 @Controller('post')
 @ApiTags('post')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private mailer: MailerService,
+  ) {}
 
   @Public()
   @Get()
@@ -129,6 +133,11 @@ export class PostController {
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
     return this.postService.create(createPostDto);
+  }
+
+  @Post('request-post')
+  requestPost(@Req() req: Request) {
+    return this.mailer.requestPost({ user: req['authUser'], ...req.body });
   }
 
   @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')

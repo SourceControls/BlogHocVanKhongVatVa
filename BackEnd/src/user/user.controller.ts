@@ -8,19 +8,26 @@ import {
   Delete,
   Query,
   Request,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { user_role, user_status } from '@prisma/client';
 import { Roles } from 'src/auth/roles.decorator';
+import { MailerService } from 'src/mailer/mailer.service';
+// import { Request } from 'express';
+
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 @ApiTags('user')
 // @ApiBearerAuth()
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private mailer: MailerService,
+  ) {}
 
   @Get('profile')
   getProfile(@Request() req) {
@@ -75,6 +82,14 @@ export class UserController {
   @Roles('SUPERADMIN')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+  @Post('contributor-register')
+  @Roles('VIEWER')
+  contributorRegister(@Request() req) {
+    return this.mailer.contributorRegister({
+      user: req['authUser'],
+      ...req.body,
+    });
   }
   @Patch(':id')
   @Roles('SUPERADMIN')

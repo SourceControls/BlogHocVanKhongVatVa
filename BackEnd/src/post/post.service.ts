@@ -311,7 +311,7 @@ export class PostService {
         include,
       });
 
-      return { data: updatedPost, message: 'Viewed' };
+      return { data: updatedPost };
     } catch (error) {
       console.error(error.message);
       throw new InternalServerErrorException('Có lỗi xảy ra!');

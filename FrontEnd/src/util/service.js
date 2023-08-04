@@ -14,6 +14,12 @@ export async function signOut() {
 export async function signUp(form) {
     return axios.post('/api/auth/sign-up', form)
 }
+export async function forgotPassword(form) {
+    return axios.post('/api/auth/forgot-password', form)
+}
+export async function changePasswordCaseForgot(form) {
+    return axios.post('/api/auth/change-password-case-forgot', form)
+}
 
 export async function createPost(form) {
     return axios.post('/api/post', form)
@@ -29,6 +35,9 @@ export async function publishPost(id) {
 }
 export async function hidePost(id) {
     return axios.put('/api/post/' + id + '/hide')
+}
+export async function requestPost(form) {
+    return axios.post('/api/post/request-post', form)
 }
 export async function reaction(slug, like = true) {
     return axios.put(`/api/post/${slug}/reaction/${like ? 'LIKE' : 'DISLIKE'}`)
@@ -104,6 +113,9 @@ export async function uploadImg(file) {
 
 export async function updateUser(form) {
     return axios.patch('/api/user/' + form.userId, form)
+}
+export async function contributorRegister(form) {
+    return axios.post('/api/user/contributor-register', form)
 }
 export async function createComment(content, slug = '') {
     return axios.post(`/api/post/${slug}/comment`, {content})

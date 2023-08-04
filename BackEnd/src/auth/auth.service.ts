@@ -11,10 +11,15 @@ import { JwtService } from '@nestjs/jwt';
 import { Public } from './public.decorator';
 import { Response as Res } from 'express';
 import { user_status } from '@prisma/client';
+import { MailerService } from 'src/mailer/mailer.service';
 @Public()
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+    private mailer: MailerService,
+  ) {}
 
   async signUp(dto: SignUpDto) {
     try {
@@ -59,6 +64,52 @@ export class AuthService {
       delete user.password;
       res.setHeader('Authorization', token);
       return res.json({ data: user, message: 'Hello!! ' + user.name + ' !' });
+    } catch (error) {
+      throw new UnauthorizedException(error.message);
+    }
+  }
+
+  private whiteList = [];
+  async forgotPassword(email: string) {
+    try {
+      //get account via email address
+      const user = await this.prisma.user.findUnique({
+        where: { email },
+      });
+      if (!user) throw new UnauthorizedException('Người dùng không tồn tại!');
+      //compare password
+      if (user.status === 'BANNED')
+        throw new UnauthorizedException('Người dùng đã bị cấm!');
+      //generate token
+      const payload = {
+        email: user.email,
+        type: 'forgotPassword',
+      };
+      const token = await this.jwtService.signAsync(payload, {
+        expiresIn: '5m',
+      });
+      this.whiteList.push(token);
+      return this.mailer.sendChangePasswordUrl(user, token);
+    } catch (error) {
+      throw new UnauthorizedException(error.message);
+    }
+  }
+  async changePasswordCaseForgot(token: string, newPassword: string) {
+    try {
+      if (!this.whiteList.includes(token))
+        throw new UnauthorizedException('Token hết hiêu lực');
+
+      //get account via email address
+      const { email } = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const user = await this.prisma.user.update({
+        where: { email },
+        data: { password: hashedPassword },
+      });
+      this.whiteList = this.whiteList.filter((e) => e !== token);
+      return { rs: 'OK', message: 'Đổi mật khẩu thành công!' };
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }

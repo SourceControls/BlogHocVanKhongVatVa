@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Grid, Group, Image, Stack, Text, Title} from '@mantine/core'
+import {Box, Button, Divider, Grid, Group, Image, LoadingOverlay, Stack, Text, Title} from '@mantine/core'
 import {ExtraInfo} from '@comp'
 import {useMediaQuery} from '@mantine/hooks'
 import {usePosts} from '@util'
@@ -9,8 +9,8 @@ import {useState} from 'react'
 export default function FeaturedPosts() {
     const [page, setPage] = useState(1)
     const {posts, isLoading, size, setSize} = usePosts(`&featured=true&status=published`)
-
     const smScreen = useMediaQuery('(max-width: 48em)')
+    if (!posts[0]?.postId) return <LoadingOverlay />
     return (
         <>
             <Grid gutter={0}>

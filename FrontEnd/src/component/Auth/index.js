@@ -27,8 +27,9 @@ export function Auth({closeModal, userMutate}) {
                 <Tabs.Panel value='#signUp'>
                     <SignUp />
                 </Tabs.Panel>
+
                 <Tabs.Panel value='Quên Mật Khẩu'>
-                    <ForgotPassword />
+                    <ForgotPassword close={closeModal} />
                 </Tabs.Panel>
             </Tabs>
         </Box>

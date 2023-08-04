@@ -36,9 +36,14 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Token không hợp lệ!');
     }
     try {
-      const { userId } = await this.jwtService.verifyAsync(token, {
+      const { userId, type } = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
       });
+
+      //block forgotpassword token
+      if (type === 'forgotPassword')
+        throw new UnauthorizedException('Token không hợp lệ!');
+
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
       const user = await this.prisma.user.findUnique({ where: { userId } });

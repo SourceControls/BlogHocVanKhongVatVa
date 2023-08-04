@@ -18,7 +18,7 @@ function Header({categories, active, setActive}) {
     const smScreen = useMediaQuery('(max-width: 48em)')
     const {settings, isLoading} = useSettings()
     const {users, mutate: userMutate} = useUsers('', '/profile')
-
+    if (!settings[0]) return <></>
     return (
         <>
             <Paper
@@ -140,7 +140,9 @@ function Header({categories, active, setActive}) {
                 })}>
                 <Auth
                     closeModal={() => {
-                        router.push({pathname: router.pathname, query: {...router.query}}, undefined, {scroll: false})
+                        router.push({pathname: router.pathname, query: {...router.query}}, undefined, {
+                            scroll: false,
+                        })
                     }}
                     userMutate={userMutate}></Auth>
             </Modal>
@@ -151,7 +153,7 @@ function Header({categories, active, setActive}) {
                     content: {backgroundColor: theme.backgroundColor},
                     header: {backgroundColor: theme.backgroundColor},
                 })}>
-                <ContributorForm closeModal={closeContributorForm} />
+                <ContributorForm close={closeContributorForm} />
             </Modal>
         </>
     )
