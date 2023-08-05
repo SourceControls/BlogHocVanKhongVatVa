@@ -64,7 +64,7 @@ export class UserService {
         data: updateUserDto,
         select,
       });
-      return { data: user, message: 'Cập nhật người dùng thành công!' };
+      return { data: user, message: 'Cập nhật thành công!' };
     } catch (error) {
       throw new ForbiddenException(error.message);
     }

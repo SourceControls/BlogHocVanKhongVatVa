@@ -92,7 +92,6 @@ export class UserController {
     });
   }
   @Patch(':id')
-  @Roles('SUPERADMIN')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }

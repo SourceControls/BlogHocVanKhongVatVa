@@ -12,7 +12,7 @@ export function Auth({closeModal, userMutate}) {
     return (
         <Box>
             <Center h='200px'>
-                <Image src={settings[1].logo} />
+                <Image src={settings[1].logo} alt='Logo' />
             </Center>
 
             <Tabs defaultValue={tab} pb='xl'>

@@ -46,11 +46,14 @@ export function ImageDropzone(props) {
                         width={props.w || 300}
                         height={props.h || 300}
                         mx='auto'
-                        fit='contain'
+                        radius={props.radius || 0}
+                        fit={props.fit || 'contain'}
+                        alt=''
                     />
                     <ActionIcon
                         variant='filled'
                         color='red'
+                        size='md'
                         style={{position: 'absolute', top: '-20px', right: '16px'}}
                         onClick={handleRemoveFile}>
                         <IconX />

@@ -16,7 +16,7 @@ import {
     TextInput,
 } from '@mantine/core'
 import {useForm} from '@mantine/form'
-import Layout from '../../Layout'
+import Layout from '../Layout'
 import {createPost, useTags, publishPost, updatePost, requestPublish, hidePost, useUsers} from '@util'
 import {EyeOff, Pencil, Send, WorldUpload} from 'tabler-icons-react'
 const content = `<p class="description" style="text-align: justify;">&nbsp;</p>
@@ -265,6 +265,7 @@ export default function MyEditor({post, close, mutate, posts}) {
                                 <Image
                                     width={100}
                                     mx='auto'
+                                    alt=''
                                     src={literaries.filter((e) => e.value == form.values.literary)[0]?.image}
                                 />
                             </>
@@ -279,7 +280,7 @@ export default function MyEditor({post, close, mutate, posts}) {
                             {...form.getInputProps('postTag')}></MultiSelect>
 
                         <TextInput label='Link ảnh bìa' {...form.getInputProps('featuredImage')} />
-                        <Image src={form.values.featuredImage} />
+                        <Image src={form.values.featuredImage} alt='' />
                         <Checkbox
                             checked={form.values.featured}
                             onChange={(e) => form.setValues({featured: e.target.checked == 1})}

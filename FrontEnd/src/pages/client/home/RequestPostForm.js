@@ -27,7 +27,7 @@ function RequestPostForm({close}) {
     return (
         <>
             <Center h='200px'>
-                <Image src={settings[1].logo} />
+                <Image src={settings[1].logo} alt='' />
             </Center>
             <Text size='xl' mb='md'>
                 Gửi Yêu Cầu Viết Bài

@@ -21,8 +21,8 @@
         ],
         "paths": {
             "@api/*": ["./src/pages/api/*"],
-            "@util": ["./src/util/index.js"],
-            "@comp": ["./src/component/index.js"]
+            "@util": ["./src/utils/index.js"],
+            "@comp": ["./src/components/index.js"]
         }
     },
     "include": [

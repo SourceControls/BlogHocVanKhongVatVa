@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Query, Req, Response } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Query,
+  Req,
+  Request,
+  Response,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/signIn.dto';
 import { SignUpDto } from './dto/signUp.dto';
@@ -24,6 +32,14 @@ export class AuthController {
   @Post('forgot-password')
   forgotPassword(@Body() body) {
     return this.authService.forgotPassword(body.email);
+  }
+  @Post('change-password')
+  changePassword(@Request() req) {
+    return this.authService.changePassword(
+      req['authUser'].userId,
+      req.body.password,
+      req.body.newPassword,
+    );
   }
   @Public()
   @Post('change-password-case-forgot')

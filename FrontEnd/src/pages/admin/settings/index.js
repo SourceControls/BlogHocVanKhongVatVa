@@ -98,7 +98,7 @@ function Settings() {
                         label='Icon'
                         {...form.getInputProps('favIcon')}
                         description='Hiển thị trên tab trình duyệt'
-                        icon={<Image src={form.values.favIcon} mx='8px' />}
+                        icon={<Image src={form.values.favIcon} mx='8px' alt='' />}
                         iconWidth={38}></TextInput>
                 </SimpleGrid>
                 <Divider size='md' my='xl' />
@@ -134,7 +134,7 @@ function Settings() {
                         label='Ảnh bìa'
                         {...form.getInputProps('readPostCover')}
                         description='Hiển thị ngay đầu trang đọc bài viết'></TextInput>
-                    <Image src={form.values.readPostCover} fit='contain' width='100%' mx='auto' />
+                    <Image src={form.values.readPostCover} fit='contain' width='100%' mx='auto' alt='' />
                     {/* <Radio.Group label='Home Hero' withAsterisk {...form.getInputProps('homePageHero')}>
                         <Group mt='xs'>
                             <Radio value='grid' label='Grid' />

@@ -17,6 +17,9 @@ export async function signUp(form) {
 export async function forgotPassword(form) {
     return axios.post('/api/auth/forgot-password', form)
 }
+export async function changePassword(form) {
+    return axios.post('/api/auth/change-password', form)
+}
 export async function changePasswordCaseForgot(form) {
     return axios.post('/api/auth/change-password-case-forgot', form)
 }

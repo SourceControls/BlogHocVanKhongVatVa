@@ -11,6 +11,7 @@ function SearchPage({heading}) {
     const router = useRouter()
     const handleQuery = (type) => {
         router.push({
+            pathname: router.pathname.replace('/client', ''),
             query: {
                 type,
                 key: router.query?.key,

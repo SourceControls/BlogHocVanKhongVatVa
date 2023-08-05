@@ -109,7 +109,27 @@ export class AuthService {
         data: { password: hashedPassword },
       });
       this.whiteList = this.whiteList.filter((e) => e !== token);
-      return { rs: 'OK', message: 'Đổi mật khẩu thành công!' };
+      return { data: 'OK', message: 'Đổi mật khẩu thành công!' };
+    } catch (error) {
+      throw new UnauthorizedException(error.message);
+    }
+  }
+  async changePassword(userId: number, password: string, newPassword: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { userId },
+      });
+      if (!user) throw new UnauthorizedException('User không tồn tại!');
+      //compare password
+      const matchPassword = await bcrypt.compare(password, user.password);
+      if (!matchPassword)
+        throw new UnauthorizedException('Mật khẩu hiện tại không đúng!');
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const updatedUser = await this.prisma.user.update({
+        where: { userId },
+        data: { password: hashedPassword },
+      });
+      return { data: 'OK', message: 'Đổi mật khẩu thành công!' };
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }

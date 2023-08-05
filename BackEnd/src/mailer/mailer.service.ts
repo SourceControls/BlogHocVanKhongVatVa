@@ -74,8 +74,7 @@ export class MailerService {
         ? supperAdmins.map((item) => item.email)
         : 'hungbuituan1@gmail.com',
       subject: '[VIETLIT SYSTEM]',
-      html: `<h1>Nhận được y&ecirc;u cầu đăng k&iacute; trở th&agrave;nh cộng t&aacute;c vi&ecirc;n</h1>
-<h2>Th&ocirc;ng tin người đăng k&iacute;:</h2>
+      html: `<h1>Nhận được y&ecirc;u cầu đăng k&iacute; trở th&agrave;nh cộng t&aacute;c vi&ecirc;n</h1><h2>Th&ocirc;ng tin người đăng k&iacute;:</h2>
 <p><strong>Họ t&ecirc;n:&nbsp;</strong>${user.name}</p>
 <p><strong>Email:&nbsp;</strong>${user.email}</p>
 <p><strong>Ng&agrave;y tham gia:&nbsp;</strong>${new Date(
@@ -109,7 +108,7 @@ export class MailerService {
 <p>Ch&agrave;o bạn <strong>${user.name}</strong>,</p>
 <p>Ch&uacute;ng t&ocirc;i nhận được y&ecirc;u cầu đổi mật khẩu cho t&agrave;i khoản của bạn. Để tiến h&agrave;nh thay đổi mật khẩu, vui l&ograve;ng nhấp v&agrave;o li&ecirc;n kết b&ecirc;n dưới:</p>
 <p><em><a href='${
-        process.env.BASE_FE_URL + '/change-password?token=' + token
+        process.env.BASE_FE_URL + '/change-password-case-forgot?token=' + token
       }'>Nhâp vào đây!</a></em></p>
 <p><strong>Lưu ý:</strong> đường dẫn chỉ có hiệu lực trong 5 phút!!</p>      
 <p>Nếu bạn kh&ocirc;ng thực hiện y&ecirc;u cầu n&agrave;y, bạn c&oacute; thể bỏ qua email n&agrave;y. T&agrave;i khoản của bạn vẫn được bảo mật.</p>

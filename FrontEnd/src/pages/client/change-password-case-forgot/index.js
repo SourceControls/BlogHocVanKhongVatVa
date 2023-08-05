@@ -1,9 +1,9 @@
-import {Button, Center, PasswordInput, Stack, TextInput, Title} from '@mantine/core'
+import {Button, Center, Paper, PasswordInput, Stack, TextInput, Title} from '@mantine/core'
 import {useForm} from '@mantine/form'
 import {changePasswordCaseForgot} from '@util'
 import {useRouter} from 'next/router'
 import {useEffect} from 'react'
-function ChangePassword() {
+function ChangePasswordCaseForgot() {
     const form = useForm({
         initialValues: {
             newPassword: '',
@@ -22,9 +22,11 @@ function ChangePassword() {
     }
     return (
         <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Center>
-                <Stack w='300px'>
-                    <Title order={3}>Đổi mật khẩu</Title>
+            <Center mt='xl'>
+                <Stack py='xl' px='md' w='100vw' maw='400px' style={{boxShadow: '0 12px 16px 4px rgba(0,0,0,0.2)'}}>
+                    <Title order={3} align='center'>
+                        Đổi mật khẩu
+                    </Title>
                     <PasswordInput
                         {...form.getInputProps('newPassword')}
                         label='Mật khẩu'
@@ -46,4 +48,4 @@ function ChangePassword() {
     )
 }
 
-export default ChangePassword
+export default ChangePasswordCaseForgot

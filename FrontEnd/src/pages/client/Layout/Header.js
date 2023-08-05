@@ -10,14 +10,16 @@ import {useState} from 'react'
 import {useSettings, useUsers, signOut} from '@util'
 import {toast} from 'react-toastify'
 import ContributorForm from './ContributorForm'
+import ProfileForm from './ProfileForm'
 function Header({categories, active, setActive}) {
     const router = useRouter()
     const [openedContributorForm, {open: openContributorForm, close: closeContributorForm}] = useDisclosure(false)
-
+    const [openedProfileForm, {open: openProfileForm, close: closeProfileForm}] = useDisclosure(false)
     const [searchKey, setSearchKey] = useState('')
     const smScreen = useMediaQuery('(max-width: 48em)')
     const {settings, isLoading} = useSettings()
     const {users, mutate: userMutate} = useUsers('', '/profile')
+
     if (!settings[0]) return <></>
     return (
         <>
@@ -35,7 +37,6 @@ function Header({categories, active, setActive}) {
                             {smScreen ? <IconHome /> : <Image width='200px' src={settings[1].logo} alt='' />}
                         </Link>
                     </Box>
-                    {/* <Nav categories={categories} active={active} setActive={setActive} /> */}
                     <FloatingLabelInput
                         placeholder='Nhập tên tác phẩm, tác giả, chủ đề...'
                         label='Tìm kiếm'
@@ -45,7 +46,6 @@ function Header({categories, active, setActive}) {
                         value={searchKey}
                         onChange={(e) => {
                             setSearchKey(e.target.value)
-                            // if (e.target.value == '') router.push('/search?key=' + '')
                         }}
                         icon={<IconSearch size='1.5rem' stroke={2.5} />}
                         onKeyDown={(e) => {
@@ -72,12 +72,7 @@ function Header({categories, active, setActive}) {
                                 </Menu.Target>
 
                                 <Menu.Dropdown>
-                                    {/* <Menu.Label>Menu</Menu.Label> */}
-                                    <Menu.Item
-                                        icon={<User size='1.2rem' />}
-                                        onClick={async () => {
-                                            toast.info('Coming soon')
-                                        }}>
+                                    <Menu.Item icon={<User size='1.2rem' />} onClick={openProfileForm}>
                                         Tài khoản
                                     </Menu.Item>
                                     {users[0].role !== 'VIEWER' && (
@@ -132,7 +127,11 @@ function Header({categories, active, setActive}) {
             <Modal
                 opened={router.asPath.includes('#signIn') || router.asPath.includes('#signUp')}
                 onClose={() => {
-                    router.push({pathname: router.pathname, query: {...router.query}}, undefined, {scroll: false})
+                    router.push(
+                        {pathname: router.pathname.replace('/client', ''), query: {...router.query}},
+                        undefined,
+                        {scroll: false},
+                    )
                 }}
                 styles={(theme) => ({
                     content: {backgroundColor: theme.backgroundColor},
@@ -140,9 +139,13 @@ function Header({categories, active, setActive}) {
                 })}>
                 <Auth
                     closeModal={() => {
-                        router.push({pathname: router.pathname, query: {...router.query}}, undefined, {
-                            scroll: false,
-                        })
+                        router.push(
+                            {pathname: router.pathname.replace('/client', ''), query: {...router.query}},
+                            undefined,
+                            {
+                                scroll: false,
+                            },
+                        )
                     }}
                     userMutate={userMutate}></Auth>
             </Modal>
@@ -154,6 +157,15 @@ function Header({categories, active, setActive}) {
                     header: {backgroundColor: theme.backgroundColor},
                 })}>
                 <ContributorForm close={closeContributorForm} />
+            </Modal>
+            <Modal
+                opened={openedProfileForm}
+                onClose={closeProfileForm}
+                styles={(theme) => ({
+                    content: {backgroundColor: theme.backgroundColor},
+                    header: {backgroundColor: theme.backgroundColor},
+                })}>
+                <ProfileForm close={closeProfileForm} />
             </Modal>
         </>
     )

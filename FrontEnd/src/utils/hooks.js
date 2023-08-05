@@ -87,8 +87,6 @@ export function useCategories(query, slug = '') {
 }
 
 export function useUsers(query, slug = '') {
-    if (query == -1) return {users: []}
-
     const {data, error, isLoading, size, setSize, mutate} = useSWRInfinite(
         (index) => `/api/user${slug}?page=${index + 1}` + query,
         axios.get,

@@ -29,7 +29,7 @@ function Hero() {
                         </>
                     </Stack>
                 </Stack>
-                {!smScreen && <Image src={settings[1].homeHeroCover}></Image>}
+                {!smScreen && <Image src={settings[1].homeHeroCover} alt=''></Image>}
             </Group>
             {users[0]?.userId ? (
                 <Modal opened={opened} onClose={close}>

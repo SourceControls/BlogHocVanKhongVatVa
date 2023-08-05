@@ -96,7 +96,7 @@ export function Layout({children}) {
                     <Navbar height={'100vh'} width={{sm: 300}} p='md' className={classes.navbar}>
                         <Navbar.Section className={classes.header}>
                             <Link href='/home'>
-                                <Image src={settings[1].logo} width={rem(120)} />
+                                <Image src={settings[1].logo} width={rem(120)} alt='' />
                             </Link>
                         </Navbar.Section>
 
