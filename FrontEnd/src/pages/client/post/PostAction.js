@@ -14,6 +14,7 @@ function PostAction(props) {
             })
         else setUserReact()
     }, [users[0]])
+    if (!props.post) return <></>
     return (
         <Flex
             direction={props.direction || 'column'}

@@ -12,6 +12,7 @@ import {
     Text,
     Button,
     Center,
+    LoadingOverlay,
 } from '@mantine/core'
 import {
     IconGauge,
@@ -75,7 +76,7 @@ let mockSuperAdmin = [
 ]
 export function Layout({children}) {
     const {classes} = useStyles()
-    const {users, mutate, isLoading: isUserLoading} = useUsers(undefined, '/profile')
+    const {users, mutate, isLoading: isUserLoading} = useUsers('', '/profile')
     const router = useRouter()
     const [links, setLinks] = useState()
     const {settings, isLoading} = useSettings()
@@ -93,7 +94,7 @@ export function Layout({children}) {
             </>,
         )
     }, [users[0]?.role])
-    if (isLoading) return <p>...loading</p>
+    if (isUserLoading) return <></>
     if (!users[0]?.role) {
         router.push('/home#signIn')
         return <></>

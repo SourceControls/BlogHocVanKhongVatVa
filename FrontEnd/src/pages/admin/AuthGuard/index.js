@@ -6,19 +6,18 @@ import {toast} from 'react-toastify'
 
 const AuthGuard = ({children, allowedRoles}) => {
     const router = useRouter()
-    const {users, mutate, isLoading: isUserLoading} = useUsers(undefined, '/profile')
+    const {users, mutate, isLoading} = useUsers(undefined, '/profile')
 
-    useEffect(() => {
-        if (!users[0]?.role) {
-            toast.info('Bạn cần đăng nhập trước!')
-            return
-        }
-        if (!allowedRoles.includes(users[0]?.role) || users[0]?.status === 'BANNED') {
-            // toast.info('Bạn cần đăng nhập trước!')
-            router.push('/home') // Redirect to an unauthorized page or handle accordingly
-        }
-    }, [users[0]?.role])
-    if (!users[0]?.role) return <></>
+    useEffect(() => {}, [users[0]?.role])
+    if (isLoading) return <p>...loading</p>
+    if (!users[0]?.role) {
+        toast.info('Bạn cần đăng nhập trước!')
+        return <></>
+    }
+    if (!allowedRoles.includes(users[0]?.role)) {
+        // router.push('/home') // Redirect to an unauthorized page or handle accordingly
+        return <></>
+    }
     return <>{children}</>
 }
 

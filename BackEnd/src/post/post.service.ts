@@ -237,6 +237,7 @@ export class PostService {
         //update likeCoutnt
         let field = 'likeCount';
         if (deletedReaction.type == 'DISLIKE') field = 'dislikeCount';
+
         const updatedPost = await this.prisma.post.update({
           where: {
             postId: post.postId,
@@ -244,7 +245,14 @@ export class PostService {
           data: {
             [field]: { decrement: 1 },
           },
-          include,
+          select: {
+            postId: true,
+            likeCount: true,
+            slug: true,
+
+            view: true,
+            dislikeCount: true,
+          },
         });
         return { data: updatedPost };
       }
@@ -276,7 +284,13 @@ export class PostService {
         data: {
           [field]: { increment: 1 },
         },
-        include,
+        select: {
+          postId: true,
+          likeCount: true,
+          slug: true,
+          view: true,
+          dislikeCount: true,
+        },
       });
 
       //re-count removed reaction
@@ -290,9 +304,17 @@ export class PostService {
           data: {
             [field]: { decrement: 1 },
           },
-          include,
+          select: {
+            postId: true,
+            likeCount: true,
+            slug: true,
+
+            view: true,
+            dislikeCount: true,
+          },
         });
       }
+
       return { data: updatedPost };
     } catch (error) {
       console.error(error.message);
@@ -308,7 +330,13 @@ export class PostService {
         data: {
           view: { increment: 1 },
         },
-        include,
+        select: {
+          postId: true,
+          likeCount: true,
+          slug: true,
+          view: true,
+          dislikeCount: true,
+        },
       });
 
       return { data: updatedPost };

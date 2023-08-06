@@ -24,6 +24,9 @@ export async function changePasswordCaseForgot(form) {
     return axios.post('/api/auth/change-password-case-forgot', form)
 }
 
+export async function getPostsSSR(query) {
+    return axios.get(process.env.BASE_BE_URL + '/post' + query)
+}
 export async function createPost(form) {
     return axios.post('/api/post', form)
 }
