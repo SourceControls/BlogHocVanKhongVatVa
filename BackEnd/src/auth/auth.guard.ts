@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
     // const token =
     // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidHVhbmh1bmc1OTIwMDFAZ21haWwuY29tIiwicm9sZXMiOlsiVklFV0VSIl0sImlhdCI6MTY5MDYyNzA2MCwiZXhwIjoxNjkyNzAwNjYwfQ.Nn0rrqV6JApanOq2KdnQLgIEvI9uhLiDIVTgKwj3loY';
     if (!token) {
-      throw new UnauthorizedException('Token không hợp lệ!');
+      throw new UnauthorizedException('Chưa đăng nhập hoặc phiên đã hết hạn!');
     }
     try {
       const { userId, type } = await this.jwtService.verifyAsync(token, {
@@ -42,7 +42,9 @@ export class AuthGuard implements CanActivate {
 
       //block forgotpassword token
       if (type === 'forgotPassword')
-        throw new UnauthorizedException('Token không hợp lệ!');
+        throw new UnauthorizedException(
+          'Chưa đăng nhập hoặc phiên đã hết hạn!',
+        );
 
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers

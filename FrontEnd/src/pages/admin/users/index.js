@@ -82,24 +82,24 @@ function Users() {
                                                 {item.name}
                                                 {item.role == 'SUPERADMIN' && (
                                                     <Badge ml='md' color='grape'>
-                                                        Trùm
+                                                        S-ADMIN
                                                     </Badge>
                                                 )}
                                                 {item.role == 'ADMIN' && (
                                                     <Badge ml='md' color='teal'>
-                                                        Quản trị viên
+                                                        admin
                                                     </Badge>
                                                 )}
                                                 {item.role == 'CONTRIBUTOR' && (
                                                     <Badge ml='md' color='orange'>
-                                                        Cộng tác viên
+                                                        contrib
                                                     </Badge>
                                                 )}
-                                                {item.role == 'VIEWER' && (
+                                                {/* {item.role == 'VIEWER' && (
                                                     <Badge ml='md' color='dark'>
-                                                        Người xem
+                                                        viewer
                                                     </Badge>
-                                                )}
+                                                )} */}
                                             </Text>
                                             <Text>{item.email}</Text>
                                         </div>

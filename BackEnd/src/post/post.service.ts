@@ -246,7 +246,7 @@ export class PostService {
           },
           include,
         });
-        return { data: updatedPost, message: 'DeReacted' };
+        return { data: updatedPost };
       }
 
       //update reaction
@@ -293,7 +293,7 @@ export class PostService {
           include,
         });
       }
-      return { data: updatedPost, message: 'Reacted' };
+      return { data: updatedPost };
     } catch (error) {
       console.error(error.message);
       throw new InternalServerErrorException('Có lỗi xảy ra!');

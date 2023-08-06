@@ -1,5 +1,18 @@
 import useStyles from './style'
-import {Navbar, Group, Code, ScrollArea, rem, Image, Box, AppShell, MantineProvider, Text} from '@mantine/core'
+import {
+    Navbar,
+    Group,
+    Code,
+    ScrollArea,
+    rem,
+    Image,
+    Box,
+    AppShell,
+    MantineProvider,
+    Text,
+    Button,
+    Center,
+} from '@mantine/core'
 import {
     IconGauge,
     IconPresentationAnalytics,
@@ -15,6 +28,7 @@ import {UserButton, LinksGroup} from '@comp'
 import {useSettings, useUsers} from '@util'
 import {useEffect, useState} from 'react'
 import Link from 'next/link'
+import {useRouter} from 'next/router'
 
 let mockContributor = [
     // {label: 'Dashboard', icon: IconGauge},
@@ -62,7 +76,7 @@ let mockSuperAdmin = [
 export function Layout({children}) {
     const {classes} = useStyles()
     const {users, mutate, isLoading: isUserLoading} = useUsers(undefined, '/profile')
-
+    const router = useRouter()
     const [links, setLinks] = useState()
     const {settings, isLoading} = useSettings()
 
@@ -79,7 +93,11 @@ export function Layout({children}) {
             </>,
         )
     }, [users[0]?.role])
-    if (!links) return <></>
+    if (isLoading) return <p>...loading</p>
+    if (!users[0]?.role) {
+        router.push('/home#signIn')
+        return <></>
+    }
     return (
         <MantineProvider
             theme={{

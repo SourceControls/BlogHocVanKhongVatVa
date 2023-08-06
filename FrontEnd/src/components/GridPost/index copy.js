@@ -25,25 +25,61 @@ export function GridPost({query}) {
                                 p={smScreen ? 'sm' : 'md'}
                                 sx={(theme) => ({
                                     borderRadius: '12px',
-                                    transition: '0.2s',
+                                    transition: '0.3s',
+                                    '.content': {
+                                        position: 'absolute',
+                                        top: '100%',
+                                        height: '0%',
+                                        overflowY: 'hidden',
+                                        transition: '0.3s',
+                                        background: 'var(--primary-color-0)',
+                                    },
+                                    ' .hide-on-hover': {
+                                        transition: '0.3s',
+                                        opacity: 1,
+                                    },
                                     '&:hover': {
                                         transform: 'translateY(-2%)',
                                         boxShadow: '0 4px 8px rgba(0, 0, 0,0.4)',
+                                        ' .content': {
+                                            top: '0',
+                                            height: 'calc(130%)',
+                                        },
+                                        ' .hide-on-hover': {
+                                            opacity: 0,
+                                        },
                                     },
                                 })}>
                                 <Link href={'/post/' + item.slug}>
-                                    <AspectRatio ratio={1920 / 1020} mb='md'>
-                                        <Image fit='cover' src={item.featuredImage} alt='' />
-                                    </AspectRatio>
                                     <Group
                                         grow={!smScreen && span == 12}
                                         spacing={!smScreen && span == 12 && '40px'}
                                         align='flex-start'>
+                                        <div
+                                            style={{overflow: 'visible', position: 'relative'}}
+                                            className='unset-overflow'>
+                                            <Image
+                                                // maw='100%'
+                                                // h='230px'
+                                                // height='200px'
+                                                // width='100%'
+                                                // width='400px'
+                                                // style={{overflow: 'hidden'}}
+                                                // fit='cover'
+                                                src={item.featuredImage}
+                                                alt=''
+                                            />
+                                            <Box className='content'>
+                                                <Title order={4} lineClamp={3} mb='md'>
+                                                    {item.title}
+                                                </Title>
+                                                <Text lineClamp={10}>{item.summary}</Text>
+                                            </Box>
+                                        </div>
                                         <Stack>
-                                            <Title order={3} lineClamp={3}>
+                                            <Title order={4} lineClamp={3} className='hide-on-hover'>
                                                 {item.title}
                                             </Title>
-                                            <Text lineClamp={3}>{item.summary}</Text>
                                             <ExtraInfo
                                                 publisherName={item.createdByUser.name}
                                                 publishedAt={item.createdAt}

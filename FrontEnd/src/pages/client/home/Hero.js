@@ -39,7 +39,7 @@ function Hero() {
                 <Dialog
                     opened={opened}
                     withCloseButton
-                    onClose={close}
+                    onClose={setTimeout(close, 4000)}
                     size='lg'
                     zIndex={100}
                     // position={{bottom: '84px', right: '16px'}}

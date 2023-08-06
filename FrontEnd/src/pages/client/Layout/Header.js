@@ -1,5 +1,19 @@
 'use client'
-import {ActionIcon, Avatar, Box, Button, Flex, Group, Image, Menu, Modal, Paper, Text, TextInput} from '@mantine/core'
+import {
+    ActionIcon,
+    Avatar,
+    Badge,
+    Box,
+    Button,
+    Flex,
+    Group,
+    Image,
+    Menu,
+    Modal,
+    Paper,
+    Text,
+    TextInput,
+} from '@mantine/core'
 import Link from 'next/link'
 import {ArrowBarToRight, Logout, MailOpened, User, UserCircle} from 'tabler-icons-react'
 import {Auth, FloatingLabelInput} from '@comp'
@@ -63,11 +77,16 @@ function Header({categories, active, setActive}) {
                                 <Menu.Target>
                                     <Group
                                         ml='auto'
-                                        align='center'
+                                        align='flex-start'
                                         style={{width: 'fit-content', cursor: 'pointer'}}
                                         spacing='0'>
                                         <Avatar src={users[0].avatarImage} />
-                                        <Text fw='bold'>{users[0].name}</Text>
+                                        <div>
+                                            <Text fw='bold'>{users[0].name}</Text>
+                                            <Text color='dimmed' size='sm' lh='0.5rem'>
+                                                {users[0].role.toLowerCase()}
+                                            </Text>
+                                        </div>
                                     </Group>
                                 </Menu.Target>
 
@@ -79,7 +98,7 @@ function Header({categories, active, setActive}) {
                                         <Menu.Item
                                             icon={<ArrowBarToRight size='1.2rem' />}
                                             onClick={() => router.push('/admin/posts')}>
-                                            Quản lý
+                                            Đến trang quản lý
                                         </Menu.Item>
                                     )}
                                     {users[0].role === 'VIEWER' && (

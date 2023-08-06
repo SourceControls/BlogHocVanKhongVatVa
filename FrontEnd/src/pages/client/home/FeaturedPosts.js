@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Grid, Group, Image, LoadingOverlay, Stack, Text, Title} from '@mantine/core'
+import {AspectRatio, Box, Button, Divider, Grid, Group, Image, LoadingOverlay, Stack, Text, Title} from '@mantine/core'
 import {ExtraInfo} from '@comp'
 import {useMediaQuery} from '@mantine/hooks'
 import {usePosts} from '@util'
@@ -41,14 +41,15 @@ export default function FeaturedPosts() {
                                         style={{
                                             flexFlow: index % 2 != 0 && !smScreen && 'row-reverse',
                                         }}>
-                                        <div style={{overflow: 'hidden', position: 'relative'}}>
-                                            <Image fit='cover' src={item.featuredImage} alt='' />
-                                        </div>
+                                        <AspectRatio ratio={1920 / 1020} w={smScreen && '100%'}>
+                                            <img width='100%' height='auto' src={item.featuredImage} />
+                                            {/* <Image fit='cover' src={item.featuredImage} alt='' pos='relative'></Image> */}
+                                        </AspectRatio>
                                         <Stack>
-                                            <Title order={4} lineClamp={3}>
+                                            <Title order={3} lineClamp={3}>
                                                 {item.title}
                                             </Title>
-                                            {!smScreen && <Text lineClamp={5}>{item.summary}</Text>}
+                                            {<Text lineClamp={5}>{item.summary}</Text>}
                                             <ExtraInfo
                                                 publisherName={item.createdByUser.name}
                                                 publishedAt={item.createdAt}

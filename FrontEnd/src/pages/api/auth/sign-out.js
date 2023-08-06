@@ -13,5 +13,5 @@ export default function handler(req, res) {
     const cookies = new Cookies(req, res)
     cookies.set('access_token')
 
-    return res.status(200).send({message: 'Đăng xuất thành công'})
+    return res.status(200).send({message: 'Đã đăng xuất'})
 }
