@@ -1,10 +1,24 @@
-import {AspectRatio, Box, Button, Divider, Grid, Group, Image, LoadingOverlay, Stack, Text, Title} from '@mantine/core'
+import {
+    AspectRatio,
+    Box,
+    Button,
+    Divider,
+    Grid,
+    Group,
+    Image,
+    LoadingOverlay,
+    Stack,
+    Text,
+    Title,
+    Tooltip,
+} from '@mantine/core'
 import {ExtraInfo} from '@comp'
 import {useMediaQuery} from '@mantine/hooks'
 import {usePosts} from '@util'
 import Link from 'next/link'
 import {Eye, Heart, ThumbUp} from 'tabler-icons-react'
 import {useState} from 'react'
+import {IconStarFilled} from '@tabler/icons-react'
 
 export default function FeaturedPosts() {
     const [page, setPage] = useState(1)
@@ -22,7 +36,7 @@ export default function FeaturedPosts() {
                                 p={smScreen ? 'sm' : 'xl'}
                                 sx={(theme) => ({
                                     backgroundColor: 'var(--primary-color-0)',
-                                    borderRadius: '12px',
+                                    borderRadius: '24px',
                                     transition: '0.3s',
 
                                     '&:hover': {
@@ -42,14 +56,28 @@ export default function FeaturedPosts() {
                                             flexFlow: index % 2 != 0 && !smScreen && 'row-reverse',
                                         }}>
                                         <AspectRatio ratio={1920 / 1020} w={smScreen && '100%'}>
-                                            <img width='100%' height='auto' src={item.featuredImage} />
+                                            <img
+                                                width='100%'
+                                                height='auto'
+                                                src={item.featuredImage}
+                                                style={{borderRadius: '24px'}}
+                                            />
                                             {/* <Image fit='cover' src={item.featuredImage} alt='' pos='relative'></Image> */}
                                         </AspectRatio>
                                         <Stack>
                                             <Title order={3} lineClamp={3}>
-                                                {item.title}
+                                                {item.title}{' '}
+                                                {item.featured && (
+                                                    <Tooltip label='Bài viết nổi bật'>
+                                                        <IconStarFilled size='1rem' />
+                                                    </Tooltip>
+                                                )}
                                             </Title>
-                                            {<Text lineClamp={5}>{item.summary}</Text>}
+                                            {
+                                                <Text lineClamp={7} className='format-content'>
+                                                    {item.summary}
+                                                </Text>
+                                            }
                                             <ExtraInfo
                                                 publisherName={item.createdByUser.name}
                                                 publishedAt={item.createdAt}

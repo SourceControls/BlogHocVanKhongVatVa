@@ -61,6 +61,7 @@ export class LiteraryService {
       });
       return { data: literaries };
     } catch (error) {
+      console.log(error.message);
       return { message: error.message };
     }
   }

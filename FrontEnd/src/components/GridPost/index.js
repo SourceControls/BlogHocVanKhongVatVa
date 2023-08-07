@@ -1,10 +1,24 @@
-import {AspectRatio, Box, Button, Divider, Grid, Group, Image, LoadingOverlay, Stack, Text, Title} from '@mantine/core'
+import {
+    AspectRatio,
+    Box,
+    Button,
+    Divider,
+    Grid,
+    Group,
+    Image,
+    LoadingOverlay,
+    Stack,
+    Text,
+    Title,
+    Tooltip,
+} from '@mantine/core'
 import {ExtraInfo} from '@comp'
 import {useMediaQuery} from '@mantine/hooks'
 
 import Link from 'next/link'
 import {Eye, Heart, ThumbUp} from 'tabler-icons-react'
 import {usePosts} from '@util'
+import {IconStarFilled} from '@tabler/icons-react'
 
 export function GridPost({query}) {
     // const [page, setPage] = useState(1)
@@ -33,7 +47,12 @@ export function GridPost({query}) {
                                 })}>
                                 <Link href={'/post/' + item.slug}>
                                     <AspectRatio ratio={1920 / 1020} mb='md'>
-                                        <Image fit='cover' src={item.featuredImage} alt='' />
+                                        <Image
+                                            fit='cover'
+                                            src={item.featuredImage}
+                                            style={{borderRadius: '16px'}}
+                                            alt=''
+                                        />
                                     </AspectRatio>
                                     <Group
                                         grow={!smScreen && span == 12}
@@ -41,9 +60,16 @@ export function GridPost({query}) {
                                         align='flex-start'>
                                         <Stack>
                                             <Title order={3} lineClamp={3}>
-                                                {item.title}
+                                                {item.title}{' '}
+                                                {item.featured && (
+                                                    <Tooltip label='Bài viết nổi bật'>
+                                                        <IconStarFilled size='1rem' />
+                                                    </Tooltip>
+                                                )}
                                             </Title>
-                                            <Text lineClamp={3}>{item.summary}</Text>
+                                            <Text lineClamp={3} className='format-content'>
+                                                {item.summary}
+                                            </Text>
                                             <ExtraInfo
                                                 publisherName={item.createdByUser.name}
                                                 publishedAt={item.createdAt}

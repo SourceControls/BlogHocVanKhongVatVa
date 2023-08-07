@@ -45,35 +45,21 @@ export class LiteraryController {
     @Query('limit') limit?: string,
     @Query('sortBy') sortBy?: string,
   ) {
+    let orderBy = {};
+    if (key && !sortBy)
+      orderBy = {
+        _relevance: {
+          fields: ['title', 'summary', 'timeOfCreation', 'intro', 'authorName'],
+          search: key,
+          sort: 'desc',
+        },
+      };
+    else orderBy = { [sortBy || 'literaryId']: 'desc' };
     return this.literaryService.findAll({
-      skip: (+page - 1 || 0) * (+limit || 3),
-      take: +limit || 3,
-      orderBy: {
-        [sortBy || 'literaryId']: 'desc',
-      },
+      skip: +limit == 0 ? undefined : (+page - 1 || 0) * (+limit || 3),
+      take: +limit == 0 ? undefined : +limit || 3,
+      orderBy,
       where: {
-        OR: key && [
-          {
-            title: {
-              contains: key,
-            },
-          },
-          {
-            summary: {
-              contains: key,
-            },
-          },
-          {
-            authorName: {
-              contains: key,
-            },
-          },
-          {
-            intro: {
-              contains: key,
-            },
-          },
-        ],
         visibility: visibility && visibility === 'true',
         featured: featured && featured === 'true',
         literaryCategory: categorySlug && {
@@ -104,8 +90,6 @@ export class LiteraryController {
     @Body() updateLiteraryDto: UpdateLiteraryDto,
   ) {
     console.log(updateLiteraryDto);
-    console.log(1);
-
     return this.literaryService.update(+id, updateLiteraryDto);
   }
   @Roles('ADMIN', 'SUPERADMIN')

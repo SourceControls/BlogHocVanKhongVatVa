@@ -30,12 +30,12 @@ function BaseInfo() {
                         required
                         {...form.getInputProps('email')}
                     />
-                    <TextInput
+                    {/* <TextInput
                         disabled
                         label='Thẻ URL'
                         placeholder='Đường dẫn đến profile của bạn'
                         value={form.values.slug}
-                    />
+                    /> */}
                     <TextInput
                         label='Họ Tên'
                         placeholder='Nhập họ tên người dùng'

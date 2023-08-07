@@ -1,7 +1,7 @@
 import {Text, Avatar, Group, Button, Textarea, Divider, Stack, ActionIcon, Box, Modal} from '@mantine/core'
 import {useMediaQuery, useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
-import {Send, Trash} from 'tabler-icons-react'
+import {Clock, Send, Trash} from 'tabler-icons-react'
 import {useComments, useUsers, formatDate, createComment, deleteComment} from '@util'
 import {useState} from 'react'
 import {toast} from 'react-toastify'
@@ -58,12 +58,22 @@ export default function CommentSection() {
                                 <Group>
                                     <Text size='sm' fw='bold'>
                                         {item.user.name}
-                                        {users[0]?.userId == item.user.userId && '(bạn)'}
+                                        {users[0]?.userId == item.user.userId && ' (bạn)'}
                                     </Text>
-                                    <Text size='xs' color='dimmed'>
-                                        {formatDate(item.createdAt)}
+                                    <Text color='grey' size='xs'>
+                                        {item.user.role === 'VIEWER' && '(Người xem)'}
+                                        {item.user.role === 'CONTRIBUTOR' && '(Cộng tác viên)'}
+                                        {item.user.role === 'ADMIN' && '(Quản trị viên)'}
+                                        {item.user.role === 'SUPERADMIN' && '(QTV cao cấp)'}
                                     </Text>
+                                    <Group align='center' spacing='xs'>
+                                        <Clock size='0.8rem' color='grey' />
+                                        <Text size='xs' color='dimmed'>
+                                            {formatDate(item.createdAt)}
+                                        </Text>
+                                    </Group>
                                 </Group>
+
                                 <Text size='sm'>{item.content}</Text>
                             </Stack>
                             {users[0]?.userId == item.user.userId && (

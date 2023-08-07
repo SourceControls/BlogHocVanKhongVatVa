@@ -1,10 +1,9 @@
 import {Carousel} from '@mantine/carousel'
-import {Box, Divider, LoadingOverlay, Text} from '@mantine/core'
+import {LoadingOverlay} from '@mantine/core'
 import {IconArrowLeft, IconArrowRight} from '@tabler/icons-react'
 import Autoplay from 'embla-carousel-autoplay'
 import {useRef} from 'react'
 import {LiteraryContainer} from '../LiteraryContainer'
-import Shelf from './Shelf'
 import {useMediaQuery} from '@mantine/hooks'
 import {useLiteries} from '@util'
 export function FeaturedLiterary(props) {
@@ -14,31 +13,30 @@ export function FeaturedLiterary(props) {
     if (!literaries[0]?.literaryId) return <LoadingOverlay />
 
     return (
-        <Box pos='relative' mb='xl'>
-            <Carousel
-                style={{zIndex: 1}}
-                loop
-                px={smScreen ? 64 : 64}
-                pb={smScreen ? 22 : 44}
-                pt='0'
-                slidesToScroll={smScreen ? 1 : 4}
-                slideSize={smScreen ? '100%' : '25%'}
-                align='center'
-                withIndicators
-                controlSize={45}
-                // plugins={[autoplay.current]}
-                nextControlIcon={<IconArrowRight size={25} />}
-                previousControlIcon={<IconArrowLeft size={25} />}>
-                {literaries &&
-                    literaries.map((item, index) => {
-                        return (
-                            <Carousel.Slide key={index} py={smScreen ? 33 : 44} px={44}>
-                                <LiteraryContainer literary={item} />
-                            </Carousel.Slide>
-                        )
-                    })}
-            </Carousel>
-            <Shelf />
-        </Box>
+        <Carousel
+            style={{zIndex: 1}}
+            loop
+            px={64}
+            pb={48}
+            my='xl'
+            w='90%'
+            mx='auto'
+            slidesToScroll={smScreen ? 1 : 3}
+            slideSize={smScreen ? '100%' : '33.33%'}
+            align='start'
+            withIndicators
+            controlSize={45}
+            // plugins={[autoplay.current]}
+            nextControlIcon={<IconArrowRight size={25} />}
+            previousControlIcon={<IconArrowLeft size={25} />}>
+            {literaries &&
+                literaries.map((item, index) => {
+                    return (
+                        <Carousel.Slide key={index} px={24}>
+                            <LiteraryContainer literary={item} />
+                        </Carousel.Slide>
+                    )
+                })}
+        </Carousel>
     )
 }

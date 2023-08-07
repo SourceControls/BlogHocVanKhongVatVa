@@ -19,12 +19,12 @@ function Hero() {
                     <Text>{settings[1].homeHeroSubtitle}</Text>
                     <Stack>
                         <Text size='xl' fw='bold'>
-                            Hoặc
+                            Bạn cần gấp?
                         </Text>
 
                         <>
-                            <Button rightIcon={<MailForward />} w='230px' variant='outline' onClick={open}>
-                                Yêu Cầu Bài Viết
+                            <Button rightIcon={<MailForward />} w='270px' variant='outline' onClick={open}>
+                                Liên Hệ Với Chúng Tôi
                             </Button>
                         </>
                     </Stack>

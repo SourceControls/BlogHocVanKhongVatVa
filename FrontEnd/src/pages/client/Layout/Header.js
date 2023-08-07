@@ -48,11 +48,15 @@ function Header({categories, active, setActive}) {
                 <Flex className='limit-w' mx='auto' align='center' py='xs' px='md'>
                     <Box style={{flex: 1}}>
                         <Link href='/home' onClick={() => setActive(undefined)}>
-                            {smScreen ? <IconHome /> : <Image width='200px' src={settings[1].logo} alt='' />}
+                            {smScreen ? (
+                                <IconHome size={'2.5rem'} color='var(--primary-color-6)' />
+                            ) : (
+                                <Image width='200px' src={settings[1].logo} alt='' />
+                            )}
                         </Link>
                     </Box>
                     <FloatingLabelInput
-                        placeholder='Nhập tên tác phẩm, tác giả, chủ đề...'
+                        placeholder='Nhập #hashtag, tác phẩm, chủ đề...'
                         label='Tìm kiếm'
                         radius='xl'
                         w='70%'
@@ -81,12 +85,17 @@ function Header({categories, active, setActive}) {
                                         style={{width: 'fit-content', cursor: 'pointer'}}
                                         spacing='0'>
                                         <Avatar src={users[0].avatarImage} />
-                                        <div>
-                                            <Text fw='bold'>{users[0].name}</Text>
-                                            <Text color='dimmed' size='sm' lh='0.5rem'>
-                                                {users[0].role.toLowerCase()}
-                                            </Text>
-                                        </div>
+                                        {!smScreen && (
+                                            <div>
+                                                <Text fw='bold'>{users[0].name}</Text>
+                                                <Text color='dimmed' size='sm' lh='0.5rem'>
+                                                    {users[0].role === 'VIEWER' && 'Người xem'}
+                                                    {users[0].role === 'CONTRIBUTOR' && 'Cộng tác viên'}
+                                                    {users[0].role === 'ADMIN' && 'Quản trị viên'}
+                                                    {users[0].role === 'SUPERADMIN' && 'QTV cao cấp'}
+                                                </Text>
+                                            </div>
+                                        )}
                                     </Group>
                                 </Menu.Target>
 

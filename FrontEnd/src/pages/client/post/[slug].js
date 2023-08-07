@@ -1,4 +1,4 @@
-import {Grid, Group, Image, Stack} from '@mantine/core'
+import {AspectRatio, Box, Grid, Group, Image, Stack} from '@mantine/core'
 import Postcontent from './PostContent'
 import PostAction from './PostAction'
 import Layout from '../Layout'
@@ -6,7 +6,7 @@ import {GridPost, Section} from '@comp'
 import {useMediaQuery} from '@mantine/hooks'
 import PostHeader from './PostHeader'
 import CommentSection from './CommentSection'
-import {usePosts, countPostView, getPostsSSR} from '@util'
+import {usePosts, countPostView, getPostsSSR, useSettings} from '@util'
 import {useRouter} from 'next/router'
 import ViewCountTracker from './ViewCountTracker'
 import {useState} from 'react'
@@ -14,6 +14,7 @@ function Post({post}) {
     const smScreen = useMediaQuery('(max-width: 48em)')
     const [viewed, setViewed] = useState(false)
     const router = useRouter()
+    const {settings} = useSettings()
     const {posts, isLoading, mutate} = usePosts('', `/${router.isReady && router.query.slug}`)
     const handleCountView = () => {
         setViewed(true)
@@ -26,13 +27,11 @@ function Post({post}) {
     if (!post?.postId) return <></>
     return (
         <Stack>
-            <Image
-                height={450}
-                fit='cover'
-                src={post.featuredImage || 'https://i.ibb.co/9rHFrZq/Untitled.png'}
-                alt=''
-                my='xl'
-            />
+            <Box pos='relative'>
+                <AspectRatio ratio={5 / 2} maw={800} w='100%' mx='auto'>
+                    <img style={{objectFit: 'contain'}} src={settings[1]?.readPostCover || post.featuredImage} alt='' />
+                </AspectRatio>
+            </Box>
             <Grid mx='auto'>
                 <Grid.Col span={smScreen ? 12 : 3} order={smScreen ? 2 : 1}>
                     {posts[0]?.postId && <PostAction post={posts[0]} direction={smScreen && 'row'} mutate={mutate} />}

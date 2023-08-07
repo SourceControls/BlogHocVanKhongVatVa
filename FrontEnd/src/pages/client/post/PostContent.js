@@ -23,8 +23,8 @@ function Postcontent(props) {
                         width: '100% !important',
                     },
                 }}
-                // align='justify'
-                style={{overflow: 'hidden', letterSpacing: '0.05rem', wordSpacing: '0.2rem', lineHeight: '1.6rem'}}>
+                className='format-content'
+                style={{overflow: 'hidden'}}>
                 {parsedContent}
             </Text>
         </Stack>

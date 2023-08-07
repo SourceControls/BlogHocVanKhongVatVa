@@ -8,7 +8,7 @@ import {useRouter} from 'next/router'
 function GridPostWithFilter() {
     const smScreen = useMediaQuery('(max-width: 48em)')
     const router = useRouter()
-    const query = '&limit=6&status=published&' + router.asPath.split('?')[1]
+    const query = '&limit=3&status=published&' + router.asPath.split('?')[1]
 
     const changeQuery = (key, value) => {
         router.push({

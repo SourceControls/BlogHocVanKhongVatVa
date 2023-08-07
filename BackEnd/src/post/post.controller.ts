@@ -45,16 +45,21 @@ export class PostController {
     @Query('limit') limit?: string,
     @Query('sortBy') sortBy?: string,
   ) {
+    let orderBy = {};
+    if (key && !sortBy)
+      orderBy = {
+        _relevance: {
+          fields: ['title', 'summary'],
+          search: key,
+          sort: 'desc',
+        },
+      };
+    else orderBy = { [sortBy || 'postId']: 'desc' };
     return this.postService.findAll({
       skip: (+page - 1 || 0) * (+limit || 3),
       take: +limit || 3,
-      orderBy: {
-        [sortBy || 'postId']: 'desc',
-      },
+      orderBy,
       where: {
-        title: {
-          contains: key,
-        },
         featured: featured && featured === 'true',
         status: 'PUBLISHED',
         postLiterary: { slug: literarySlug },

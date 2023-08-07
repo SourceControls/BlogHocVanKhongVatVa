@@ -22,11 +22,6 @@ function SearchPage({heading}) {
     if (!router.query.type) handleQuery('literary')
     return (
         <Box pt='48px' px='md'>
-            {/* <Section title='Tác phẩm tiêu biểu' titlePosition='center'>
-                <CommonLiterarySection />
-            </Section> */}
-            {/* <Image alt='' src={getConfig().categoryCover} my='xl' fit='cover' imageProps={{objectPotition: 'center'}} /> */}
-
             <Tabs value={router.query?.type} pb='xl'>
                 <Tabs.List mb='md'>
                     <Tabs.Tab value='literary' onClick={() => handleQuery('literary')}>

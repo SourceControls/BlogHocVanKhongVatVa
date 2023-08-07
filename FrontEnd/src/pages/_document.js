@@ -1,6 +1,9 @@
 import {Html, Head, Main, NextScript} from 'next/document'
+import {useSettings} from '@util'
 
 export default function Document() {
+    const {settings, isLoading} = useSettings()
+
     return (
         <Html lang='en'>
             <Head>

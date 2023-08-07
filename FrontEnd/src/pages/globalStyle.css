@@ -31,7 +31,12 @@ a {
     text-decoration: none;
 }
 
-
+.format-content {
+    letter-spacing: 0.05rem;
+    word-spacing: 0.2rem;
+    line-height: 1.6rem;
+    text-align: justify;
+}
 
 /* img {
     borderRadius: 8px !important;

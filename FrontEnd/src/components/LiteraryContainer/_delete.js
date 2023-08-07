@@ -1,26 +1,31 @@
-import {Image, Title, Text, Box, Paper, Group, Stack, ScrollArea, Spoiler, AspectRatio} from '@mantine/core'
+import {Image, Title, Text, Box, Paper, Group, Stack, ScrollArea, Spoiler} from '@mantine/core'
 import Link from 'next/link'
 import {Eye, News, ThumbUp} from 'tabler-icons-react'
 import {useMediaQuery} from '@mantine/hooks'
 
 export function LiteraryContainer(props) {
     const smScreen = useMediaQuery('(max-width: 48em)')
-    if (!props.literary?.literaryId) return <></>
     return (
         <Box
             sx={(theme) => ({
                 backgroundColor: 'transparent',
-                paddingTop: '24px',
                 transition: '0.3s',
+                ' .shadow': {
+                    boxShadow: '8px 16px 16px rgba(0,0,0,0.6)',
+                    transition: '0.3s',
+                },
                 ' .bookContainer': {
                     transition: '0.3s',
                 },
                 '&:hover .bookContainer': {
                     transform: 'translate(-1%,-3%)',
+                    ' .shadow': {
+                        top: 0,
+                    },
                 },
                 borderRadius: '12px',
             })}>
-            <Group grow align='flex-start'>
+            <Group noWrap={!smScreen} align='flex-start'>
                 <Link
                     href={'/literary/' + props.literary.slug}
                     style={{
@@ -29,15 +34,8 @@ export function LiteraryContainer(props) {
                         width: props.showContent ? '40%' : 'auto',
                     }}
                     className='bookContainer'>
-                    <AspectRatio ratio={3 / 4}>
-                        <img
-                            src={props.literary.image}
-                            alt=''
-                            style={{borderRadius: '24px'}}
-                            width='100%'
-                            height='100%'
-                        />
-                    </AspectRatio>
+                    <Box className='shadow' ml='4px' w='97%' h='97%' pos='absolute'></Box>
+                    <Image src={props.literary.image} alt='' radius='12px' />
                 </Link>
                 {props.showContent && (
                     <Stack w={smScreen ? '100%' : '80%'} ml={'xs'} h='100%' spacing='xs'>

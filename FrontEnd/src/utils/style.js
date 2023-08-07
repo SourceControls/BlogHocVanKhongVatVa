@@ -25,7 +25,7 @@ const inputStyle = {
 }
 
 export function style(settings) {
-    return settings[1]
+    return settings[1]?.settingId
         ? {
               fontFamily: settings[1].fontFamily,
               primaryColor: settings[1].primaryColor,

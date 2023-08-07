@@ -1,4 +1,4 @@
-import {ActionIcon, Button, Group, Image, Modal, Select, Stack, Text, Title} from '@mantine/core'
+import {ActionIcon, Button, Group, Image, Modal, Select, Stack, Text, Title, Tooltip} from '@mantine/core'
 import {FloatingLabelInput} from '@comp'
 import Layout from '../Layout'
 import {Edit, Eye, Search, Plus, News, Trash} from 'tabler-icons-react'
@@ -86,7 +86,11 @@ function Literaries() {
                                 <Text fw='bold' size='lg' lineClamp={2}>
                                     {item.title}
                                 </Text>
-                                {item.featured && <IconStarFilled size='1rem' />}
+                                {item.featured && (
+                                    <Tooltip label='Bài viết nổi bật'>
+                                        <IconStarFilled size='1rem' />
+                                    </Tooltip>
+                                )}
                             </Group>
                             <Text>Tác giả: {item.authorName}</Text>
 

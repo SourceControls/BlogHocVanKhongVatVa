@@ -6,16 +6,16 @@ import { ad_display_position, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const comments = [
-  'Nhân vật Phùng trong truyện Chiếc thuyền ngoài xa tạo cho tôi một cảm giác đồng cảm mạnh mẽ, với cuộc đời bất hạnh nhưng vẫn kiên cường và lạc quan.',
-  'Phùng là một nhân vật đầy sâu sắc, hành trình tìm kiếm hạnh phúc của cô làm tôi suy tư về ý nghĩa thực sự của cuộc sống.',
-  'Từng trải qua biết bao khó khăn và thử thách, Phùng đã giúp tôi nhận ra rằng cuộc sống không phải lúc nào cũng suôn sẻ, nhưng quan trọng là không bỏ cuộc.',
-  'Sự mạnh mẽ và quyết tâm của Phùng khiến tôi không thể không ngưỡng mộ, cô là một nguồn động lực lớn cho tôi.',
-  'Nhân vật Phùng trong truyện thể hiện tình yêu thương chân thành và sự hi sinh vô điều kiện, điều đó khiến tôi cảm động.',
-  'Trái tim ấm áp và tấm lòng nhân hậu của Phùng đã khiến tôi xem lại bản thân và suy tư về ý nghĩa thực sự của cuộc sống.',
-  'Cuộc sống của Phùng là một hành trình đầy biến đổi, nhưng cô luôn kiên nhẫn và kiên định đi đến cuối con đường.',
-  'Tôi yêu thích nhân vật Phùng bởi cách cô luôn tìm thấy niềm vui và ý nghĩa trong những điều giản đơn nhất.',
-  'Nhân vật Phùng trong truyện đã làm tôi nhận ra rằng không có gì quý giá hơn gia đình và tình thương thân mật.',
-  'Phùng là một nhân vật vô cùng thú vị và đáng yêu, tôi đã rơi vào câu chuyện của cô và không thể dứt ra khỏi.',
+  'Nhân vật trong truyện tạo cho tôi một cảm giác đồng cảm mạnh mẽ, với cuộc đời bất hạnh nhưng vẫn kiên cường và lạc quan.',
+  'Nhật vật chính là một nhân vật đầy sâu sắc, hành trình tìm kiếm hạnh phúc của cô làm tôi suy tư về ý nghĩa thực sự của cuộc sống.',
+  'Từng trải qua biết bao khó khăn và thử thách, Nhật vật chính đã giúp tôi nhận ra rằng cuộc sống không phải lúc nào cũng suôn sẻ, nhưng quan trọng là không bỏ cuộc.',
+  'Sự mạnh mẽ và quyết tâm của Nhật vật chính khiến tôi không thể không ngưỡng mộ, cô là một nguồn động lực lớn cho tôi.',
+  'Nhân vật Nhật vật chính trong truyện thể hiện tình yêu thương chân thành và sự hi sinh vô điều kiện, điều đó khiến tôi cảm động.',
+  'Trái tim ấm áp và tấm lòng nhân hậu của Nhật vật chính đã khiến tôi xem lại bản thân và suy tư về ý nghĩa thực sự của cuộc sống.',
+  'Cuộc sống của Nhật vật chính là một hành trình đầy biến đổi, nhưng cô luôn kiên nhẫn và kiên định đi đến cuối con đường.',
+  'Tôi yêu thích nhân vật Nhật vật chính bởi cách cô luôn tìm thấy niềm vui và ý nghĩa trong những điều giản đơn nhất.',
+  'Nhân vật Nhật vật chính trong truyện đã làm tôi nhận ra rằng không có gì quý giá hơn gia đình và tình thương thân mật.',
+  'Nhật vật chính là một nhân vật vô cùng thú vị và đáng yêu, tôi đã rơi vào câu chuyện của cô và không thể dứt ra khỏi.',
 ];
 
 async function main() {
@@ -42,6 +42,7 @@ async function main() {
           'https://i.ibb.co/vP05vCF/d4b927049e2f8f0760239c475a9d200b-cleanup.png',
         role: 'VIEWER',
         email: 'hungbuituan1@gmail.com',
+        website: 'https://www.facebook.com/TuanHung.fb/',
         password:
           '$2b$10$O/UxP2LOsMpGuPFc2DE0AeSiYFIVZ2e8GSzMDcUUAQtGhENhnXqxy',
       },
@@ -53,6 +54,7 @@ async function main() {
           'https://i.ibb.co/vP05vCF/d4b927049e2f8f0760239c475a9d200b-cleanup.png',
         role: 'CONTRIBUTOR',
         email: 'buituanhung80@gmail.com',
+        website: 'https://www.facebook.com/TuanHung.fb/',
         password:
           '$2b$10$O/UxP2LOsMpGuPFc2DE0AeSiYFIVZ2e8GSzMDcUUAQtGhENhnXqxy',
       },
@@ -64,6 +66,7 @@ async function main() {
           'https://i.ibb.co/vP05vCF/d4b927049e2f8f0760239c475a9d200b-cleanup.png',
         role: 'SUPERADMIN',
         email: 'tuanhung592001@gmail.com',
+        website: 'https://www.facebook.com/TuanHung.fb/',
         password:
           '$2b$10$O/UxP2LOsMpGuPFc2DE0AeSiYFIVZ2e8GSzMDcUUAQtGhENhnXqxy',
       },
@@ -89,7 +92,7 @@ async function main() {
                 thị. Và cuối cùng Tấm gặp lại nhà vua và sống trong cung hạnh phúc đến suốt đời. Còn mẹ con
                 Cám phải chịu báo ứng vì những tội ác mà mình đã gây ra.`,
         slug: 'tam-cam',
-        image: 'https://i.ibb.co/W2zv6HF/T-m-C-m-1-removebg-preview.png',
+        image: 'https://i.ibb.co/k9LKW75/TC.png',
         featured: true,
         view: Math.round(Math.random() * 10000),
         createdBy: 1,
@@ -107,7 +110,7 @@ Tôn Vinh Người Lính: Bài thơ khen ngợi tinh thần dũng cảm, đồng
 Khát Vọng Chiến Thắng: Bài thơ thể hiện khát vọng chiến thắng của người lính, với hi vọng trỗi dậy bất chấp khó khăn. Đó là lời kêu gọi cùng nhau "lên" để đối phó với mọi thử thách.
 Tinh Thần Đoàn Kết: Bài thơ truyền đạt tinh thần đoàn kết của mọi người, khi họ sát cánh, đồng lòng hướng tới mục tiêu chung - giữ vững quê hương.`,
         slug: 'tay-tien',
-        image: 'https://i.ibb.co/DkcWvys/TayTien.png',
+        image: 'https://i.ibb.co/TwNr9vm/TT.png',
         featured: true,
         view: Math.round(Math.random() * 10000),
         createdBy: 1,
@@ -126,7 +129,7 @@ Tâm Trạng Xao Lãng: Bài thơ mô tả tâm trạng xao lãng và biến đ�
 Mong Muốn Vượt Qua: Người phụ nữ trong bài thơ mang trong mình khao khát vượt qua những biến đổi và khó khăn. Cô mong muốn có thể tìm thấy sự yên bình và tự do bên trong mình.
 Tương Quan Gia Đình: Bài thơ cũng đề cập đến tương quan gia đình khi người phụ nữ đối mặt với "ông xã và bọn con". Đây có thể thể hiện sự chịu đựng và gánh vác trách nhiệm trong gia đình.`,
         slug: 'song',
-        image: 'https://i.ibb.co/3rK8p8P/song.png',
+        image: 'https://i.ibb.co/7gLhmrk/S.png',
         featured: true,
         view: Math.round(Math.random() * 10000),
         createdBy: 1,
@@ -145,7 +148,21 @@ Phạm tội đánh người nhà nước, chị bị thúc giải lên quan. T�
 Sau đó, chị may mắn gặp một người nhà quan cụ trên tỉnh. Người này cho chị 2 đồng nộp nốt tiền sưu và hứa hẹn cho chị công việc vắt sữa của mình để quan cụ uống (do quan cụ đã rụng hết răng không ăn được cơm). Chị bèn về bàn với anh Dậu, cho cái Tỉu làm con nuôi nhà hàng xóm, lên tỉnh làm việc.
 Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nhưng vào một đêm tối, quan cụ mò vào buồng của chị định giở trò đồi bại với chị... Tác phẩm kết thúc bằng câu "Chị vùng chạy ra ngoài giữa lúc trời tối đen mực, đen như cái tiền đồ của chị vậy!"`,
         slug: 'tat-den',
-        image: 'https://i.ibb.co/9YWgQFW/TatDen.png',
+        image: 'https://i.ibb.co/DDYphMw/TD.png',
+        featured: true,
+        view: Math.round(Math.random() * 10000),
+        createdBy: 1,
+      },
+      {
+        literaryId: 5,
+        title: 'Chiếc thuyền ngoài xa',
+        timeOfCreation: 'Tháng 09 - 1983',
+        authorName: 'Nguyễn Minh Châu',
+        intro: `Truyện in đậm phong cách tự sự - triết lý của Nguyễn Minh Châu, rất tiêu biểu cho hướng tiếp cận đời sống từ góc độ thế sự của nhà văn ở giai đoạn sáng tác thứ hai.
+        Truyện ngắn lúc đầu được in trong tập Bến quê (1985), sau được nhà văn lấy làm tên chung cho một tuyển tập truyện ngắn (in năm 1987).`,
+        summary: `Nhận nhiệm vụ từ trưởng phòng, Phùng phải đi về miền Trung thực hiện bộ ảnh để chào đón năm mới. Đây cũng là địa điểm mà anh từng tham chiến trong thời gian chống Mỹ. Sau một tuần “phục kích” và phát hiện ra “cảnh đắt trời cho” Phùng quyết định chọn chủ đề cho bộ lịch đó là chiếc thuyền đánh cá trong một buổi sáng bình minh. Khi đã hoàn thành bộ ảnh, anh quay về thì chứng kiến cảnh tượng người đàn ông hàng chài to lớn đang đánh đập người phụ nữ. Đứa con tên Phác chạy ra can ngăn. Cứ thế cảnh tượng đó diễn ra liên tiếp, không thể chịu được, Phùng quyết định ngăn cản thì bị người đàn ông đánh bị thương. Ngay sau đó, chánh án Đẩu - bạn của Phùng mời người đàn bà hàng chài lên tòa án huyện để giải quyết. Tại đây Đẩu khuyên người đàn bà hàng chài bỏ người chồng vũ phu kia. Người đàn bà giải thích lý do vì sao chồng đánh và kể về người chồng của mình. Phùng và Đẩu hiểu ra rằng mặc cho bị ngược đãi về thể xác nhưng cả người đàn bà và những đứa con cần người đàn ông gánh vác trách nhiệm và nuôi sống gia đình. Phùng nhận ra nhìn nhận mọi việc đơn giản bằng vẻ ngoài không thôi thì chưa đủ.`,
+        slug: 'chiec-thuyen-ngoai-xa',
+        image: 'https://i.ibb.co/bFmDPX1/CTNX.png',
         featured: true,
         view: Math.round(Math.random() * 10000),
         createdBy: 1,
@@ -176,6 +193,12 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
         tagId: 4,
         tagName: 'song',
         slug: 'song',
+        createdBy: 1,
+      },
+      {
+        tagId: 5,
+        tagName: 'chiecthuyenngoaixa',
+        slug: 'chiecthuyenngoaixa',
         createdBy: 1,
       },
     ],
@@ -214,7 +237,7 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
       {
         postId: 1,
         title: 'Phân tích nhân vật Tấm trong truyện Tấm Cám',
-        slug: '1',
+        slug: 'phan-tich-nhan-vat-tam-trong-truyen-tam-cam',
         summary:
           'Tấm và Cám là hai chị em cùng cha khác mẹ. Mẹ Tấm chết từ hồi Tấm mới biết đi, sau đó ít năm người cha cũng chết, Tấm phải sống với dì ghẻ là mẹ của Cám. Ngay từ đầu tác phẩm, tác giả dân gian đã đưa người đọc đến số phận quen thuộc trong truyện cổ tích',
         htmlContent: `<p style="text-align: justify;">Trong kho t&agrave;ng văn học Việt Nam ngo&agrave;i những t&aacute;c phẩm truyện k&iacute;, thơ, ph&uacute;, c&aacute;o&hellip;được nhiều người nhắc đến th&igrave; ch&uacute;ng ta c&ograve;n n&ecirc;n nhớ đến một thể loại m&agrave; c&aacute;c bạn thiếu nhi hay th&iacute;ch nghe. Đ&oacute; ch&iacute;nh l&agrave; thể loại truyện cổ t&iacute;ch. C&oacute; thể n&oacute;i những c&acirc;u chuyện cổ t&iacute;ch như mang hơi thở ngọt ng&agrave;o của những quan niệm xưa như ở hiền gặp l&agrave;nh, n&oacute; l&agrave; loại truyện m&agrave; d&agrave;nh cho trẻ em l&agrave; nhiều nhất v&igrave; n&oacute; mang những yếu tố k&igrave; ảo lạ thường để cho trẻ em thỏa sức tưởng tượng. Đồng thời n&oacute; c&ograve;n c&oacute; những c&aacute;i kết c&oacute; hậu để dạy dỗ trẻ em l&agrave;m người tốt. Trong những t&aacute;c phẩm truyện cổ t&iacute;ch như Thạch Sanh, Sọ Dừa&hellip; th&igrave; c&oacute; lẽ truyện &ldquo;Tấm C&aacute;m&rdquo; cũng hấp dẫn biết bao nhi&ecirc;u bạn đọc kh&ocirc;ng chỉ trẻ con m&agrave; cả người lớn. Đặc biệt trong đ&oacute; ta thấy nổi bật l&ecirc;n h&igrave;nh tượng nh&acirc;n vật c&ocirc; Tấm với những vẻ đẹp của người con g&aacute;i thuở xưa.</p>
@@ -226,15 +249,16 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
         featuredImage: 'https://img.idesign.vn/2019/12/id-tamcam-cover-1.jpg',
         featured: true,
         status: 'PUBLISHED',
-
+        view: Math.round(Math.random() * 10000),
+        likeCount: Math.round(Math.random() * 1000),
+        dislikeCount: Math.round(Math.random() * 100),
         createdBy: 1,
         literary: 1,
       },
       {
         postId: 2,
         title: 'Phân tích bài thơ Tây Tiến của nhà thơ Quang Dũng',
-        slug: '2',
-
+        slug: 'phan-tich-bai-tho-tay-tien-cua-nha-tho-quang-dung',
         summary:
           'Quang Dũng thuộc lớp nhà thơ trưởng thành từ kháng chiến chống Pháp. Không chỉ viết thơ hay, ông còn được biết đến là một nghệ sĩ tài năng với khả năng viết văn, soạn nhạc, vẽ tranh. Sinh ra và lớn lên ở Hà Nội, tâm hồn nhà thơ vì thế cũng đầy mơ mộng. Cũng bởi thế mà thơ của ông phóng khoáng mà hồn hậu, lãng mạn và tài hoa.',
         htmlContent: `<p>Kh&aacute;ng chiến ch&ocirc;ng Ph&aacute;p đ&atilde; đi qua, nhưng qua những vần thơ, b&agrave;i h&aacute;t, ch&uacute;ng ta vẫn c&oacute; thể cảm nhận được một qu&aacute; khứ đau thương nhưng h&agrave;o h&ugrave;ng của d&acirc;n tộc. Quang Dũng với t&aacute;c phẩm "T&acirc;y Tiến" đ&atilde; đưa v&agrave;o văn chương kh&aacute;ng chiến một luồn gi&oacute; mới. Th&ocirc;ng qua việc ph&acirc;n t&iacute;ch b&agrave;i thơ T&acirc;y Tiến, ta sẽ thấy được h&igrave;nh ảnh quả cảm, đau thương nhưng đầy mộng mơ của những người l&iacute;nh tri thức bấy giờ.</p>
@@ -259,14 +283,16 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
           'https://theki.vn/wp-content/uploads/2019/07/phan-tich-hinh-tuong-nguoi-linh-tay-tien-678-677x381.jpg',
         featured: true,
         status: 'PUBLISHED',
-
+        view: Math.round(Math.random() * 10000),
+        likeCount: Math.round(Math.random() * 1000),
+        dislikeCount: Math.round(Math.random() * 100),
         createdBy: 1,
         literary: 2,
       },
       {
         postId: 3,
         title: 'Phân tích bài thơ Sóng của Xuân Quỳnh',
-        slug: '3',
+        slug: 'phan-tich-bai-tho-song-cua-xuan-quynh',
         summary:
           'Tình yêu là đề tài muôn thuở của thi ca. Nhiều nhà thơ nổi tiếng đã viết về tình yêu với tất cả sự nồng nhiệt của một trái tim tuổi trẻ. Ta bắt gặp một Xuân Diệu nồng nàn, đắm say và khát khao dâng hiến cho tình yêu, một Nguyễn Bính mơ màng tìm về tình yêu đồng nội, một Anh Thơ tha thiết nhưng thẹn thùng cái duyên con gái… ',
         htmlContent: `<p>Xu&acirc;n Quỳnh l&agrave; nh&agrave; thơ của hạnh ph&uacute;c đời thường. Thơ b&agrave; l&agrave; tiếng l&ograve;ng của một t&acirc;m hồn lu&ocirc;n lu&ocirc;n khao kh&aacute;t t&igrave;nh y&ecirc;u, gắn b&oacute; hết m&igrave;nh với cuộc sống h&agrave;ng ng&agrave;y, tr&acirc;n trọng, n&acirc;ng niu v&agrave; chăm ch&uacute;t cho hạnh ph&uacute;c đời thường. Trong c&aacute;c nh&agrave; thơ nữ Việt Nam, Xu&acirc;n Quỳnh xứng đ&aacute;ng được gọi l&agrave; nh&agrave; thơ của t&igrave;nh y&ecirc;u. B&agrave; viết nhiều, viết hay về t&igrave;nh y&ecirc;u nhưng c&oacute; lẽ S&oacute;ng l&agrave; b&agrave;i thơ đặc sắc hơn cả. Bởi n&oacute; n&oacute;i l&ecirc;n được một t&acirc;m hồn khao kh&aacute;t y&ecirc;u đương, một t&igrave;nh y&ecirc;u vừa hồn nhi&ecirc;n ch&acirc;n thật, vừa m&atilde;nh liệt, s&ocirc;i nổi của một tr&aacute;i tim phụ nữ.</p>
@@ -306,15 +332,16 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
           'https://cdnimg.vietnamplus.vn/t1200/Uploaded/tpuoaob/2022_10_01/xuanquynhgoogle.png',
         featured: false,
         status: 'PUBLISHED',
-
+        view: Math.round(Math.random() * 10000),
+        likeCount: Math.round(Math.random() * 1000),
+        dislikeCount: Math.round(Math.random() * 100),
         createdBy: 1,
-        literary: 1,
+        literary: 3,
       },
       {
         postId: 4,
         title: 'Phân tích đoạn trích "Tức nước vỡ bờ"',
-        slug: '4',
-
+        slug: 'phan-tich-doan-trich-tuc-nuoc-vo-bo',
         summary:
           'Tác giả lấy đề tài từ một vụ thu thuế hàng năm ở một làng quê Bắc Bộ, qua đó phản ánh số phận bi thảm của nông dân và bản chất tàn bạo của giai cấp thống trị trong xã hội đương thời. Có thể nói tác phẩm Tắt đèn là bức tranh thu nhỏ của nông thôn Việt Nam dưới thời Pháp thuộc.',
         htmlContent: `<p>Ng&ocirc; Tất Tố (1893 &ndash; 1954), qu&ecirc; ở l&agrave;ng Lộc H&agrave;, huyện Từ Sơn, tỉnh Bắc Ninh, nay thuộc Đ&ocirc;ng Anh, H&agrave; Nội; l&agrave; một nh&agrave; Nho sống ở n&ocirc;ng th&ocirc;n, c&oacute; vốn hiểu biết H&aacute;n học kh&aacute; s&acirc;u rộng, &ocirc;ng nổi tiếng tr&ecirc;n lĩnh vực b&aacute;o ch&iacute; v&agrave; văn chương trong giai đoạn đầu thế kỉ XX. Tắt đ&egrave;n l&agrave; t&aacute;c phẩm ti&ecirc;u biểu trong sự nghiệp s&aacute;ng t&aacute;c của Ng&ocirc; Tất Tố v&agrave; trong tr&agrave;o lưu văn học hiện thực trước C&aacute;ch mạng th&aacute;ng T&aacute;m 1945.</p>
@@ -351,9 +378,37 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
         featuredImage:
           'https://pgdphurieng.edu.vn/wp-content/uploads/2023/05/chi-dau-1.jpg',
         featured: false,
+        view: Math.round(Math.random() * 10000),
+        likeCount: Math.round(Math.random() * 1000),
+        dislikeCount: Math.round(Math.random() * 100),
         status: 'PUBLISHED',
         createdBy: 1,
-        literary: 1,
+        literary: 4,
+      },
+      {
+        postId: 5,
+        title: 'Phân tích nhân vật Phùng trong Chiếc thuyền ngoài xa',
+        slug: 'phan-tich-nhan-vat-phung-trong-chiec-thuyen-ngoai-xa',
+        summary:
+          'Nguyễn Minh Châu thuộc thế hệ nhà văn trưởng thành trong cuộc kháng chiến chống Mỹ. Cùng với nhà văn Nguyễn Khải, Nguyễn Minh Châu có những đống góp quan trọng đối với nền văn học kháng chiến chống Mỹ và nền văn học thời kì đầu đổi mới. “Nguyễn Minh Châu là người kế tục xuất sắc những bậc thầy của nền văn xuôi Việt Nam và cũng là người mở đường rực rỡ cho những cây bút trẻ tài năng sau này” (Nguyễn khải).',
+        htmlContent: `<p>Nguyễn Minh Ch&acirc;u thuộc thế hệ nh&agrave; văn trưởng th&agrave;nh trong cuộc kh&aacute;ng chiến chống Mỹ. C&ugrave;ng với nh&agrave; văn Nguyễn Khải, Nguyễn Minh Ch&acirc;u c&oacute; những đống g&oacute;p quan trọng đối với nền văn học kh&aacute;ng chiến chống Mỹ v&agrave; nền văn học thời k&igrave; đầu đổi mới. &ldquo;Nguyễn Minh Ch&acirc;u l&agrave; người kế tục xuất sắc những bậc thầy của nền văn xu&ocirc;i Việt Nam v&agrave; cũng l&agrave; người mở đường rực rỡ cho những c&acirc;y b&uacute;t trẻ t&agrave;i năng sau n&agrave;y&rdquo; (Nguyễn khải).</p>
+ <p>Chiếc thuyền ngo&agrave;i xa l&agrave; một t&aacute;c phẩm xuất sắc của Nguyễn Minh Ch&acirc;u. Đ&acirc;y l&agrave; một t&aacute;c phẩm ti&ecirc;u biểu cho đề t&agrave;i đời tư, thế sự của Nguyễn Minh Ch&acirc;u sau 1975. T&aacute;c phẩm thuộc kiểu truyện luận đề v&agrave; nh&acirc;n vật Ph&ugrave;ng l&agrave; người ph&aacute;t biểu c&aacute;c luận đề ấy. Qua nh&acirc;n vật Ph&ugrave;ng v&agrave; c&aacute;c nh&acirc;n vật kh&aacute;c nh&agrave; văn đề cập đến t&iacute;nh trung thực của người nghệ sĩ, n&ecirc;u l&ecirc;n mối quan hệ chặt chẽ giữa văn học v&agrave; hiện thực cũng như những vấn để phức tạp của cuộc sống, kể cả bi kịch số phận con người.</p>
+ <p>Vốn l&agrave; một người l&iacute;nh chiến đ&atilde; từng v&agrave;o sinh ra tử, Ph&ugrave;ng căm gh&eacute;t mọi sự &aacute;p bức bất c&ocirc;ng. Anh sẵn s&agrave;ng l&agrave;m tất cả v&igrave; điều thiện v&agrave; lẽ c&ocirc;ng bằng. Anh thực sự x&uacute;c động ngỡ ng&agrave;ng trước trước vẻ đẹp m&aacute;t mẻ tinh kh&ocirc;i của con thuyền v&agrave; biển cả l&uacute;c b&igrave;nh minh. Đ&oacute; l&agrave; sự rung đ&ocirc;ng của người nghệ sĩ trước c&aacute;i đẹp tr&ecirc;n cuộc đời n&agrave;y v&agrave; n&oacute; th&uacute;c đầy anh khao kh&aacute;t đi t&igrave;m. Ph&ugrave;ng l&agrave; con người nghệ sĩ c&oacute; t&agrave;i năng. Ở anh lại c&oacute; một t&acirc;m hồn mơ mộng v&agrave; lu&ocirc;n kh&aacute;t khao hướng tới một c&aacute;i đẹp to&agrave;n b&iacute;ch, to&agrave;n thiện. Sự từng trải qua cuộc đời người l&iacute;nh c&agrave;ng khiến anh biết qu&yacute; trọng cuộc sống v&agrave; n&acirc;ng niu từng vẻ đẹp m&agrave; anh c&oacute; được. Anh tin rằng c&ograve;n c&oacute; những vẻ đẹp kh&aacute;c đang bị ẩn giấu, che khuất. Với tr&aacute;ch nhiệm của người nghệ sĩ ch&acirc;n ch&iacute;nh, anh phải đi t&igrave;m, ph&aacute;t hiện v&agrave; l&agrave;m cho n&oacute; tỏa s&aacute;ng.</p>
+ <div class="adbox in-article"><img src="https://o.rada.vn/data/image/2021/05/26/dan-y-phan-tich-Phung.jpg" alt="D&agrave;n &yacute; ph&acirc;n t&iacute;ch nh&acirc;n vật ph&ugrave;ng (4 Mẫu) - Văn 12"></div>
+ <p>Bắt gặp cuộc sống của một gia đ&igrave;nh l&agrave;ng ch&agrave;i tưởng chừng như b&igrave;nh y&ecirc;n m&agrave; lại v&ocirc; c&ugrave;ng khốc liệt khiến anh v&ocirc; c&ugrave;ng sửng sốt. Một con người nhạy cảm như Ph&ugrave;ng l&agrave;m sao tr&aacute;nh khỏi nỗi tức giận khi ph&aacute;t hiện đằng sau cảnh đẹp của chiếc thuyền ngo&agrave;i xa l&agrave; sự bạo h&agrave;nh của c&aacute;i xấu, c&aacute;i &aacute;c. Mới đầu, chứng kiến cảnh l&atilde;o đ&agrave;n &ocirc;ng đ&aacute;nh vợ v&agrave; người đ&agrave;n b&agrave; nhẫn nhục chịu đựng, Ph&ugrave;ng hết sức &ldquo;kinh ngạc&rdquo;. Anh &ldquo;h&aacute; mồm ra m&agrave; nh&igrave;n&rdquo;. Rồi như một phản xạ tự nhi&ecirc;n, anh &ldquo;vứt chiếc m&aacute;y ảnh xuống đất, chạy nh&agrave;o tới&rdquo;.</p>
+ <p>H&agrave;nh động ấy đ&atilde; n&oacute;i l&ecirc;n được rất nhiều điều đ&aacute;ng để suy ngẫm. Thứ nhất, chiếc thuyền nghệ thuật th&igrave; ở ngo&agrave;i xa. N&oacute; đang ở một khoảng c&aacute;ch đủ để tạo n&ecirc;n một vẻ đẹp huyền ảo. Nhưng sự thật cuộc đời th&igrave; lại ở rất gần. Thứ hai, đừng v&igrave; nghệ thuật m&agrave; qu&ecirc;n cuộc đời. Bởi lẽ, nghệ thuật ch&acirc;n ch&iacute;nh lu&ocirc;n l&agrave; cuộc đời v&agrave; v&igrave; cuộc đời. &ldquo;Trước khi l&agrave; một nghệ sĩ biết rung động trước c&aacute;i đẹp h&atilde;y l&agrave; một con biết y&ecirc;u gh&eacute;t vui buồn tức trước mọi lẽ đời thường t&igrave;nh, biết h&agrave;nh động để c&oacute; một cuộc sống xứng đ&aacute;ng với con người&rdquo;(Trăng s&aacute;ng &ndash; Nam Cao).</p>
+ <p>Nguyễn Minh Ch&acirc;u đ&atilde; kh&ocirc;ng c&oacute; tạo n&ecirc;n những mảnh đời đối lập. Song, cứ tự nhi&ecirc;n, cuộc đời lại vẽ l&ecirc;n những bức tranh m&agrave;u đầy ảm đạm. Cuộc sống của gia đ&igrave;nh tr&ecirc;n con thuyền chật hẹp cứ từng lớp, từng lớp được phơi b&agrave;y trước mắt Ph&ugrave;ng. Anh đi từ trạng th&aacute;i n&agrave;y đến trạng th&aacute;i kh&aacute;c, vừa h&acirc;n hoan, vừa hết sức đau thương, vừa m&atilde;n nguyện vừa xung đột m&atilde;nh liệt. Nam Cao cũng đ&atilde; từng khắc họa h&igrave;nh ảnh người nghệ sĩ trong điểm nh&igrave;n nghệ thuật đầy xung đột. Điền l&agrave; một nh&agrave; văn, nh&agrave; gi&aacute;o ngh&egrave;o. Mặc d&ugrave; cuộc sống vất vả, kh&oacute; khăn nhưng t&acirc;m hồn Điền lại đẫm thơ văn l&atilde;ng mạn. Những đ&ecirc;m trăng s&aacute;ng, Điền ngắm trăng v&agrave; mơ mộng một cuộc sống kh&aacute;c, đối lập với cuộc sống hiện tại của Điền. &ldquo;Nghệ thuật kh&ocirc;ng phải l&agrave; &aacute;nh trăng lừa dối, kh&ocirc;ng n&ecirc;n l&agrave; &aacute;nh trăng lừa dối. Nghệ thuật chỉ c&oacute; thể l&agrave; tiếng đau khổ kia, tho&aacute;t ra từ những kiếp sống lầm than&rdquo; (Trăng s&aacute;ng &ndash; Nam Cao).</p>
+ <p>Đằng sau mỗi vẻ đẹp trắng lệ lu&ocirc;n ẩn giấu một nỗi đau n&agrave;o đ&oacute; của trần thế. Điều quan trọng l&agrave; người nghệ sĩ c&oacute; nh&igrave;n thấy hoặc d&aacute;m nh&igrave;n thẳng v&agrave;o n&oacute; để phản ảnh hay kh&ocirc;ng. Đ&oacute; l&agrave; thử th&aacute;ch lớn đối với cả Điềm v&agrave; Ph&ugrave;ng khi họ bất ngờ bị đặt v&agrave;o t&igrave;nh thế g&acirc;y cấn để phản ngộ. Điều m&agrave; nghệ sĩ nhiếp ảnh Ph&ugrave;ng &ldquo;ngộ&rdquo; ra khi chứng kiến cảnh người đ&agrave;n &ocirc;ng đ&aacute;nh vợ một c&aacute;ch t&agrave;n bạo ch&iacute;nh l&agrave; t&igrave;nh người ẩn s&acirc;u trong tr&aacute;i tim đầy đau khổ của người đ&agrave;n b&agrave; kia. Nếu quan s&aacute;t từ &ldquo;ngo&agrave;i xa&rdquo; th&igrave; khung cảnh con thuyền v&agrave; mặt biển mờ sương thật đẹp, thật mơ mộng. Thậm ch&iacute; n&oacute; đạt đến sự &ldquo;to&agrave;n b&iacute;ch&rsquo;&rsquo;, hiếm khi được may mắn bắt gặp. Nhưng khi tới gần, nghệ sĩ nhiếp ảnh Ph&ugrave;ng mới nhận ra đằng sau khung cảnh đẹp ấy chứa bao nghịch cảnh đau l&ograve;ng. Người chồng đ&aacute;nh vợ một c&aacute;ch t&agrave;n nhẫn. Đứa con trai th&igrave; cầm dao xong v&agrave;o bố. Cuộc sống ấy đối v&oacute;i người đ&agrave;n b&agrave; chẳng kh&aacute;c g&igrave; địa ngục thế nhưng kh&ocirc;ng thể rời bỏ được, &hellip;.</p>
+ <p>Như vậy, giữa nghệ thuật v&agrave; cuộc đời c&oacute; một khoảng c&aacute;ch qu&aacute; xa khiến người nghệ sĩ c&oacute; sự ngộ nhận. Phải chăng qua t&igrave;nh huống n&agrave;y, nh&agrave; văn Nguyễn Minh Ch&acirc;u muốn gửi tới người đọc một th&ocirc;ng điệp s&acirc;u sắc. Để phản ảnh đ&uacute;ng về bản chất của cuộc sống, con người. Người nghệ sĩ đ&iacute;ch thực kh&ocirc;ng thể đứng ngo&agrave;i xa để quan s&aacute;t m&agrave; phải sống gắn b&oacute; với hiện thực đời sống, phải nh&igrave;n nhận sự vật một c&aacute;ch đầy đủ, to&agrave;n diện. Mặt kh&aacute;c, muốn c&oacute; được một bức ảnh nghệ thuật đẹp theo đ&uacute;ng nghĩa của n&oacute; th&igrave; trước hết phải l&agrave;m cho cuộc sống đẹp đẽ, mới mẽ với những con người c&oacute; t&acirc;m hồn trong s&aacute;ng, tinh kh&ocirc;i.</p>`,
+        featuredImage:
+          'https://hoigiasudanang.com/wp-content/uploads/2021/11/mo-bai-chiec-thuyen-ngoai-xa.jpg',
+        featured: false,
+        view: Math.round(Math.random() * 10000),
+        likeCount: Math.round(Math.random() * 1000),
+        dislikeCount: Math.round(Math.random() * 100),
+        status: 'PUBLISHED',
+        createdBy: 1,
+        literary: 4,
       },
     ],
   });
@@ -373,7 +428,7 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
   });
 
   await prisma.postTag.createMany({
-    data: [1, 1, 1, 1].map((e, i) => ({
+    data: [1, 1, 1, 1, 1].map((e, i) => ({
       postId: i + 1,
       tagId: i + 1,
     })),
@@ -395,6 +450,10 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
       {
         literaryId: 4,
         categoryId: 4,
+      },
+      {
+        literaryId: 5,
+        categoryId: 2,
       },
     ],
   });

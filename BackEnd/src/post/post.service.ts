@@ -13,6 +13,9 @@ const include = {
   createdByUser: {
     select: {
       name: true,
+      role: true,
+      email: true,
+      website: true,
       avatarImage: true,
     },
   },
@@ -81,6 +84,7 @@ export class PostService {
       });
       return { data: posts };
     } catch (error) {
+      console.log(error.message);
       return { data: [], message: error.message };
     }
   }
@@ -139,6 +143,26 @@ export class PostService {
           updatedBy,
         },
         include,
+      });
+      const postCount = await this.prisma.post.count({
+        where: {
+          AND: [
+            {
+              literary: updatedPost.literary,
+            },
+            {
+              status: 'PUBLISHED',
+            },
+          ],
+        },
+      });
+      const updatedLiterary = await this.prisma.literary.update({
+        where: {
+          literaryId: updatedPost.literary,
+        },
+        data: {
+          postCount: postCount,
+        },
       });
 
       return {

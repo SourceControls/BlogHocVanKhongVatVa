@@ -39,10 +39,10 @@ let mockContributor = [
         initiallyOpened: true,
         link: '/admin/posts',
         links: [
-            {label: 'Nháp', link: '/admin/posts'},
-            {label: 'Chờ Duyệt', link: '/admin/posts'},
-            {label: 'Công Khai', link: '/admin/posts'},
-            {label: 'Đã Ẩn', link: '/admin/posts'},
+            {label: 'Nháp', link: '/admin/posts?status=draft'},
+            {label: 'Chờ Duyệt', link: '/admin/posts?status=pending'},
+            {label: 'Công Khai', link: '/admin/posts?status=published'},
+            {label: 'Đã Ẩn', link: '/admin/posts?status=hide'},
         ],
     },
 ]
@@ -115,7 +115,7 @@ export function Layout({children}) {
                     <Navbar height={'100vh'} width={{sm: 300}} p='md' className={classes.navbar}>
                         <Navbar.Section className={classes.header}>
                             <Link href='/home'>
-                                <Image src={settings[1].logo} width={rem(120)} alt='' />
+                                <Image src={settings[1].logo} width={rem(150)} alt='' />
                             </Link>
                         </Navbar.Section>
 
