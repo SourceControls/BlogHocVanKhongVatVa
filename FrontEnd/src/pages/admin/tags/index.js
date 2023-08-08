@@ -79,7 +79,7 @@ function Tags() {
                     {tags &&
                         tags.map((item, index) => (
                             <tr w='100%' py='xs' style={{borderTop: '1px solid #ccc'}} key={index}>
-                                <td width='60%'>
+                                <td width='50%'>
                                     <Text fw='bold' size='lg' lineClamp={1}>
                                         {item.tagName}
                                     </Text>

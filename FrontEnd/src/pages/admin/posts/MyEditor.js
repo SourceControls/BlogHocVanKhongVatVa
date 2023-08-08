@@ -28,7 +28,7 @@ function getInitialValues(post) {
             slug: 'post-demo-' + Math.round(Math.random() * 1000000),
             summary:
                 'Bộ Thông tin và Truyền thông cho biết việc sửa đổi Luật Viễn thông, trong đó có OTT viễn thông, nhằm đảm bảo an toàn, an ninh mạng và quyền lợi người dùng.',
-            htmlContent: content,
+            htmlContent: '',
             featuredImage:
                 'https://cdn.tgdd.vn/Files/2022/08/12/1455650/loi-ke-va-y-nghia-cua-cau-truyen-co-tich-noi-tieng-tam-cam-202208120839487685.jpg',
             featured: false,

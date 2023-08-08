@@ -121,11 +121,11 @@ function Advertisement() {
                                     </Text> */}
                                 </td>
                                 <td>
-                                    <Text> {item.startDate}</Text>
+                                    <Text> {new Date(item.startDate).toLocaleDateString('vi')}</Text>
                                     <Text color='dimmed'> {formatDate(item.startDate)}</Text>
                                 </td>
                                 <td>
-                                    <Text> {item.endDate}</Text>
+                                    <Text> {new Date(item.endDate).toLocaleDateString('vi')}</Text>
                                     <Text color='dimmed'> {formatDate(item.endDate)}</Text>
                                 </td>
                                 <td>
@@ -156,7 +156,7 @@ function Advertisement() {
             <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
                 Xem thêm
             </Button>
-            <Modal opened={opened} size='xl' onClose={close} centered yOffset='1vh' xOffset={0} title='Tags'>
+            <Modal opened={opened} size='xl' onClose={close} centered yOffset='1vh' xOffset={0} title='Quảng cáo'>
                 {modalContent}
             </Modal>
         </AuthGuard>
