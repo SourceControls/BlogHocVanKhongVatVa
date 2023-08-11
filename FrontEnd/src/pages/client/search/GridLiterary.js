@@ -28,7 +28,7 @@ function GridLiterary() {
                 </Title>
 
                 <Select
-                    ml='auto'
+                    ml={smScreen ? '0' : 'auto'}
                     defaultValue=''
                     data={[
                         {value: '', label: 'Mới nhất'},

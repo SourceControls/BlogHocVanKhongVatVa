@@ -15,7 +15,7 @@ import {
     TextInput,
 } from '@mantine/core'
 import Link from 'next/link'
-import {ArrowBarToRight, Logout, MailOpened, User, UserCircle} from 'tabler-icons-react'
+import {ArrowBarToRight, ArrowNarrowRight, Logout, MailOpened, User, UserCircle} from 'tabler-icons-react'
 import {Auth, FloatingLabelInput} from '@comp'
 import {useMediaQuery, useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
@@ -55,26 +55,37 @@ function Header({categories, active, setActive}) {
                             )}
                         </Link>
                     </Box>
-                    <FloatingLabelInput
-                        placeholder='Nhập #hashtag, tác phẩm, chủ đề...'
-                        label='Tìm kiếm'
-                        radius='xl'
-                        w='70%'
-                        maw='400px'
-                        value={searchKey}
-                        onChange={(e) => {
-                            setSearchKey(e.target.value)
-                        }}
-                        icon={<IconSearch size='1.5rem' stroke={2.5} />}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                console.log(searchKey)
+                    <Box pos='relative' w='70%' maw='400px'>
+                        <FloatingLabelInput
+                            placeholder='Nhập #hashtag,tác phẩm...'
+                            label='Tìm kiếm'
+                            radius='xl'
+                            value={searchKey}
+                            onChange={(e) => {
+                                setSearchKey(e.target.value)
+                            }}
+                            icon={<IconSearch size='1.5rem' stroke={2.5} />}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    searchKey.includes('#')
+                                        ? router.push('/search?type=post&tag=' + searchKey.replace('#', ''))
+                                        : router.push('/search?key=' + searchKey)
+                                }
+                            }}
+                        />
+                        <ActionIcon
+                            pos='absolute'
+                            top='8px'
+                            right='0'
+                            size='md'
+                            onClick={() => {
                                 searchKey.includes('#')
                                     ? router.push('/search?type=post&tag=' + searchKey.replace('#', ''))
                                     : router.push('/search?key=' + searchKey)
-                            }
-                        }}
-                    />
+                            }}>
+                            <ArrowNarrowRight />
+                        </ActionIcon>
+                    </Box>
                     {users[0]?.userId ? (
                         <Group style={{flex: 1}}>
                             <Menu shadow='md' width={200}>
@@ -137,7 +148,7 @@ function Header({categories, active, setActive}) {
                             </Menu>
                         </Group>
                     ) : smScreen ? (
-                        <ActionIcon ml='md' onClick={open}>
+                        <ActionIcon ml='md' onClick={() => router.push(router.asPath + '#signIn')}>
                             <UserCircle />
                         </ActionIcon>
                     ) : (

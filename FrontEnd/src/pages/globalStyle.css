@@ -43,7 +43,7 @@ a {
 } */
 
 @media (max-width: 32em) {
-    html {
+    * {
         font-size: 14px;
     }
 

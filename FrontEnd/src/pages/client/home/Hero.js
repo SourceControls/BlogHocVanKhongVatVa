@@ -1,4 +1,4 @@
-import {Button, Dialog, Group, Image, Modal, Stack, Text, Title} from '@mantine/core'
+import {Box, Button, Dialog, Group, Image, Modal, Stack, Text, Title} from '@mantine/core'
 import {useMediaQuery, useDisclosure} from '@mantine/hooks'
 import {MailForward} from 'tabler-icons-react'
 import RequestPostForm from './RequestPostForm'
@@ -29,7 +29,7 @@ function Hero() {
                         </>
                     </Stack>
                 </Stack>
-                {!smScreen && <Image src={settings[1].homeHeroCover} alt=''></Image>}
+                {smScreen ? <Box my='md'></Box> : <Image src={settings[1].homeHeroCover} alt=''></Image>}
             </Group>
             {users[0]?.userId ? (
                 <Modal opened={opened} onClose={close}>

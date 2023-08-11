@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/auth/public.decorator';
 import { Roles } from 'src/auth/roles.decorator';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -24,7 +25,7 @@ export class CategoryController {
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
-
+  @Public()
   @Get()
   @ApiQuery({ name: 'key', required: false, type: String })
   @ApiQuery({ name: 'page', required: false, type: Number })
