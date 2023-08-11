@@ -54,7 +54,7 @@ export function ImageDropzone(props) {
                         variant='filled'
                         color='red'
                         size='md'
-                        style={{position: 'absolute', top: '-20px', right: '16px'}}
+                        style={{position: 'absolute', top: '0px', right: '16px'}}
                         onClick={handleRemoveFile}>
                         <IconX />
                     </ActionIcon>

@@ -4,7 +4,8 @@ import {
   ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common/exceptions';
-import { postReaction_type, post_status } from '@prisma/client';
+import { postReaction_type, post_status, user } from '@prisma/client';
+import { MailerService } from 'src/mailer/mailer.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -17,6 +18,7 @@ const include = {
       email: true,
       website: true,
       avatarImage: true,
+      createdAt: true,
     },
   },
   postLiterary: {
@@ -41,9 +43,23 @@ const include = {
 
 @Injectable()
 export class PostService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private mailer: MailerService) {}
+  async updateTagUsedCount(tags) {
+    //tags = [tagId]
+    return tags.forEach(async (tagId) => {
+      let usedCount = await this.prisma.postTag.count({
+        where: {
+          tagId,
+        },
+      });
+      await this.prisma.tag.update({
+        where: { tagId },
+        data: { usedCount },
+      });
+    });
+  }
   async create(createPostDto: CreatePostDto) {
-    const postTag = createPostDto.postTag
+    const postTags = createPostDto.postTag
       ? createPostDto.postTag.map((tag) => ({
           tagId: +tag,
         }))
@@ -55,11 +71,12 @@ export class PostService {
           ...createPostDto,
           postTag: {
             // Create the tags using the provided tagNames
-            create: postTag,
+            create: postTags,
           },
         },
         include,
       });
+      await this.updateTagUsedCount(postTags.map((e) => e.tagId));
       return {
         data: newPost,
         message: 'Bài viết đã được tạo và lưu vào mục nháp',
@@ -104,15 +121,15 @@ export class PostService {
     publishedBy: number,
     newStatus: post_status,
   ) {
+    const post = await this.prisma.post.findUnique({
+      where: {
+        postId,
+      },
+    });
     if (
       newStatus === post_status.PUBLISHED ||
       newStatus === post_status.PENDING
     ) {
-      const post = await this.prisma.post.findUnique({
-        where: {
-          postId,
-        },
-      });
       let preMessage = 'Không thể đăng!!';
       if (newStatus === post_status.PENDING)
         preMessage = 'Không thể yêu cầu đăng!!';
@@ -144,7 +161,9 @@ export class PostService {
         },
         include,
       });
-      const postCount = await this.prisma.post.count({
+
+      // cập nhật lại số lượng post của tác phẩm
+      const publishedPostCount = await this.prisma.post.count({
         where: {
           AND: [
             {
@@ -156,15 +175,18 @@ export class PostService {
           ],
         },
       });
-      const updatedLiterary = await this.prisma.literary.update({
+      await this.prisma.literary.update({
         where: {
           literaryId: updatedPost.literary,
         },
         data: {
-          postCount: postCount,
+          postCount: publishedPostCount,
         },
       });
 
+      if (newStatus === post_status.PENDING) {
+        this.mailer.requestPublishPost(updatedPost);
+      }
       return {
         data: updatedPost,
         message:
@@ -180,7 +202,7 @@ export class PostService {
     }
   }
   async update(id: number, updatePostDto: UpdatePostDto) {
-    const postTag = updatePostDto.postTag
+    const postTags = updatePostDto.postTag
       ? updatePostDto.postTag.map((tag) => ({
           tagId: +tag,
         }))
@@ -188,6 +210,9 @@ export class PostService {
 
     delete updatePostDto.postTag;
     try {
+      const deletedPostTag = await this.prisma.postTag.findMany({
+        where: { postId: id },
+      });
       await this.prisma.postTag.deleteMany({ where: { postId: id } });
       const updatedPost = await this.prisma.post.update({
         where: {
@@ -198,12 +223,15 @@ export class PostService {
           status: 'DRAFT',
           postTag: {
             // Create the tags using the provided tagNames
-            create: postTag,
+            create: postTags,
           },
         },
 
         include,
       });
+      const newPostTags = [...deletedPostTag, ...postTags];
+      await this.updateTagUsedCount(newPostTags.map((e) => e.tagId));
+
       return { data: updatedPost, message: 'Cập nhật bài viết thành công' };
     } catch (error) {
       console.error(error.message);

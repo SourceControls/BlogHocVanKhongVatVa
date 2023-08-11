@@ -1,5 +1,5 @@
 import {useForm} from '@mantine/form'
-import {Button, Checkbox, Group, Stack, Textarea, TextInput} from '@mantine/core'
+import {Button, Checkbox, Group, MultiSelect, Select, Stack, Textarea, TextInput} from '@mantine/core'
 import {ImageDropzone} from '@comp'
 import {transformToUrl, uploadImg, createLiterary, useCategories, updateLiterary, deleteLiteray} from '@util'
 
@@ -7,6 +7,8 @@ function getInitialValues(literary) {
     return literary
         ? {
               ...literary,
+              file: undefined,
+              categories: literary.literaryCategory.map((e) => e.category.categoryId),
           }
         : {
               title: 'Tấm cám ' + Math.round(Math.random() * 1000),
@@ -24,6 +26,8 @@ function getInitialValues(literary) {
 }
 
 function LiteraryForm({literary, close, mutate, literaries}) {
+    const {categories} = useCategories('&limit=0')
+
     const form = useForm({
         initialValues: getInitialValues(literary),
     })
@@ -78,6 +82,16 @@ function LiteraryForm({literary, close, mutate, literaries}) {
                         label='Thời gian sáng tác'
                         placeholder='Ví dụ: Mùa xuân năm 1975'
                         {...form.getInputProps('timeOfCreation')}
+                    />
+                    <MultiSelect
+                        data={
+                            categories[0]?.categoryId
+                                ? categories.map((e) => ({label: e.categoryName, value: e.categoryId}))
+                                : []
+                        }
+                        placeholder='Chọn danh mục'
+                        label='Danh mục'
+                        {...form.getInputProps('categories')}
                     />
                     <Checkbox
                         checked={form.values.visibility}

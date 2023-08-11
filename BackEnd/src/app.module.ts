@@ -19,9 +19,14 @@ import { AdvertisementModule } from './advertisement/advertisement.module';
 import { SettingModule } from './setting/setting.module';
 import { ConfigModule } from '@nestjs/config';
 import { MailerService } from './mailer/mailer.service';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
     PostModule,
     UserModule,
     AuthModule,

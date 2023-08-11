@@ -41,7 +41,7 @@ export class CommentController {
       skip: (+page - 1 || 0) * (+limit || 3),
       take: +limit || 3,
       orderBy: {
-        commentId: 'desc',
+        createdAt: 'desc',
       },
       where: {
         post: {

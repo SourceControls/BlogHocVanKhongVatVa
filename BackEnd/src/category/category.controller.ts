@@ -48,8 +48,8 @@ export class CategoryController {
         categoryId: 'desc',
       };
     return this.categoryService.findAll({
-      skip: (+page - 1 || 0) * (+limit || 3),
-      take: +limit || 3,
+      skip: +limit == 0 ? undefined : (+page - 1 || 0) * (+limit || 3),
+      take: +limit == 0 ? undefined : +limit || 3,
       orderBy,
       include: {
         literaryCategory: true,

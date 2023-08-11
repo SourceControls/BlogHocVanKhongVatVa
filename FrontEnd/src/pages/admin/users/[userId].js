@@ -55,6 +55,7 @@ function Profile() {
 
                         <Checkbox
                             ml='auto'
+                            disabled={users[0].role === 'SUPERADMIN'}
                             checked={form.values.status === 'BANNED'}
                             onChange={(e) => form.setValues({status: e.target.checked == 1 ? 'BANNED' : 'ACTIVE'})}
                             label='Chặn'
@@ -113,6 +114,7 @@ function Profile() {
                         </FileButton>
                     </BackgroundImage>
                     <Stack w='500px' mx='auto' my='84px'>
+                        <TextInput label='Email' disabled value={form.values.email} />
                         <TextInput
                             label='Họ Tên'
                             placeholder='Nhập họ tên người dùng'
@@ -136,11 +138,12 @@ function Profile() {
                         />
                         <Select
                             label='Vai trò'
+                            disabled={users[0].role === 'SUPERADMIN'}
                             data={[
                                 {value: 'VIEWER', label: 'Người xem'},
                                 {value: 'CONTRIBUTOR', label: 'Người đóng góp'},
                                 {value: 'ADMIN', label: 'Quản trị viên'},
-                                {value: 'SUPERADMIN', label: 'Chủ sở hữu'},
+                                {value: 'SUPERADMIN', label: 'Quản trị viên cao cấp'},
                             ]}
                             {...form.getInputProps('role')}
                         />

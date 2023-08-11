@@ -27,9 +27,8 @@ export class MailerService {
     const mailOptions = {
       from: user.email,
       to: admins.map((item) => item.email),
-      subject: '[VIETLIT SYSTEM]',
-      html: `<h1>Nhận được y&ecirc;u cầu viết b&agrave;i!!</h1>
-<h2><br>Th&ocirc;ng tin người y&ecirc;u cầu:</h2>
+      subject: '[Học văn không vất vả - Yêu cầu viết bài]',
+      html: `<h2>Th&ocirc;ng tin người y&ecirc;u cầu:</h2>
 <p><strong>Họ t&ecirc;n:</strong> ${user.name}</p>
 <p><strong>Email:&nbsp;</strong>${user.email}</p>
 <p><strong>Ng&agrave;y tham gia:&nbsp;</strong>${new Date(
@@ -61,6 +60,47 @@ export class MailerService {
       throw error;
     }
   }
+  async requestPublishPost({ createdByUser, title, summary }) {
+    const admins = await this.prisma.user.findMany({
+      where: {
+        role: {
+          in: ['ADMIN', 'SUPERADMIN'],
+        },
+      },
+    });
+    const mailOptions = {
+      from: createdByUser.email,
+      to: admins.map((item) => item.email),
+      subject: '[Học văn không vất vả - Yêu cầu duyệt bài]',
+      html: `<h2>Th&ocirc;ng tin người y&ecirc;u cầu:</h2>
+<p><strong>Họ t&ecirc;n:</strong> ${createdByUser.name}</p>
+<p><strong>Email:&nbsp;</strong>${createdByUser.email}</p>
+<p><strong>Ng&agrave;y tham gia:&nbsp;</strong>${new Date(
+        createdByUser.createdAt,
+      ).toLocaleString('vi')}</p>
+<h2><strong>Th&ocirc;ng tin nội dung y&ecirc;u cầu:</strong></h2>
+<h2><strong>Ti&ecirc;u đề:</strong> ${title}</h2>
+<p><strong>Tóm tắt:<br></strong></p>
+<p>${summary}</p>
+<p>&nbsp;</p>
+<p><strong>=============</strong></p>
+<p><strong>Mailer - By Tuan Hung<br>Được tạo l&uacute;c: </strong>${new Date().toLocaleString(
+        'vi',
+      )}</p>`,
+    };
+    try {
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log('Email sent:', info.response);
+      if (!info.response.includes('OK'))
+        throw new InternalServerErrorException(
+          'Có lỗi xảy ra khi gửi yêu cầu!',
+        );
+      return { data: 'OK', message: 'Đã gửi yêu cầu bài viết!' };
+    } catch (error) {
+      console.log('Error:', error);
+      throw error;
+    }
+  }
 
   async contributorRegister({ user, phone, address, carrer, intro }) {
     const supperAdmins = await this.prisma.user.findMany({
@@ -73,15 +113,15 @@ export class MailerService {
       to: supperAdmins[0]
         ? supperAdmins.map((item) => item.email)
         : 'hungbuituan1@gmail.com',
-      subject: '[VIETLIT SYSTEM]',
-      html: `<h1>Nhận được y&ecirc;u cầu đăng k&iacute; trở th&agrave;nh cộng t&aacute;c vi&ecirc;n</h1><h2>Th&ocirc;ng tin người đăng k&iacute;:</h2>
+      subject: '[Học văn không vất vả - Đăng kí cộng tác viên]',
+      html: `<h2>Nhận được y&ecirc;u cầu đăng k&iacute; trở th&agrave;nh cộng t&aacute;c vi&ecirc;n</h2><h2>Th&ocirc;ng tin người đăng k&iacute;:</h2>
 <p><strong>Họ t&ecirc;n:&nbsp;</strong>${user.name}</p>
 <p><strong>Email:&nbsp;</strong>${user.email}</p>
 <p><strong>Ng&agrave;y tham gia:&nbsp;</strong>${new Date(
         user.createdAt,
       ).toLocaleString('vi')}</p>
 <p><strong>Số điện thoại:&nbsp;</strong>${phone}</p>
-<p><strong>Địa chỉ;&nbsp;</strong>${address}</p>
+<p><strong>Địa chỉ:&nbsp;</strong>${address}</p>
 <p><strong>Nghề nghiệp hiện tại:&nbsp;</strong>${carrer}</p>
 <p><strong>Giới thiệu:</strong>&nbsp;${intro}</p>`,
     };

@@ -22,6 +22,7 @@ async function main() {
   // create two dummy articles
   await prisma.setting.deleteMany();
   await prisma.literaryCategory.deleteMany();
+  await prisma.advertisement.deleteMany();
   await prisma.postReaction.deleteMany();
   await prisma.postTag.deleteMany();
   await prisma.comment.deleteMany();
@@ -30,7 +31,7 @@ async function main() {
   await prisma.literary.deleteMany();
   await prisma.tag.deleteMany();
   await prisma.user.deleteMany();
-  const tmpArr = Array.from({ length: 20 });
+  const tmpArr = Array.from({ length: 4 });
 
   await prisma.user.createMany({
     data: [
@@ -408,7 +409,7 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
         dislikeCount: Math.round(Math.random() * 100),
         status: 'PUBLISHED',
         createdBy: 1,
-        literary: 4,
+        literary: 5,
       },
     ],
   });
@@ -494,6 +495,28 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
 
   await prisma.setting.createMany({
     data: [{ settingId: 1 }, { settingId: 2 }],
+  });
+  [1, 1, 1, 1, 1].forEach(async (e, i) => {
+    const publishedPostCount = await prisma.post.count({
+      where: {
+        AND: [
+          {
+            literary: i + 1,
+          },
+          {
+            status: 'PUBLISHED',
+          },
+        ],
+      },
+    });
+    await prisma.literary.update({
+      where: {
+        literaryId: i + 1,
+      },
+      data: {
+        postCount: publishedPostCount,
+      },
+    });
   });
 }
 

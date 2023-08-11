@@ -89,7 +89,6 @@ export class LiteraryController {
     @Param('id') id: string,
     @Body() updateLiteraryDto: UpdateLiteraryDto,
   ) {
-    console.log(updateLiteraryDto);
     return this.literaryService.update(+id, updateLiteraryDto);
   }
   @Roles('ADMIN', 'SUPERADMIN')

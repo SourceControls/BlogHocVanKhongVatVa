@@ -88,7 +88,7 @@ function Tags() {
                                     </Text>
                                 </td>
                                 <td>
-                                    <Anchor href='/search?tags=tam-cam' target='_blank'>
+                                    <Anchor href={'/search?tag=' + item.tagName} target='_blank'>
                                         <Group spacing='xs'>
                                             {item.slug}
                                             <ExternalLink />

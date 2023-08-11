@@ -68,9 +68,9 @@ let mockSuperAdmin = [
         icon: IconUsersGroup,
         link: '/admin/users',
         links: [
-            {label: 'Viewer', link: '/admin/users'},
-            {label: 'Contributor', link: '/admin/users'},
-            {label: 'Admin', link: '/admin/users'},
+            {label: 'Viewer', link: '/admin/users?role=VIEWER'},
+            {label: 'Contributor', link: '/admin/users?role=CONTRIBUTOR'},
+            {label: 'Admin', link: '/admin/users?role=ADMIN'},
         ],
     },
 ]

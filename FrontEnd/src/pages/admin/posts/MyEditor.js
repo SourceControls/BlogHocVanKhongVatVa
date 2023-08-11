@@ -5,6 +5,7 @@ import {
     Badge,
     Button,
     Checkbox,
+    Divider,
     Group,
     Image,
     MultiSelect,
@@ -117,7 +118,7 @@ export default function MyEditor({post, close, mutate, posts}) {
     return (
         <>
             <Group position='apart' align='flex-start'>
-                <Group align='center' mb='md'>
+                <Group align='center'>
                     {form.values.status === 'PUBLISHED' && <Badge color='green'>Công khai</Badge>}
                     {form.values.status === 'DRAFT' && <Badge color='dark'>Nháp</Badge>}
                     {form.values.status === 'HIDE' && <Badge color='red'>Đã ẩn</Badge>}
@@ -144,14 +145,14 @@ export default function MyEditor({post, close, mutate, posts}) {
                             Lưu & Gửi duyệt
                         </Button>
                     )}
-                    {users[0]?.role !== 'CONTRIBUTOR' && form.values.status !== 'PUBLISHED' && (
+                    {users[0]?.role !== 'CONTRIBUTOR' && (
                         <Button onClick={() => handleSubmit('published')} leftIcon={<WorldUpload />}>
                             Lưu & Công khai
                         </Button>
                     )}
                 </Group>
             </Group>
-            <Group noWrap align='flex-start' spacing='md' id='editor'>
+            <Group noWrap align='flex-start' spacing='md' id='editor' mt='md'>
                 <Editor
                     apiKey='bxn0ggwcir62q9v1mnynxincyleaypne5h9atduc394qhp49'
                     onInit={(evt, editor) => {

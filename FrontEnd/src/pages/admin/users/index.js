@@ -49,7 +49,7 @@ function Users() {
                         {value: 'CONTRIBUTOR', label: 'Người đóng góp'},
                         {value: 'ADMIN', label: 'Quản trị viên'},
                     ]}
-                    onChange={(val) => changeQuery('group', val)}
+                    onChange={(val) => changeQuery('role', val)}
                 />
             </Group>
             <Table w='100%' verticalSpacing='md'>
@@ -113,7 +113,7 @@ function Users() {
                                     </Group>
                                 </td>
                                 <td>
-                                    <Text> {item.createdAt}</Text>
+                                    <Text> {new Date(item.createdAt).toLocaleDateString()}</Text>
                                     <Text color='dimmed'>{formatDate(item.createdAt)}</Text>
                                 </td>
                                 <td>

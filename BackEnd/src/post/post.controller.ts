@@ -99,8 +99,8 @@ export class PostController {
   ) {
     // console.log(request.headers.referer);  //http://localhost:3001/home
 
-    //call from admin page, then rs will check role to return rs
-    //không thể thấy được thư mục draft của
+    //call from admin page, result depend on authUser
+    //contributor chỉ được thấy bài của mình
     if (req['authUser'].role === 'CONTRIBUTOR') {
       author = req['authUser'].slug;
     }

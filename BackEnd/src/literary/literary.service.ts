@@ -30,6 +30,7 @@ const select = {
     select: {
       category: {
         select: {
+          categoryId: true,
           categoryName: true,
           slug: true,
         },
@@ -42,10 +43,18 @@ const select = {
 export class LiteraryService {
   constructor(private prisma: PrismaService) {}
   async create(createLiteraryDto: CreateLiteraryDto) {
-    console.log(createLiteraryDto);
+    const literaryCategory = createLiteraryDto.categories.map((e) => ({
+      categoryId: e,
+    }));
+    delete createLiteraryDto.categories;
     try {
       const createdLiterary = await this.prisma.literary.create({
-        data: createLiteraryDto,
+        data: {
+          ...createLiteraryDto,
+          literaryCategory: {
+            create: literaryCategory,
+          },
+        },
       });
       return { data: createdLiterary, message: 'Thêm tác phẩm thành công!' };
     } catch (error) {
@@ -76,6 +85,7 @@ export class LiteraryService {
       });
       return { data: literary };
     } catch (error) {
+      console.log(error.message);
       throw new ForbiddenException(error.message);
     }
   }
@@ -92,18 +102,31 @@ export class LiteraryService {
       });
       return { data: updatedLiterary };
     } catch (error) {
+      console.log(error.message);
       throw new ForbiddenException(error.message);
     }
   }
 
   async update(id: number, updateLiteraryDto: UpdateLiteraryDto) {
-    delete updateLiteraryDto.createdBy;
+    const literaryCategory = updateLiteraryDto.categories.map((e) => ({
+      categoryId: e,
+    }));
+    delete updateLiteraryDto.categories;
     try {
+      await this.prisma.literaryCategory.deleteMany({
+        where: { literaryId: id },
+      });
       const updatedLiterary = await this.prisma.literary.update({
         where: {
           literaryId: id,
         },
-        data: updateLiteraryDto,
+        data: {
+          ...updateLiteraryDto,
+          literaryCategory: {
+            create: literaryCategory,
+          },
+        },
+        select,
       });
       return {
         data: updatedLiterary,
@@ -121,6 +144,7 @@ export class LiteraryService {
         where: {
           literaryId: id,
         },
+        select,
       });
       return {
         data: deletedLiterary,

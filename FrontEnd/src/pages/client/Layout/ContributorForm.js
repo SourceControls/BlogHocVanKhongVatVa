@@ -9,7 +9,7 @@ function ContributorForm({close}) {
             name: 'Thu Huyền',
             phone: '0973343541',
             address: 'Phủ Lý, Hà Nam',
-            career: 'Giáo viên văn học',
+            carrer: 'Giáo viên văn học',
             intro: 'Tôi là một người đam mê về văn học, sinh năm 1998 và hiện đang là một giảng viên về môn này. Từ khi còn nhỏ, tôi đã luôn mê mải đắm chìm trong thế giới của các tác phẩm văn học, từ những cuốn sách kinh điển cho đến những bài viết ngắn đầy cảm xúc. Được trải qua những hành trình tinh tế trong các trang sách, tôi đã thấu hiểu được sức mạnh của từng câu chữ, từng dòng văn, và tầm ảnh hưởng của chúng đối với cuộc sống của mỗi người.',
         },
     })

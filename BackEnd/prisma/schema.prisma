@@ -23,11 +23,11 @@ model advertisement {
   visibility                       Boolean?             @default(true)
   price                            Decimal?             @default(0.0000000) @db.Decimal(10, 7)
   createdAt                        DateTime             @default(now())
-  createdBy                        Int
+  createdBy                        Int?
   updatedAt                        DateTime             @updatedAt
   updatedBy                        Int?
-  user_advertisement_createdByUser user?                @relation("advertisement_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "advertisement_ibfk_1")
-  user_advertisement_updatedByUser user?                @relation("advertisement_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "advertisement_ibfk_2")
+  user_advertisement_createdByUser user?                @relation("advertisement_createdByUser", fields: [createdBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "advertisement_ibfk_1")
+  user_advertisement_updatedByUser user?                @relation("advertisement_updatedByUser", fields: [updatedBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "advertisement_ibfk_2")
 
   @@index([createdBy], map: "createdBy")
   @@index([updatedBy], map: "updatedBy")
@@ -76,13 +76,13 @@ model literary {
   timeOfCreation   String?            @db.VarChar(500)
   image            String?            @db.VarChar(500)
   createdAt        DateTime           @default(now())
-  createdBy        Int
+  createdBy        Int?
   updatedAt        DateTime           @updatedAt
   updatedBy        Int?
   view             Int                @default(0)
   postCount        Int                @default(0)
-  updatedByUser    user?              @relation("literary_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "literary_ibfk_1")
-  createdByUser    user?              @relation("literary_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "literary_ibfk_2")
+  updatedByUser    user?              @relation("literary_updatedByUser", fields: [updatedBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "literary_ibfk_1")
+  createdByUser    user?              @relation("literary_createdByUser", fields: [createdBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "literary_ibfk_2")
   literaryCategory literaryCategory[]
   literaryPosts    post[]             @relation("post_literaryToliterary")
 
@@ -113,7 +113,7 @@ model post {
   status          post_status     @default(DRAFT)
   visibility      post_visibility @default(PUBLIC)
   view            Int             @default(0)
-  createdBy       Int
+  createdBy       Int?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
   updatedBy       Int?
@@ -122,10 +122,10 @@ model post {
   likeCount       Int             @default(0)
   dislikeCount    Int             @default(0)
   comment         comment[]
-  updatedByUser   user?           @relation("post_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "post_ibfk_1")
-  publishedByUser user?           @relation("post_publishedByUser", fields: [publishedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "post_ibfk_2")
-  createdByUser   user?           @relation("post_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "post_ibfk_3")
-  postLiterary    literary?       @relation("post_literaryToliterary", fields: [literary], references: [literaryId], onDelete: Cascade, onUpdate: Cascade, map: "post_ibfk_4")
+  updatedByUser   user?           @relation("post_updatedByUser", fields: [updatedBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "post_ibfk_1")
+  publishedByUser user?           @relation("post_publishedByUser", fields: [publishedBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "post_ibfk_2")
+  createdByUser   user?           @relation("post_createdByUser", fields: [createdBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "post_ibfk_3")
+  postLiterary    literary?       @relation("post_literaryToliterary", fields: [literary], references: [literaryId], onDelete: SetNull, onUpdate: Cascade, map: "post_ibfk_4")
   postReaction    postReaction[]
   postTag         postTag[]
 
@@ -185,13 +185,13 @@ model tag {
   slug          String?   @unique(map: "slug") @db.VarChar(200)
   description   String?   @db.VarChar(500)
   createdAt     DateTime  @default(now())
-  createdBy     Int
+  createdBy     Int?
   updatedAt     DateTime  @updatedAt
   updatedBy     Int?
   usedCount     Int?      @default(0)
   postTag       postTag[]
-  updatedByUser user?     @relation("tag_updatedByUser", fields: [updatedBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "tag_ibfk_1")
-  createdByUser user?     @relation("tag_createdByUser", fields: [createdBy], references: [userId], onDelete: Cascade, onUpdate: Cascade, map: "tag_ibfk_2")
+  updatedByUser user?     @relation("tag_updatedByUser", fields: [updatedBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "tag_ibfk_1")
+  createdByUser user?     @relation("tag_createdByUser", fields: [createdBy], references: [userId], onDelete: SetNull, onUpdate: Cascade, map: "tag_ibfk_2")
 
   @@index([createdBy], map: "createdBy")
   @@index([updatedBy], map: "updatedBy")

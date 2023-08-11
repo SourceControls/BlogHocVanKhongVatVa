@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsEmpty,
   IsNotEmpty,
@@ -44,6 +45,8 @@ export class CreateLiteraryDto {
   @IsOptional()
   image: string;
 
+  @IsOptional()
+  categories: Array<number>;
   @IsNumber()
   @IsOptional()
   createdBy: number;
