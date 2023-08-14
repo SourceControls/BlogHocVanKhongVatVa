@@ -1,4 +1,4 @@
-import {Title, Text, Stack} from '@mantine/core'
+import {Title, Text, Stack, Group} from '@mantine/core'
 import Parser from 'html-react-parser'
 import {useState, useEffect} from 'react'
 
@@ -10,7 +10,8 @@ function Postcontent(props) {
     }, [])
     return (
         <Stack>
-            <Title>Phân Tích Nhân Vật Phùng Trong Tấm Cám</Title>
+            <Title>{props.post.title}</Title>
+
             <Text
                 // className='client-post-content'
                 sx={{
@@ -27,6 +28,14 @@ function Postcontent(props) {
                 style={{overflow: 'hidden'}}>
                 {parsedContent}
             </Text>
+
+            <Group spacing='xs'>
+                {props.post.postTag.map((e, i) => (
+                    <Text color='dimmed' key={i}>
+                        {'#' + e.tag.tagName}
+                    </Text>
+                ))}
+            </Group>
         </Stack>
     )
 }

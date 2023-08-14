@@ -23,7 +23,7 @@ function GridLiterary() {
     return (
         <Stack>
             <Group align='flex-end' mb='1rem' spacing='xl'>
-                <Title order={3}>
+                <Title order={3} maw='60%'>
                     Kết quả tìm kiếm tác phẩm cho: {"'" + (router.query.key || router.query.tag) + "'"}
                 </Title>
 

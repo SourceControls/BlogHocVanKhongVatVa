@@ -82,6 +82,13 @@ export default function FeaturedPosts() {
                                                 publisherName={item.createdByUser.name}
                                                 publishedAt={item.createdAt}
                                             />
+                                            <Group spacing='xs'>
+                                                {item.postTag.map((e, i) => (
+                                                    <Text color='dimmed' key={i}>
+                                                        {'#' + e.tag.tagName}
+                                                    </Text>
+                                                ))}
+                                            </Group>
                                             <Text color='dimmed'>
                                                 <Group spacing='xl'>
                                                     <Group spacing='xs'>

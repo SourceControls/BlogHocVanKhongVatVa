@@ -134,6 +134,7 @@ export class PostController {
   findOne(@Param('slug') slug: string) {
     return this.postService.findOne(slug);
   }
+
   @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
   @Post()
   create(@Body() createPostDto: CreatePostDto) {

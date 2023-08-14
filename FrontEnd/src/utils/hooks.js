@@ -2,6 +2,7 @@ import {getPosts} from './service'
 import {axios} from './axios'
 import useSWRInfinite from 'swr/infinite'
 import useSWR from 'swr'
+import {toast} from 'react-toastify'
 
 export function useProfile(query, slug = '') {
     const {data, isLoading, mutate} = useSWRInfinite((index) => '/api/auth/profile', axios.get)
@@ -121,6 +122,9 @@ export function useComments(query) {
         (index) => `/api/post/${query}/comment?page=${index + 1}`,
         axios.get,
     )
+    // if (data?.length > 1 && data[data.length - 1]?.length == 0) {
+    //     toast.info('Không còn bình luận')
+    // }
     const comments = data ? [].concat(...data) : []
     return {
         comments,

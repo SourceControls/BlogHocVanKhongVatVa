@@ -2,7 +2,7 @@ import Layout from '../Layout'
 import {useRouter} from 'next/router'
 import {AspectRatio, Box, Group, Image, Select, Skeleton, Spoiler, Stack, Text, TextInput, Title} from '@mantine/core'
 import {Section, GridPost, Decorate} from '@comp'
-import {Eye, News, Search, ThumbUp} from 'tabler-icons-react'
+import {Eye, EyeOff, News, Search, ThumbUp} from 'tabler-icons-react'
 import {useMediaQuery} from '@mantine/hooks'
 import {useLiteries, countLiterayView} from '@util'
 import ViewCountTracker from './ViewCountTracker'
@@ -86,7 +86,20 @@ function Category() {
                 <Text size='xl' fw='bold'>
                     Tóm tắt
                 </Text>
-                <Spoiler maxHeight={smScreen ? 200 : 310} showLabel='...Xem Thêm' hideLabel='Ẩn Bớt'>
+                <Spoiler
+                    maxHeight={smScreen ? 200 : 310}
+                    showLabel={
+                        <Group align='center' spacing='6px' c>
+                            <label>...Xem Thêm</label>
+                            <Eye />
+                        </Group>
+                    }
+                    hideLabel={
+                        <Group align='center' spacing='6px' c>
+                            <label> - Ẩn Bớt</label>
+                            <EyeOff />
+                        </Group>
+                    }>
                     <Text className='format-content'>{literaries[0].summary}</Text>
                 </Spoiler>
             </Stack>

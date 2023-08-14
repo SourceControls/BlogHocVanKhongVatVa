@@ -1,5 +1,4 @@
 import {axios} from './axios'
-import testData from './data'
 
 export async function updateConfig(data) {
     return axios.patch(`/api/setting`, data) // Convert the data object to a JSON string

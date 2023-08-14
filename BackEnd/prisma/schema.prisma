@@ -164,15 +164,15 @@ model postTag {
 
 model setting {
   settingId        Int      @id @default(autoincrement())
-  fontFamily       String   @default("Mali") @db.VarChar(500)
-  primaryColor     String   @default("brown") @db.VarChar(500)
-  webTitle         String   @default("Học Văn Không Vất Vả") @db.VarChar(500)
-  logo             String   @default("https://i.ibb.co/wdqbVkv/Vietlit-Img.png") @db.VarChar(500)
-  favIcon          String   @default("https://i.ibb.co/ZzZgHxT/favicon.png") @db.VarChar(500)
-  homeHeroTitle    String   @default("Bạn Đang Cần Tham Khảo Bài Viết Văn Học?") @db.VarChar(500)
-  homeHeroSubtitle String   @default("Học Văn Không Vất Vả là nơi chia sẻ, thảo luận những bài nghị luận, phân tích văn học chất lượng hoàn toàn miễn phí.") @db.VarChar(500)
-  homeHeroCover    String   @default("https://i.ibb.co/VNQT78b/Vietlit-Img-1.png") @db.VarChar(500)
-  readPostCover    String   @default("https://i.ibb.co/6vhgRhM/hero.png") @db.VarChar(500)
+  fontFamily       String   @db.VarChar(500)
+  primaryColor     String   @db.VarChar(500)
+  webTitle         String   @db.VarChar(500)
+  logo             String   @db.VarChar(500)
+  favIcon          String   @db.VarChar(500)
+  homeHeroTitle    String   @db.VarChar(500)
+  homeHeroSubtitle String   @db.VarChar(500)
+  homeHeroCover    String   @db.VarChar(500)
+  readPostCover    String   @db.VarChar(500)
   updatedAt        DateTime @updatedAt
   updatedBy        Int?
 

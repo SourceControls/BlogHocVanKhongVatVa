@@ -239,9 +239,9 @@ async function main() {
     ],
   });
 
-  await prisma.setting.createMany({
-    data: [{ settingId: 1 }, { settingId: 2 }],
-  });
+  // await prisma.setting.createMany({
+  //   data: [{ settingId: 1 }, { settingId: 2 }],
+  // });
 }
 
 // execute the main function

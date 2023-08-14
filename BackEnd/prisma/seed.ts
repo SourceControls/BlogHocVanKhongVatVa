@@ -494,7 +494,34 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
   });
 
   await prisma.setting.createMany({
-    data: [{ settingId: 1 }, { settingId: 2 }],
+    data: [
+      {
+        settingId: 1,
+        fontFamily: 'Mali',
+        primaryColor: 'brown',
+        webTitle: 'Học Văn Không Vất Vả',
+        logo: 'https://i.ibb.co/wdqbVkv/Vietlit-Img.png',
+        favIcon: 'https://i.ibb.co/ZzZgHxT/favicon.png',
+        homeHeroTitle: 'Bạn Đang Cần Tham Khảo Bài Viết Văn Học?',
+        homeHeroSubtitle:
+          'Học Văn Không Vất Vả là nơi chia sẻ, thảo luận những bài nghị luận, phân tích văn học chất lượng hoàn toàn miễn phí.',
+        homeHeroCover: 'https://i.ibb.co/VNQT78b/Vietlit-Img-1.png',
+        readPostCover: 'https://i.ibb.co/6vhgRhM/hero.png',
+      },
+      {
+        settingId: 2,
+        fontFamily: 'Mali',
+        primaryColor: 'brown',
+        webTitle: 'Học Văn Không Vất Vả',
+        logo: 'https://i.ibb.co/wdqbVkv/Vietlit-Img.png',
+        favIcon: 'https://i.ibb.co/ZzZgHxT/favicon.png',
+        homeHeroTitle: 'Bạn Đang Cần Tham Khảo Bài Viết Văn Học?',
+        homeHeroSubtitle:
+          'Học Văn Không Vất Vả là nơi chia sẻ, thảo luận những bài nghị luận, phân tích văn học chất lượng hoàn toàn miễn phí.',
+        homeHeroCover: 'https://i.ibb.co/VNQT78b/Vietlit-Img-1.png',
+        readPostCover: 'https://i.ibb.co/6vhgRhM/hero.png',
+      },
+    ],
   });
   [1, 1, 1, 1, 1].forEach(async (e, i) => {
     const publishedPostCount = await prisma.post.count({

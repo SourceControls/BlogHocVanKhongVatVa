@@ -15,7 +15,7 @@ function Post({post}) {
     const [viewed, setViewed] = useState(false)
     const router = useRouter()
     const {settings} = useSettings()
-    const {posts, isLoading, mutate} = usePosts('', `/${router.isReady && router.query.slug}`)
+    const {posts: relevantPost, isLoading, mutate} = usePosts('', `/${router.isReady && router.query.slug}`)
     const handleCountView = () => {
         setViewed(true)
         countPostView(post.slug).then((rs) => {
@@ -34,12 +34,16 @@ function Post({post}) {
             </Box>
             <Grid mx='auto'>
                 <Grid.Col span={smScreen ? 12 : 3} order={smScreen ? 2 : 1}>
-                    {posts[0]?.postId && <PostAction post={posts[0]} direction={smScreen && 'row'} mutate={mutate} />}
+                    {relevantPost[0]?.postId && (
+                        <PostAction post={relevantPost[0]} direction={smScreen && 'row'} mutate={mutate} />
+                    )}
                 </Grid.Col>
                 <Grid.Col span={smScreen ? 12 : 6} order={smScreen ? 1 : 2}>
                     <PostHeader post={post} />
                     <Postcontent post={post} />
-                    {!viewed && <ViewCountTracker postId={posts[0]?.postId} onComponentInView={handleCountView} />}
+                    {!viewed && (
+                        <ViewCountTracker postId={relevantPost[0]?.postId} onComponentInView={handleCountView} />
+                    )}
                 </Grid.Col>
                 <Grid.Col span={smScreen ? 12 : 6} order={3} offset={smScreen ? 0 : 3}>
                     <Section title='Bình Luận'>
@@ -48,7 +52,9 @@ function Post({post}) {
                 </Grid.Col>
             </Grid>
             <Section title='Bài Viết Liên Quan'>
-                <GridPost />
+                {relevantPost[0]?.postId && (
+                    <GridPost query={'&' + relevantPost[0].title} excludePostId={relevantPost[0]?.postId} />
+                )}
             </Section>
         </Stack>
     )

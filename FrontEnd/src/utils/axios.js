@@ -1,13 +1,5 @@
 import axios from 'axios'
-// import {useState} from 'react'
-// import {LoadingOverlay} from '@mantine/core'
 import {toast} from 'react-toastify'
-
-var displayGlobalLoading, setDisplayGlobalLoading
-// function GlobalLoading() {
-//     ;[displayGlobalLoading, setDisplayGlobalLoading] = useState(false)
-//     return <LoadingOverlay visible={displayGlobalLoading} overlayBlur={2} />
-// }
 
 const instance = axios.create({
     timeout: 10000,
@@ -18,32 +10,25 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     function (config) {
-        // if (!displayGlobalLoading) setDisplayGlobalLoading(true)
         console.log(config.method.toLocaleUpperCase() + ' || ' + config.url)
         return config
     },
     function (error) {
-        // setDisplayGlobalLoading(false)
         return toast.error(error.message)
     },
 )
 instance.interceptors.response.use(
     async function (response) {
-        // if (displayGlobalLoading) setTimeout(() => setDisplayGlobalLoading(false), 0)
-
         // hiển thị message
         if (response.config.method != 'get' && response.data.message)
             // if (response.data.state) {
             toast.success(response.data.message)
-        // } else {
-        // toast.error(response.data.message)
-        // }
         if (response.config.method == 'get')
-            if (!response.data.data || response.data.data?.length == 0) toast.info('Không còn gì để xem!')
+            if ((!response.data.data || response.data.data?.length == 0) && !response.config.url.includes('page=1'))
+                toast.info('Không còn gì để xem!')
         return response.data.data
     },
     function (error) {
-        // setDisplayGlobalLoading(false)
         const hideAlert = ['/api/user/profile?page=1']
 
         let message = error.response?.data?.message
@@ -51,8 +36,7 @@ instance.interceptors.response.use(
             message = message[0]
         }
 
-        if (hideAlert.includes(error.response?.config.url)) return
-        toast.error(message)
+        if (!hideAlert.includes(error.response?.config.url)) toast.error(message)
     },
 )
 

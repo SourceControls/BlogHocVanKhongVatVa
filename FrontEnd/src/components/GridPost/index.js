@@ -1,5 +1,6 @@
 import {
     AspectRatio,
+    Badge,
     Box,
     Button,
     Divider,
@@ -20,7 +21,7 @@ import {Eye, Heart, ThumbUp} from 'tabler-icons-react'
 import {usePosts} from '@util'
 import {IconStarFilled} from '@tabler/icons-react'
 
-export function GridPost({query}) {
+export function GridPost({query, excludePostId}) {
     // const [page, setPage] = useState(1)
     const {posts, isLoading, size, setSize} = usePosts(query || '')
     const smScreen = useMediaQuery('(max-width: 48em)')
@@ -30,6 +31,7 @@ export function GridPost({query}) {
             <Grid m={0}>
                 {posts.length != 0 &&
                     posts.map((item, index) => {
+                        if (item.postId === excludePostId) return <></>
                         let span = 4
                         if (smScreen) span = 12
                         return (
@@ -58,7 +60,7 @@ export function GridPost({query}) {
                                         grow={!smScreen && span == 12}
                                         spacing={!smScreen && span == 12 && '40px'}
                                         align='flex-start'>
-                                        <Stack>
+                                        <Stack spacing='6px'>
                                             <Title order={3} lineClamp={3}>
                                                 {item.title}{' '}
                                                 {item.featured && (
@@ -67,6 +69,7 @@ export function GridPost({query}) {
                                                     </Tooltip>
                                                 )}
                                             </Title>
+
                                             <Text lineClamp={3} className='format-content'>
                                                 {item.summary}
                                             </Text>
@@ -74,6 +77,13 @@ export function GridPost({query}) {
                                                 publisherName={item.createdByUser.name}
                                                 publishedAt={item.createdAt}
                                             />
+                                            <Group spacing='xs'>
+                                                {item.postTag.map((e, i) => (
+                                                    <Text color='dimmed' key={i}>
+                                                        {'#' + e.tag.tagName}
+                                                    </Text>
+                                                ))}
+                                            </Group>
                                             <Text color='dimmed'>
                                                 <Group spacing='xl'>
                                                     <Group spacing='xs'>
