@@ -11,16 +11,17 @@ function getInitialValues(literary) {
               categories: literary.literaryCategory.map((e) => e.category.categoryId),
           }
         : {
-              title: 'Tấm cám ' + Math.round(Math.random() * 1000),
-              slug: 'tam-cam-' + Math.round(Math.random() * 1000),
-              intro: 'Tấm Cám (chữ Nôm: 糝𥽇) là một câu chuyện cổ tích Việt Nam thuộc thể loại truyện cổ tích thần kì. Dù có nhiều dị bản, câu chuyện này phản ánh những mâu thuẫn trong gia đình, đặc biệt là mối quan hệ mẹ kế - con chồng.',
+              title: 'Vợ chồng A Phủ',
+              slug: 'vo-chong-a-phu',
+              intro: '"Vợ Chồng A Phủ" là một tác phẩm văn học nổi tiếng của nhà văn Tô Hoài - một trong những tên tuổi sáng giá của văn học Việt Nam thế kỷ 20. Tác phẩm được viết dưới hình thức truyện ngắn, nhưng lại mang trong mình sự đa chiều, sâu sắc về tình yêu và cuộc sống.Tấm Cám (chữ Nôm: 糝𥽇) là một câu chuyện cổ tích Việt Nam thuộc thể loại truyện cổ tích thần kì. Dù có nhiều dị bản, câu chuyện này phản ánh những mâu thuẫn trong gia đình, đặc biệt là mối quan hệ mẹ kế - con chồng.',
               summary:
-                  'Tấm Cám là câu chuyện dân gian kể về hai chị em Tấm Cám. Tấm mồ côi mẹ từ nhỏ sống với mẹcon dì ghẻ và Cám. Mẹ con Cám thường xuyên hành hạ đối xử bất công với Tấm. Khi thì cướp hếtcá mà Tấm bắt được, khi thì lại giết hại cả bống bạn của Tấm, lúc lại không cho Tấm đi trẩyhội, bắt Tấm ở nhà nhặt thóc và gạo. Tuy nhiên khi được Bụt giúp đỡ Tấm đã được đi chơi hộivà gặp gỡ nhà vua. Khi trở về từ dạ tiệc Tấm đánh rơi chiếc hài và nhà vua theo đó mà tìmđược người để cưới về làm vợ. Tấm trở thành hoàng hậu, điều đó làm mẹ con Cám ganh ghét vàlập mưu giết hại Tấm. Nhưng Tấm đã hóa thành chim vàng anh, cây xoan đào, khung cửi, quảthị. Và cuối cùng Tấm gặp lại nhà vua và sống trong cung hạnh phúc đến suốt đời. Còn mẹ conCám phải chịu báo ứng vì những tội ác mà mình đã gây ra.',
-              authorName: 'Khuyết danh',
-              timeOfCreation: 'Mùa xuân 1975',
-              image: 'https://i.ibb.co/W2zv6HF/T-m-C-m-1-removebg-preview.png',
+                  'Vợ chồng A phủ kể về đôi vợ chồng người H’ Mông ở vùng Tây Bắc. Mị là một cô gái xinh đẹp có tài thổi sáo. Một đêm xuân, Mị bị A Sử lừa, bắt về trình ma và làm con dâu gạt nợ cho nhà thống lí Pá Tra. Ban đầu, Mị định tự tử nhưng vì thương cha đành cam chịu sống trong đau khổ câm lặng “lùi lũi như con rùa nuôi trong xó cửa”. Ngày này qua ngày khác dần dần Mị trở nên vô cảm và nghĩ mình không bằng con trâu con ngựa, chỉ biết làm những việc lặp đi lặp lại, Mị cũng chẳng còn buồn nữa. Ngày Tết lại về, Mị lén uống rượu một mình. Không khí vui nhộn, nhất là tiếng sáo gọi bạn tình đã giúp Mị nhớ lại những ngày trước, khơi dậy ở Mị khát vọng tình yêu hạnh phúc. Mị vào buồng và định thay váy áo đi chơi thì bị A Sử bắt trói đứng vào cột nhà, bằng cả thúng dây đay, cả tóc Mị. Trong cơn chập chờn mê tỉnh, Mị vẫn thả hồn theo các cuộc chơi. Đến lúc thích chí vùng bước đi mới biết toàn thân bị trói chặt, đau buốt. Cũng đêm đó, A Phủ, một thanh niên mồ côi nhưng khoẻ mạnh đã đánh A Sử, vì bất bình trước trò xấc xược của hắn ta. A Phủ bị làng bắt về làng đánh đập dã man và trở thành người ở trong nhà Pá Tra để trừ nợ. Một hôm A Phủ vì mải mê bẫy nhím nên đã để hổ bắt mất một con bò. A Phủ bị thống lí Pá Tra bắt trói đứng vào một cây cột, suốt mấy ngày đêm chờ khi nào A Sử bắn được hổ mới tha. Mị đã nhìn thấy hai dòng nước mắt của A Phủ lặng lẽ rơi trên hai hóm má xám đen vì kiệt sức, tuyệt vọng, Mị động lòng thương người cùng cảnh ngộ. Sau một hồi suy nghĩ, Mị đã cắt dây trói cho A Phủ. Rồi, Mị vụt chạy theo anh ta. Cả hai băng rừng sang Phiềng Sa, trở thành vợ chồng.',
+              authorName: 'Tô Hoài',
+              timeOfCreation: 'Năm 1952 trong chiến dịch giải phóng Tây Bắc',
+              image: '',
+              categories: [],
               visibility: true,
-              featured: false,
+              featured: true,
               file: undefined,
           }
 }
@@ -36,7 +37,7 @@ function LiteraryForm({literary, close, mutate, literaries}) {
         if (!literary) {
             //create new
             createLiterary(form.values).then((rs) => {
-                if (rs.literaryId) {
+                if (rs?.literaryId) {
                     mutate([rs, ...literaries], false)
                     close()
                 }

@@ -8,12 +8,10 @@ function RequestPostForm({close}) {
 
     const form = useForm({
         initialValues: {
-            title: 'Phân tích tâm trạng của nhân vật tấm khi bị mẹ bắt ở nhà!',
-            detail: `- Sự bất mãn và tủi hận
-- Sự tuyệt vọng và cô đơn
-- Sự kiên nhẫn và lạc quan
-- Ý thức về bản thân và ước mơ
-- Sự kiên định và tinh thần chiến đấu`,
+            title: 'Phân tích Mị trong đêm tình mùa xuân và đêm đông cứu A Phủ',
+            detail: `- Dễ nhớ
+- Ngắn gọn
+- Dùng cho học sinh giỏi văn`,
             limitTime: undefined,
         },
     })
@@ -33,7 +31,7 @@ function RequestPostForm({close}) {
                 Gửi Yêu Cầu Viết Bài
             </Text>
             <form onSubmit={form.onSubmit(handleSubmit)}>
-                <Stack>
+                <Stack spacing='xs'>
                     <TextInput
                         {...form.getInputProps('title')}
                         label='Tiêu Đề'

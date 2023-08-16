@@ -23,7 +23,7 @@ instance.interceptors.response.use(
         if (response.config.method != 'get' && response.data.message)
             // if (response.data.state) {
             toast.success(response.data.message)
-        if (response.config.method == 'get')
+        if (response.config.method == 'get' && response.config.url.includes('page'))
             if ((!response.data.data || response.data.data?.length == 0) && !response.config.url.includes('page=1'))
                 toast.info('Không còn gì để xem!')
         return response.data.data

@@ -43,8 +43,8 @@ function PostAction(props) {
                             } else {
                                 let post = {...props.post, likeCount: props.post.likeCount + 1}
                                 setUserReact('LIKE')
-                                if (userReact === 'DISLIKE')
-                                    props.mutate([{...post, dislikeCount: props.post.dislikeCount - 1}], false)
+                                if (userReact === 'DISLIKE') post.dislikeCount = props.post.dislikeCount - 1
+                                props.mutate([post], false)
                             }
                         }}>
                         {userReact == 'LIKE' ? <IconThumbUpFilled size='1.8rem' /> : <IconThumbUp size='1.8rem' />}
@@ -64,8 +64,8 @@ function PostAction(props) {
                             } else {
                                 let post = {...props.post, dislikeCount: props.post.dislikeCount + 1}
                                 setUserReact('DISLIKE')
-                                if (userReact === 'LIKE')
-                                    props.mutate([{...post, likeCount: props.post.likeCount - 1}], false)
+                                if (userReact === 'LIKE') post.likeCount = props.post.likeCount - 1
+                                props.mutate([post], false)
                             }
                         }}>
                         {userReact == 'DISLIKE' ? <IconThumbDownFilled size='1.8rem' /> : <ThumbDown size='1.8rem' />}

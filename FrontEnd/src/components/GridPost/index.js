@@ -61,7 +61,7 @@ export function GridPost({query, excludePostId}) {
                                         spacing={!smScreen && span == 12 && '40px'}
                                         align='flex-start'>
                                         <Stack spacing='6px'>
-                                            <Title order={3} lineClamp={3}>
+                                            <Title order={3} lineClamp={2}>
                                                 {item.title}{' '}
                                                 {item.featured && (
                                                     <Tooltip label='Bài viết nổi bật'>

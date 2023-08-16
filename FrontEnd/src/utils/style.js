@@ -97,6 +97,7 @@ export function style(settings) {
                   Select: inputStyle,
                   MultiSelect: inputStyle,
                   PasswordInput: inputStyle,
+                  DatePickerInput: inputStyle,
                   Avatar: {
                       defaultProps: {
                           radius: '50%',

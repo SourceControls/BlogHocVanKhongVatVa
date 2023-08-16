@@ -24,7 +24,8 @@ import AuthGuard from '../AuthGuard'
 
 function Literaries() {
     const [opened, {open, close}] = useDisclosure(false)
-    const [openedDelete, {openDelete, closeDelete}] = useDisclosure(false)
+    const [openedDelete, {open: openDelete, close: closeDelete}] = useDisclosure(false)
+    const [deleteLiteraryId, setDeleteLiteraryId] = useState()
     const router = useRouter()
     const {literaries, isLoading, size, setSize, mutate} = useLiteries('&limit=6&' + router.asPath.split('?')[1])
     const [modalContent, setModalContent] = useState(
@@ -39,8 +40,8 @@ function Literaries() {
             },
         })
     }
-    const handleDelete = async (id) => {
-        let rs = await deleteLiterary(id)
+    const handleDelete = async () => {
+        let rs = await deleteLiterary(deleteLiteraryId)
         if (rs.literaryId) {
             const newItems = literaries.filter((item) => item.literaryId !== rs.literaryId)
             mutate(newItems, false)
@@ -140,31 +141,37 @@ function Literaries() {
                                     }}>
                                     <Edit />
                                 </ActionIcon>
-                                <ActionIcon size='xl' color='red' onClick={openDelete}>
+                                <ActionIcon
+                                    size='xl'
+                                    color='red'
+                                    onClick={() => {
+                                        setDeleteLiteraryId(item.literaryId)
+                                        openDelete()
+                                    }}>
                                     <Trash />
                                 </ActionIcon>
                             </Group>
                         </Group>
-                        <Modal opened={openedDelete} onClose={closeDelete} size='xs' title='Xóa tác phẩm?' centered>
-                            <Group align='center' position='apart' px='xl' mt='md'>
-                                <Button variant='outline' onClick={closeDelete}>
-                                    Hủy
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        handleDelete(item.literaryId)
-                                        closeDelete()
-                                    }}>
-                                    Xác nhận
-                                </Button>
-                            </Group>
-                        </Modal>
                     </>
                 ))}
             </div>
             <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
                 Xem thêm
             </Button>
+            <Modal opened={openedDelete} onClose={closeDelete} size='xs' title='Xóa tác phẩm?' centered>
+                <Group align='center' position='apart' px='xl' mt='md'>
+                    <Button variant='outline' onClick={closeDelete}>
+                        Hủy
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleDelete()
+                            closeDelete()
+                        }}>
+                        Xác nhận
+                    </Button>
+                </Group>
+            </Modal>
             <Modal size={1100} opened={opened} onClose={close} centered yOffset='1vh' xOffset={0} title='Tác Phẩm'>
                 {modalContent}
             </Modal>

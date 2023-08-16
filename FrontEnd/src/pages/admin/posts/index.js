@@ -1,16 +1,19 @@
-import {ActionIcon, Box, Button, Group, Modal, Select, Stack, Text, Title} from '@mantine/core'
+import {ActionIcon, Box, Button, Group, Modal, Select, Stack, Text, TextInput, Title, Tooltip} from '@mantine/core'
 import {FloatingLabelInput, ExtraInfo} from '@comp'
 import Layout from '../Layout'
-import {Edit, Eye, PresentationAnalytics, Search, ThumbUp, ThumbDown, Plus} from 'tabler-icons-react'
+import {Edit, Eye, PresentationAnalytics, Search, ThumbUp, ThumbDown, Plus, Bell, Mail} from 'tabler-icons-react'
 import MyEditor from './MyEditor'
 import {useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
-import {usePosts, useUsers} from '@util'
+import {usePosts, useUsers, sendPostAlert} from '@util'
 import {useState} from 'react'
 import AuthGuard from '../AuthGuard'
 function Posts() {
     const [opened, {open, close}] = useDisclosure(false)
+    const [openedPostAlert, {open: openPostAlert, close: closePostAlert}] = useDisclosure(false)
     const router = useRouter()
+    const [email, setEmail] = useState('hungbuituan1@gmail.com')
+    const [alertPostId, setAlertPostId] = useState()
     const [modalContent, setModalContent] = useState(<MyEditor close={close} />)
     const {posts, isLoading, size, setSize, mutate} = usePosts('&limit=6&' + router.asPath.split('?')[1], '/admin')
     const {users: authUsers} = useUsers('', '/profile')
@@ -26,6 +29,10 @@ function Posts() {
                 [key]: value,
             },
         })
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        sendPostAlert(alertPostId, email)
     }
     return (
         <AuthGuard allowedRoles={['CONTRIBUTOR', 'ADMIN', 'SUPERADMIN']}>
@@ -93,7 +100,7 @@ function Posts() {
                     posts.map((item, index) => (
                         <Group key={index} w='100%' py='md' style={{borderTop: '1px solid #ccc'}}>
                             <Stack spacing='4px'>
-                                <Text fw='bold' size='lg' lineClamp={1}>
+                                <Text fw='bold' size='lg' lineClamp={1} maw='70%'>
                                     {item.title}
                                 </Text>
                                 <Text>
@@ -130,9 +137,16 @@ function Posts() {
                                     <Edit />
                                 </ActionIcon>
 
-                                <ActionIcon size='xl'>
-                                    <PresentationAnalytics />
-                                </ActionIcon>
+                                <Tooltip label='Gửi thông báo bài viết'>
+                                    <ActionIcon
+                                        size='xl'
+                                        onClick={() => {
+                                            setAlertPostId(item.postId)
+                                            openPostAlert()
+                                        }}>
+                                        <Bell />
+                                    </ActionIcon>
+                                </Tooltip>
                             </Group>
                         </Group>
                     ))}
@@ -149,6 +163,22 @@ function Posts() {
                 xOffset={0}
                 title='Soạn Thảo Bài Viết'>
                 {modalContent}
+            </Modal>
+            <Modal opened={openedPostAlert} onClose={closePostAlert} centered yOffset='1vh' xOffset={0} title=''>
+                <form onSubmit={handleSubmit}>
+                    <Group align='flex-end' noWrap>
+                        <TextInput
+                            type='email'
+                            label='Nhập email của người nhận'
+                            w={300}
+                            value={email}
+                            onChange={(e) => setEmail(e.value)}
+                        />
+                        <Button type='submit' rightIcon={<Mail />}>
+                            Gửi
+                        </Button>
+                    </Group>
+                </form>
             </Modal>
         </AuthGuard>
     )

@@ -41,7 +41,7 @@ function ContributorForm({close}) {
                         required
                     />
                     <TextInput
-                        {...form.getInputProps('career')}
+                        {...form.getInputProps('carrer')}
                         label='Nghề nghiệp'
                         placeHolder='Ví dụ: Học sinh cấp 3, giáo viên...'
                         required

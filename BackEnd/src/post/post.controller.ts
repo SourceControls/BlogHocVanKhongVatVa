@@ -145,6 +145,11 @@ export class PostController {
   requestPost(@Req() req: Request) {
     return this.mailer.requestPost({ user: req['authUser'], ...req.body });
   }
+  @Roles('ADMIN', 'SUPERADMIN')
+  @Post(':id/alert')
+  alert(@Param('id') id: string, @Req() req: Request) {
+    return this.mailer.alertPost({ id: +id, ...req.body });
+  }
 
   @Roles('CONTRIBUTOR', 'ADMIN', 'SUPERADMIN')
   @Put(':id/publish')

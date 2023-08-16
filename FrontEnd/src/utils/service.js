@@ -41,6 +41,9 @@ export async function publishPost(id) {
 export async function hidePost(id) {
     return axios.put('/api/post/' + id + '/hide')
 }
+export async function sendPostAlert(id, email) {
+    return axios.post('/api/post/' + id + '/alert', {email})
+}
 export async function requestPost(form) {
     return axios.post('/api/post/request-post', form)
 }

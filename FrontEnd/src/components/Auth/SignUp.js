@@ -4,10 +4,10 @@ import {signUp} from '@util'
 function SignUp() {
     const form = useForm({
         initialValues: {
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
+            name: 'Tuấn Hùng',
+            email: 'hungbuituan1@gmail.com',
+            password: '123456',
+            confirmPassword: '123456',
         },
     })
     const handleSignUp = () => {

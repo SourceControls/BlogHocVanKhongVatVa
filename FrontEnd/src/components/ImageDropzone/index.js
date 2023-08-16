@@ -32,17 +32,17 @@ export function ImageDropzone(props) {
 
     const handleUpdateFile = (file) => {
         let url = URL.createObjectURL(file[0])
-        props.form.setValues({[props.imageField]: url, file: file[0]})
+        props.form.setValues({[props.imageField || 'image']: url, file: file[0]})
     }
     const handleRemoveFile = () => {
-        props.form.setValues({[props.imageField]: null, file: null})
+        props.form.setValues({[props.imageField || 'image']: null, file: null})
     }
     return (
         <>
-            {props.form.values[props.imageField] ? (
+            {props.form.values[props.imageField || 'image'] ? (
                 <div style={{position: 'relative'}}>
                     <Image
-                        src={props.form.values[props.imageField]}
+                        src={props.form.values[props.imageField || 'image']}
                         width={props.w || 300}
                         height={props.h || 300}
                         mx='auto'
@@ -54,7 +54,7 @@ export function ImageDropzone(props) {
                         variant='filled'
                         color='red'
                         size='md'
-                        style={{position: 'absolute', top: '0px', right: '16px'}}
+                        style={{position: 'absolute', top: '0px', right: '0px'}}
                         onClick={handleRemoveFile}>
                         <IconX />
                     </ActionIcon>
