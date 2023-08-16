@@ -177,7 +177,6 @@ export class MailerService {
     }
   }
   async alertPost({ id, email }) {
-    console.log(email);
     const user = await this.prisma.user.findUnique({
       where: {
         email,

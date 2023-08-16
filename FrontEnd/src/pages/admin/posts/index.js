@@ -99,8 +99,8 @@ function Posts() {
                 {posts[0]?.postId &&
                     posts.map((item, index) => (
                         <Group key={index} w='100%' py='md' style={{borderTop: '1px solid #ccc'}}>
-                            <Stack spacing='4px'>
-                                <Text fw='bold' size='lg' lineClamp={1} maw='70%'>
+                            <Stack spacing='4px' maw='70%'>
+                                <Text fw='bold' size='lg' lineClamp={1}>
                                     {item.title}
                                 </Text>
                                 <Text>
