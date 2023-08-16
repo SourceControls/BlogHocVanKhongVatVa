@@ -1,8 +1,8 @@
 import Layout from '../Layout'
 import {useRouter} from 'next/router'
-import {AspectRatio, Box, Group, Image, Select, Skeleton, Spoiler, Stack, Text, TextInput, Title} from '@mantine/core'
-import {Section, GridPost, Decorate} from '@comp'
-import {Eye, EyeOff, News, Search, ThumbUp} from 'tabler-icons-react'
+import {AspectRatio, Box, Group, Spoiler, Stack, Text, Title} from '@mantine/core'
+import {Section, GridPost, Decorate, Adverting} from '@comp'
+import {Eye, EyeOff, News} from 'tabler-icons-react'
 import {useMediaQuery} from '@mantine/hooks'
 import {useLiteries, countLiterayView} from '@util'
 import ViewCountTracker from './ViewCountTracker'
@@ -33,6 +33,8 @@ function Category() {
                     paddingTop: smScreen ? '12px' : '64px',
                     borderRadius: '12px',
                 })}>
+                <Adverting position='LITERARY' mb='xl' />
+
                 <Group noWrap={!smScreen} align='flex-start' spacing='xl'>
                     <AspectRatio ratio={3 / 4} w={smScreen ? '50%' : '40%'}>
                         <img
@@ -103,6 +105,7 @@ function Category() {
                     <Text className='format-content'>{literaries[0].summary}</Text>
                 </Spoiler>
             </Stack>
+
             <Decorate />
             {!viewed && <ViewCountTracker literaryId={literaries[0]?.literaryId} onComponentInView={handleCountView} />}
 

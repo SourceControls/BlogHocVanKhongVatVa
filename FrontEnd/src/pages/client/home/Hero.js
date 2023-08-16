@@ -31,41 +31,48 @@ function Hero() {
                 </Stack>
                 {smScreen ? <Box my='md'></Box> : <Image src={settings[1].homeHeroCover} alt=''></Image>}
             </Group>
+
             {users[0]?.userId ? (
                 <Modal opened={opened} onClose={close}>
                     <RequestPostForm close={close} />
                 </Modal>
             ) : (
-                <Dialog
-                    opened={opened}
-                    withCloseButton
-                    onClose={setTimeout(close, 4000)}
-                    size='lg'
-                    zIndex={100}
-                    // position={{bottom: '84px', right: '16px'}}
-                    radius='md'
-                    bg='var(--primary-color-0)'>
-                    <Text size='sm' mb='xs' weight={500}>
-                        Hãy trở thành viên để sử dụng chức năng!
-                    </Text>
+                (() => {
+                    setTimeout(close, 4000)
+                    return (
+                        <Dialog
+                            opened={opened}
+                            withBorder
+                            withCloseButton
+                            onClose={close}
+                            size='lg'
+                            zIndex={100}
+                            // position={{bottom: '84px', right: '16px'}}
+                            radius='md'
+                            bg='var(--primary-color-0)'>
+                            <Text size='sm' mb='xs' weight={500}>
+                                Hãy trở thành viên để sử dụng chức năng!
+                            </Text>
 
-                    <Button
-                        mr='xl'
-                        onClick={() => {
-                            close()
-                            router.push(router.asPath + '#signIn')
-                        }}>
-                        Đăng nhập
-                    </Button>
-                    <Button
-                        variant='outline'
-                        onClick={() => {
-                            close()
-                            router.push(router.asPath + '#signUp')
-                        }}>
-                        Đăng kí
-                    </Button>
-                </Dialog>
+                            <Button
+                                mr='xl'
+                                onClick={() => {
+                                    close()
+                                    router.push(router.asPath + '#signIn')
+                                }}>
+                                Đăng nhập
+                            </Button>
+                            <Button
+                                variant='outline'
+                                onClick={() => {
+                                    close()
+                                    router.push(router.asPath + '#signUp')
+                                }}>
+                                Đăng kí
+                            </Button>
+                        </Dialog>
+                    )
+                })()
             )}
         </>
     )

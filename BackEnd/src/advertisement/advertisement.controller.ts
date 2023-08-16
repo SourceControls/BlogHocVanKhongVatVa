@@ -7,8 +7,10 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/auth/public.decorator';
 import { Roles } from 'src/auth/roles.decorator';
 import { AdvertisementService } from './advertisement.service';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
@@ -27,12 +29,14 @@ export class AdvertisementController {
   @Get()
   @ApiQuery({ name: 'key', required: false, type: String })
   @ApiQuery({ name: 'visibility', required: false, type: Boolean })
+  @ApiQuery({ name: 'display', required: false, type: Boolean })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'sortBy', required: false, type: String })
   findAll(
     @Query('key') key?: string,
     @Query('visibility') visibility?: string,
+    @Query('display') display?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('sortBy') sortBy?: string,
@@ -47,11 +51,35 @@ export class AdvertisementController {
         title: {
           contains: key,
         },
-        visibility: visibility && visibility === 'true',
+        // visibility: visibility && visibility === 'true',
+        visibility: display && display === 'true',
+        AND: display && [
+          {
+            startDate: {
+              lte: new Date(), // Start date is less than or equal to the current date
+            },
+          },
+          {
+            endDate: {
+              gte: new Date(), // End date is greater than or equal to the current date
+            },
+          },
+        ],
       },
     });
   }
 
+  @Public()
+  @Get('/client/:position')
+  @ApiParam({ name: 'position', required: false, type: String })
+  findClient(@Param('position') position?: string) {
+    return this.advertisementService.findClient(position);
+  }
+  @Public()
+  @Put(':id')
+  click(@Param('id') id: string) {
+    return this.advertisementService.click(+id);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.advertisementService.findOne(+id);

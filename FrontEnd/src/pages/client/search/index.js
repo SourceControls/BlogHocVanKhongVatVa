@@ -1,8 +1,6 @@
 import {useRouter} from 'next/router'
-import {Box, Button, Center, Grid, Group, Select, Tabs, TextInput} from '@mantine/core'
-import {Section, CommonLiterarySection, FloatingLabelInput} from '@comp'
-import {Search} from 'tabler-icons-react'
-import {useEffect, useState} from 'react'
+import {Box, Tabs} from '@mantine/core'
+import {Adverting} from '@comp'
 import Layout from '../Layout'
 import GridLiterary from './GridLiterary'
 import GridPostWithFilter from './GridPostWithFilter'
@@ -21,27 +19,30 @@ function SearchPage({heading}) {
     }
     if (!router.query.type) handleQuery('literary')
     return (
-        <Box pt='48px' px='md'>
-            <Tabs value={router.query?.type} pb='xl'>
-                <Tabs.List mb='md'>
-                    <Tabs.Tab value='literary' onClick={() => handleQuery('literary')}>
-                        Tác phẩm
-                    </Tabs.Tab>
-                    <Tabs.Tab value='post' onClick={() => handleQuery('post')}>
-                        Bài Viết
-                    </Tabs.Tab>
-                    <Tabs.Tab
-                        value='user'
-                        onClick={async () => {
-                            toast.info('Coming soon')
-                        }}>
-                        Người Dùng
-                    </Tabs.Tab>
-                </Tabs.List>
-                <Tabs.Panel value='literary'>{router.query.type == 'literary' && <GridLiterary />}</Tabs.Panel>
-                <Tabs.Panel value='post'>{router.query.type == 'post' && <GridPostWithFilter />}</Tabs.Panel>
-            </Tabs>
-        </Box>
+        <>
+            <Adverting position='SEARCH' mt='xl' />
+            <Box pt='48px' px='md'>
+                <Tabs value={router.query?.type} pb='xl'>
+                    <Tabs.List mb='md'>
+                        <Tabs.Tab value='literary' onClick={() => handleQuery('literary')}>
+                            Tác phẩm
+                        </Tabs.Tab>
+                        <Tabs.Tab value='post' onClick={() => handleQuery('post')}>
+                            Bài Viết
+                        </Tabs.Tab>
+                        <Tabs.Tab
+                            value='user'
+                            onClick={async () => {
+                                toast.info('Coming soon')
+                            }}>
+                            Người Dùng
+                        </Tabs.Tab>
+                    </Tabs.List>
+                    <Tabs.Panel value='literary'>{router.query.type == 'literary' && <GridLiterary />}</Tabs.Panel>
+                    <Tabs.Panel value='post'>{router.query.type == 'post' && <GridPostWithFilter />}</Tabs.Panel>
+                </Tabs>
+            </Box>
+        </>
     )
 }
 SearchPage.Layout = Layout

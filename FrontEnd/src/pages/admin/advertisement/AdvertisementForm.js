@@ -56,13 +56,13 @@ function AdvertisementForm({ad, close, mutate, ads}) {
                 <Checkbox
                     checked={form.values.visibility}
                     onChange={(e) => form.setValues({visibility: e.target.checked == 1})}
-                    label='Hiển thị'
+                    label='Cho phép hiển thị'
                 />
                 <Button type='submit' display='inline-block'>
                     Lưu
                 </Button>
             </Group>
-            <Group grow align='flex-start' my='xl'>
+            <Group grow align='center' my='xl'>
                 <Stack>
                     <TextInput
                         label='Tiêu đề'
@@ -84,28 +84,28 @@ function AdvertisementForm({ad, close, mutate, ads}) {
                         label='Vị trí hiển thị'
                         data={[
                             {value: 'HOME', label: 'Trang chủ'},
-                            {value: 'POST', label: 'Trang đọc bài viết'},
+                            {value: 'READ', label: 'Trang đọc bài viết'},
+                            {value: 'LITERARY', label: 'Trang tác phẩm'},
+                            {value: 'SEARCH', label: 'Trang tìm kiếm'},
                         ]}
                         {...form.getInputProps('displayPosition')}
                     />
-                    <NumberInput
+                    <Textarea
+                        minRows={3}
+                        label='Mô tả'
+                        placeholder='Mô tả thêm cho quảng cáo...'
+                        {...form.getInputProps('description')}
+                    />
+                    {/* <NumberInput
                         {...form.getInputProps('price')}
                         precision={4}
                         defaultValue={0}
                         min={0}
                         placeholder='Nhập tiền hoa hồng'
                         label='Hoa hồng'
-                    />
+                    /> */}
                 </Stack>
-                <Stack>
-                    <ImageDropzone form={form} imageField='image' />
-                    <Textarea
-                        minRows={5}
-                        label='Mô tả'
-                        placeholder='Mô tả thêm cho quảng cáo...'
-                        {...form.getInputProps('description')}
-                    />
-                </Stack>
+                <ImageDropzone form={form} imageField='image' h='100px' />
             </Group>
         </form>
     )

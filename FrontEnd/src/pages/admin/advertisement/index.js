@@ -57,16 +57,16 @@ function Advertisement() {
                     data={[
                         {value: '', label: 'Tất cả'},
                         {value: 'true', label: 'Đang hiển thị'},
-                        {value: 'false', label: 'Hàng chờ'},
+                        // {value: 'false', label: 'Hàng chờ'},
                     ]}
-                    onChange={(val) => changeQuery('visibility', val)}
+                    onChange={(val) => changeQuery('display', val)}
                 />
                 <Select
                     defaultValue=''
                     data={[
                         {value: '', label: 'Gần đây'},
                         {value: 'clickCount', label: 'Nhiều click'},
-                        {value: 'price', label: 'Giá giá cao nhất'},
+                        {value: 'impressionCount', label: 'Lượt hiển thị'},
                     ]}
                     onChange={(val) => changeQuery('sortBy', val)}
                 />
@@ -85,6 +85,7 @@ function Advertisement() {
                     <tr>
                         <th>Tiêu đề</th>
                         <th>Vị trí</th>
+                        <th>Lượt hiển thị</th>
                         <th>Lượt click </th>
                         <th>Bắt đầu</th>
                         <th>Kết thúc</th>
@@ -104,14 +105,19 @@ function Advertisement() {
                                             </Group>
                                         </Text>
                                     </Anchor>
-                                    <Text>{item.description}</Text>
+                                    <Text lineClamp={2}>{item.description}</Text>
                                 </td>
                                 <td>
                                     {item.displayPosition == 'HOME'
                                         ? 'Trang chủ'
                                         : item.displayPosition == 'SEARCH'
                                         ? 'Trang tìm kiếm'
-                                        : 'Trang đọc'}
+                                        : item.displayPosition == 'LITERARY'
+                                        ? 'Trang tác phẩm'
+                                        : 'Trang đọc bài viết'}
+                                </td>
+                                <td>
+                                    <Badge color='green'>{item.impressionCount}</Badge>
                                 </td>
                                 <td>
                                     <Badge color='green'>{item.clickCount}</Badge>

@@ -248,6 +248,7 @@ enum ad_display_position {
   HOME
   SEARCH
   READ
+  LITERARY
 }
 
 enum post_status {

@@ -61,7 +61,7 @@ async function main() {
       },
       {
         userId: 1,
-        name: 'Tuấn Hùng SAD',
+        name: 'Tuấn Hùng',
         slug: 'tuan-hung-sad',
         avatarImage:
           'https://i.ibb.co/vP05vCF/d4b927049e2f8f0760239c475a9d200b-cleanup.png',
@@ -462,31 +462,68 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
     data: [
       {
         advertisementId: 1,
-        title: 'Học bổng Úc',
-        description: 'Học bổng úc trọn gói, thi đánh giá năng lực',
-        image: '',
+        title: 'Trắc nghiệm tính cách MBTI',
+        description:
+          'Dẫn dắt bởi chuyên gia hàng đầu, trải nghiệm trắc nghiệm MBTI sẽ giúp bạn hiểu rõ hơn về mình và mở ra cơ hội phát triển cá nhân không giới hạn. Bắt đầu cuộc hành trình khám phá bản thân ngay hôm nay!',
+        image:
+          'https://i.ibb.co/PQs9v4q/Bright-Purple-White-Black-Illustrative-Leaderboard-Ad.jpg',
         displayPosition: ad_display_position.HOME,
-        target: '#hocbonguc',
+        target: 'https://www.16personalities.com/free-personality-test',
         startDate: new Date(),
-        endDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+        endDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000), //15 days
         impressionCount: 1523,
         clickCount: 231,
         price: Math.random().toFixed(3),
+        visibility: false,
         createdBy: 1,
       },
       {
         advertisementId: 2,
-        title: 'Học bổng Anh',
+        title: 'Học bổng Anh Quốc',
         description: 'Học bổng Anh trọn gói, thi đánh giá năng lực',
-        image: '',
+        image:
+          'https://i.ibb.co/MRP4wH4/Blue-Modern-Time-To-Travel-Mobile-Banner.jpg',
         displayPosition: ad_display_position.SEARCH,
-        target: '#hocbonganh',
+        target: 'hhttps://duhocnamphong.vn/hoc-bong-du-hoc-anh-ct15.html',
         startDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
         endDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
-        impressionCount: 865,
-        clickCount: 152,
+        impressionCount: 263,
+        clickCount: 12,
         visibility: false,
-
+        price: Math.random().toFixed(3),
+        createdBy: 1,
+      },
+      {
+        advertisementId: 3,
+        title: 'Trại hè 2023',
+        description:
+          'Trại Hè 2023: Kỳ nghỉ đáng nhớ cho sự phát triển và kỷ niệm vui vẻ!',
+        image:
+          'https://i.ibb.co/G2k15VZ/Dark-Green-Ash-Grey-Playful-Type-Billboard.jpg',
+        displayPosition: ad_display_position.READ,
+        target: 'https://duhocnamphong.vn/hoc-bong-du-hoc-anh-ct15.html',
+        startDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+        endDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+        impressionCount: 743,
+        clickCount: 324,
+        visibility: false,
+        price: Math.random().toFixed(3),
+        createdBy: 1,
+      },
+      {
+        advertisementId: 4,
+        title: 'Trắc nghiệm Online',
+        description:
+          'Thi Online Chất Lượng: Động Não, Đánh Bại Giới Hạn với Dịch Vụ Uy Tín',
+        image:
+          'https://i.ibb.co/qn7C51W/Pastel-Blue-Abstract-Modern-Online-Courses-Billboard-Web-Ad.jpg',
+        displayPosition: ad_display_position.LITERARY,
+        target: 'https://duhocnamphong.vn/hoc-bong-du-hoc-anh-ct15.html',
+        startDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+        endDate: new Date(new Date().getTime() + 60 * 60 * 24 * 15 * 1000),
+        impressionCount: 527,
+        clickCount: 82,
+        visibility: false,
         price: Math.random().toFixed(3),
         createdBy: 1,
       },

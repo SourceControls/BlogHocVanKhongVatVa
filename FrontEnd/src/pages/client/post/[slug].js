@@ -2,7 +2,7 @@ import {AspectRatio, Box, Grid, Group, Image, Stack} from '@mantine/core'
 import Postcontent from './PostContent'
 import PostAction from './PostAction'
 import Layout from '../Layout'
-import {GridPost, Section} from '@comp'
+import {GridPost, Section, Adverting} from '@comp'
 import {useMediaQuery} from '@mantine/hooks'
 import PostHeader from './PostHeader'
 import CommentSection from './CommentSection'
@@ -27,6 +27,7 @@ function Post({post}) {
     if (!post?.postId) return <></>
     return (
         <Stack>
+            <Adverting position='READ' my='md' />
             <Box pos='relative'>
                 <AspectRatio ratio={5 / 2} maw={800} w='100%' mx='auto'>
                     <img style={{objectFit: 'contain'}} src={settings[1]?.readPostCover || post.featuredImage} alt='' />

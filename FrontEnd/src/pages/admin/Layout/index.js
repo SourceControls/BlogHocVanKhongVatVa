@@ -24,6 +24,8 @@ import {
     IconUsersGroup,
     IconAd,
     IconAd2,
+    IconDashboard,
+    IconHome,
 } from '@tabler/icons-react'
 import {UserButton, LinksGroup} from '@comp'
 import {useSettings, useUsers} from '@util'
@@ -84,7 +86,8 @@ export function Layout({children}) {
     useEffect(() => {
         let mockData = []
         if (users[0]?.role !== 'VIEWER') mockData = [...mockData, ...mockContributor]
-        if (users[0]?.role === 'ADMIN' || users[0]?.role === 'SUPERADMIN') mockData = [...mockData, ...mockAdmin]
+        if (users[0]?.role === 'ADMIN' || users[0]?.role === 'SUPERADMIN')
+            mockData = [{label: 'Tổng quan', link: '/admin/dashboard', icon: IconHome}, ...mockData, ...mockAdmin]
         if (users[0]?.role === 'SUPERADMIN') mockData = [...mockData, ...mockSuperAdmin]
         setLinks(
             <>

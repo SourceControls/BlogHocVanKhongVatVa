@@ -15,7 +15,13 @@ export class RemoveUndefinedQueryMiddleware implements NestMiddleware {
         const value = queryParams[key];
 
         // Kiểm tra nếu giá trị của query parameter không phải là undefined
-        if (value == undefined || value == 'undefined' || value == '') {
+        if (
+          value == undefined ||
+          value == 'undefined' ||
+          value == '' ||
+          value == null ||
+          value == 'null'
+        ) {
           delete queryParams[key];
         }
       }

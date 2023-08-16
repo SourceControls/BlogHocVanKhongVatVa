@@ -1,5 +1,5 @@
 import {LoadingOverlay, Stack} from '@mantine/core'
-import {Section, GridPost, FeaturedLiterary, Decorate} from '@comp'
+import {Section, GridPost, FeaturedLiterary, Decorate, Adverting} from '@comp'
 import {usePosts} from '@util'
 import Layout from '../Layout'
 import FeaturedPosts from './FeaturedPosts'
@@ -12,7 +12,7 @@ function Home() {
             <Section title='Tác Phẩm Tiêu Biểu' titlePosition='center'>
                 <FeaturedLiterary />
             </Section>
-            {/* <Adverting /> */}
+            <Adverting position='HOME' mb='md' />
 
             <Section title='Bài Viết Nổi Bật'>
                 <FeaturedPosts />
