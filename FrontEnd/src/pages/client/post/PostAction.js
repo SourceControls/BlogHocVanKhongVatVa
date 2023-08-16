@@ -36,14 +36,16 @@ function PostAction(props) {
                         onClick={() => {
                             if (!users[0]?.userId) return toast.info('Cần đăng nhập để sử dụng')
 
-                            reaction(props.post.slug).then((rs) => {
-                                if (rs?.postId) {
-                                    props.mutate([rs], false)
-                                    if (userReact === 'LIKE') {
-                                        setUserReact()
-                                    } else setUserReact('LIKE')
-                                }
-                            })
+                            reaction(props.post.slug)
+                            if (userReact === 'LIKE') {
+                                props.mutate([{...props.post, likeCount: props.post.likeCount - 1}], false)
+                                setUserReact()
+                            } else {
+                                let post = {...props.post, likeCount: props.post.likeCount + 1}
+                                setUserReact('LIKE')
+                                if (userReact === 'DISLIKE')
+                                    props.mutate([{...post, dislikeCount: props.post.dislikeCount - 1}], false)
+                            }
                         }}>
                         {userReact == 'LIKE' ? <IconThumbUpFilled size='1.8rem' /> : <IconThumbUp size='1.8rem' />}
                     </ActionIcon>
@@ -55,14 +57,16 @@ function PostAction(props) {
                         onClick={() => {
                             if (!users[0]?.userId) return toast.info('Cần đăng nhập để sử dụng')
 
-                            reaction(props.post.slug, false).then((rs) => {
-                                if (rs?.postId) {
-                                    props.mutate([rs], false)
-                                    if (userReact === 'DISLIKE') {
-                                        setUserReact()
-                                    } else setUserReact('DISLIKE')
-                                }
-                            })
+                            reaction(props.post.slug, false)
+                            if (userReact === 'DISLIKE') {
+                                props.mutate([{...props.post, dislikeCount: props.post.dislikeCount - 1}], false)
+                                setUserReact()
+                            } else {
+                                let post = {...props.post, dislikeCount: props.post.dislikeCount + 1}
+                                setUserReact('DISLIKE')
+                                if (userReact === 'LIKE')
+                                    props.mutate([{...post, likeCount: props.post.likeCount - 1}], false)
+                            }
                         }}>
                         {userReact == 'DISLIKE' ? <IconThumbDownFilled size='1.8rem' /> : <ThumbDown size='1.8rem' />}
                     </ActionIcon>
