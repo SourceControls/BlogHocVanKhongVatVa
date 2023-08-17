@@ -26,7 +26,7 @@ export function FeaturedLiterary(props) {
             align='start'
             withIndicators
             controlSize={45}
-            // plugins={[autoplay.current]}
+            plugins={[autoplay.current]}
             nextControlIcon={<IconArrowRight size={25} />}
             previousControlIcon={<IconArrowLeft size={25} />}>
             {literaries &&

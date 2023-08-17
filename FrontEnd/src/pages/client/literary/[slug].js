@@ -7,6 +7,7 @@ import {useMediaQuery} from '@mantine/hooks'
 import {useLiteries, countLiterayView} from '@util'
 import ViewCountTracker from './ViewCountTracker'
 import {useState} from 'react'
+import Head from 'next/head'
 function Category() {
     const router = useRouter()
     const smScreen = useMediaQuery('(max-width: 48em)')
@@ -25,6 +26,9 @@ function Category() {
     }
     return (
         <Box px='xs'>
+            <Head>
+                <title>Tác phẩm {literaries[0].title + ' - ' + literaries[0].authorName} </title>
+            </Head>
             <Stack
                 maw='800px'
                 mx='auto'

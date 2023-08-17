@@ -61,7 +61,7 @@ let mockAdmin = [
     },
     {label: 'Tags', link: '/admin/tags', icon: IconTags},
     {label: 'Quảng cáo', link: '/admin/advertisement', icon: IconAd2},
-    {label: 'Phân Tích', link: '/admin/analytics', icon: IconPresentationAnalytics},
+    // {label: 'Phân Tích', link: '/admin/analytics', icon: IconPresentationAnalytics},
     {label: 'Cài đặt', link: '/admin/settings', icon: IconAdjustments},
 ]
 let mockSuperAdmin = [

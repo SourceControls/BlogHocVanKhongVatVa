@@ -42,7 +42,7 @@ function TopPost() {
     return (
         <div>
             <Text fw='bold' size='1.6rem' mb='md'>
-                Bài viết tiêu biểu
+                Bài viết nhiều người xem
             </Text>
             {posts[0]?.postId &&
                 posts.map((item, index) => (

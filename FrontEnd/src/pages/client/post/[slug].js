@@ -10,6 +10,7 @@ import {usePosts, countPostView, getPostsSSR, useSettings} from '@util'
 import {useRouter} from 'next/router'
 import ViewCountTracker from './ViewCountTracker'
 import {useState} from 'react'
+import Head from 'next/head'
 function Post({post}) {
     const smScreen = useMediaQuery('(max-width: 48em)')
     const [viewed, setViewed] = useState(false)
@@ -27,6 +28,9 @@ function Post({post}) {
     if (!post?.postId) return <></>
     return (
         <Stack>
+            <Head>
+                <title>{post.title}</title>
+            </Head>
             <Adverting position='READ' my='md' />
             <Box pos='relative'>
                 <AspectRatio ratio={5 / 2} maw={800} w='100%' mx='auto'>
