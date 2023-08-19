@@ -1,5 +1,5 @@
 import './globalStyle.css'
-import {MantineProvider} from '@mantine/core'
+import {LoadingOverlay, MantineProvider} from '@mantine/core'
 import {useEffect} from 'react'
 import {style} from '@util'
 import {ToastContainer} from 'react-toastify'
@@ -26,7 +26,7 @@ export default function MyApp({Component, pageProps}) {
     useEffect(() => {
         initWebInfo(settings[1]?.favIcon)
     }, [settings[1]?.favIcon])
-    if (!settings[1]) return <></>
+    if (!settings[1]) return <LoadingOverlay visible />
     return (
         <>
             <Head>

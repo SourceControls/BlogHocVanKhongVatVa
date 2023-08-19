@@ -95,11 +95,6 @@ function Users() {
                                                         contrib
                                                     </Badge>
                                                 )}
-                                                {/* {item.role == 'VIEWER' && (
-                                                    <Badge ml='md' color='dark'>
-                                                        viewer
-                                                    </Badge>
-                                                )} */}
                                             </Text>
                                             <Text>{item.email}</Text>
                                         </div>

@@ -226,6 +226,15 @@ export function style(settings) {
                           header: {backgroundColor: 'var(--primary-color-0)'},
                       }),
                   },
+                  Skeleton: {
+                      styles: (theme) => ({
+                          root: {
+                              '&:after': {
+                                  backgroundColor: 'var(--primary-color-2) !important',
+                              },
+                          },
+                      }),
+                  },
               },
 
               colors: {

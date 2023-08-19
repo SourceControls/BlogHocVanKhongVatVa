@@ -60,7 +60,7 @@ let mockAdmin = [
         ],
     },
     {label: 'Tags', link: '/admin/tags', icon: IconTags},
-    {label: 'Quảng cáo', link: '/admin/advertisement', icon: IconAd2},
+    // {label: 'Quảng cáo', link: '/admin/advertisement', icon: IconAd2},
     // {label: 'Phân Tích', link: '/admin/analytics', icon: IconPresentationAnalytics},
     {label: 'Cài đặt', link: '/admin/settings', icon: IconAdjustments},
 ]
@@ -69,11 +69,11 @@ let mockSuperAdmin = [
         label: 'Người Dùng',
         icon: IconUsersGroup,
         link: '/admin/users',
-        links: [
-            {label: 'Viewer', link: '/admin/users?role=VIEWER'},
-            {label: 'Contributor', link: '/admin/users?role=CONTRIBUTOR'},
-            {label: 'Admin', link: '/admin/users?role=ADMIN'},
-        ],
+        // links: [
+        //     {label: 'Người xem', link: '/admin/users?role=VIEWER'},
+        //     {label: 'Cộng tác viên', link: '/admin/users?role=CONTRIBUTOR'},
+        //     {label: 'Quản trị viên', link: '/admin/users?role=ADMIN'},
+        // ],
     },
 ]
 export function Layout({children}) {
@@ -84,6 +84,7 @@ export function Layout({children}) {
     const {settings, isLoading} = useSettings()
 
     useEffect(() => {
+        if (isUserLoading) return
         let mockData = []
         if (users[0]?.role !== 'VIEWER') mockData = [...mockData, ...mockContributor]
         if (users[0]?.role === 'ADMIN' || users[0]?.role === 'SUPERADMIN')
@@ -97,8 +98,8 @@ export function Layout({children}) {
             </>,
         )
     }, [users[0]?.role])
-    if (isUserLoading) return <></>
-    if (!users[0]?.role) {
+    if (isUserLoading) return <LoadingOverlay visible />
+    if (!users[0]?.role || users[0]?.role === 'VIEWER') {
         router.push('/home#signIn')
         return <></>
     }

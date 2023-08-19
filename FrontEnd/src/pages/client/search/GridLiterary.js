@@ -1,9 +1,42 @@
-import {Box, Button, Grid, Group, SegmentedControl, Select, Stack, Title} from '@mantine/core'
+import {
+    Box,
+    Button,
+    Grid,
+    Group,
+    SegmentedControl,
+    Select,
+    AspectRatio,
+    Stack,
+    Title,
+    Skeleton,
+    SimpleGrid,
+} from '@mantine/core'
 import {LiteraryContainer, FloatingLabelInput} from '@comp'
 import {useMediaQuery} from '@mantine/hooks'
-import {Search} from 'tabler-icons-react'
 import {useRouter} from 'next/router'
 import {useLiteries, useCategories} from '@util'
+function GridLiterarySkeleton({smScreen}) {
+    return (
+        <SimpleGrid cols={2} w='100%' p={smScreen ? '0 22px 22px 0' : '0 42px 42px 0'}>
+            {[1, 1].map((e, i) => (
+                <Group grow align='flex-start' p='xl' key={i}>
+                    <AspectRatio ratio={3 / 4}>
+                        <Skeleton radius='md' />
+                    </AspectRatio>
+                    <Stack>
+                        <Skeleton height={24} radius='xl' />
+                        <Skeleton height={8} mt={6} radius='xl' />
+                        <Skeleton height={8} mt={6} radius='xl' />
+                        <Skeleton height={8} mt={6} radius='xl' />
+                        <Skeleton height={8} mt={6} radius='xl' />
+                        <Skeleton height={8} mt={6} width='70%' radius='xl' />
+                        <Skeleton height={8} mt={6} width='30%' radius='xl' />
+                    </Stack>
+                </Group>
+            ))}
+        </SimpleGrid>
+    )
+}
 function GridLiterary() {
     const router = useRouter()
     const query = '&limit=4&' + router.asPath.split('?')[1]
@@ -19,6 +52,7 @@ function GridLiterary() {
             },
         })
     }
+
     if (router.query.tag) return <Title order={3}>Không có tác phẩm cho hashtag: {"'#" + router.query.tag + "'"}</Title>
     return (
         <Stack>
@@ -54,6 +88,7 @@ function GridLiterary() {
                     label='Thể Loại'></Select>
             </Group>
             <Grid>
+                {!literaries[0]?.literaryId && <GridLiterarySkeleton smScreen={smScreen} />}
                 {literaries?.map((item, index) => (
                     <Grid.Col md={6} key={index} p={smScreen ? '0 22px 22px 0' : '0 42px 42px 0'}>
                         <LiteraryContainer index={index} showContent={true} literary={item} />

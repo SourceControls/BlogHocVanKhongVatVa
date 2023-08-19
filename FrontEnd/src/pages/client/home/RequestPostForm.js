@@ -5,7 +5,6 @@ import {useForm} from '@mantine/form'
 import {useSettings, requestPost} from '@util'
 function RequestPostForm({close}) {
     const {settings, isLoading} = useSettings()
-
     const form = useForm({
         initialValues: {
             title: 'Phân tích Mị trong đêm tình mùa xuân và đêm đông cứu A Phủ',

@@ -17,10 +17,6 @@ function Posts() {
     const [modalContent, setModalContent] = useState(<MyEditor close={close} />)
     const {posts, isLoading, size, setSize, mutate} = usePosts('&limit=6&' + router.asPath.split('?')[1], '/admin')
     const {users: authUsers} = useUsers('', '/profile')
-    // const {users} = useUsers(
-    //     authUsers[0]?.role && authUsers[0]?.role === 'CONTRIBUTOR' ? '' : '&limit=0&role=NOTVIEWER',
-    //     authUsers[0]?.role && authUsers[0]?.role === 'CONTRIBUTOR' ? '/profile' : '',
-    // )
 
     const changeQuery = (key, value) => {
         router.push({

@@ -98,7 +98,6 @@ export class PostController {
     @Query('sortBy') sortBy?: string,
   ) {
     // console.log(request.headers.referer);  //http://localhost:3001/home
-
     //call from admin page, result depend on authUser
     //contributor chỉ được thấy bài của mình
     if (req['authUser'].role === 'CONTRIBUTOR') {

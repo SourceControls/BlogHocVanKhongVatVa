@@ -15,14 +15,13 @@ export function useProfile(query, slug = '') {
     }
 }
 
+// lấy danh sách post
 export function usePosts(query, slug = '') {
     const {data, error, isLoading, size, setSize, mutate} = useSWRInfinite(
         (index) => `/api/post${slug}?page=${index + 1}` + query,
         axios.get,
     )
-
     const posts = data ? [].concat(...data) : []
-
     return {
         posts,
         isLoading,

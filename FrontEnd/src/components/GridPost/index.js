@@ -8,6 +8,8 @@ import {
     Group,
     Image,
     LoadingOverlay,
+    SimpleGrid,
+    Skeleton,
     Stack,
     Text,
     Title,
@@ -21,11 +23,27 @@ import {Eye, Heart, ThumbUp} from 'tabler-icons-react'
 import {usePosts} from '@util'
 import {IconStarFilled} from '@tabler/icons-react'
 
+function GridPostSkeleton() {
+    return (
+        <SimpleGrid cols={3}>
+            {[1, 1, 1].map((e, i) => (
+                <Stack key={i}>
+                    <Skeleton height={220} mb='xl' radius='md' />
+                    <Skeleton height={16} radius='xl' />
+                    <Skeleton height={8} mt={6} radius='xl' />
+                    <Skeleton height={8} mt={6} width='70%' radius='xl' />
+                    <Skeleton height={8} mt={6} width='30%' radius='xl' />
+                </Stack>
+            ))}
+        </SimpleGrid>
+    )
+}
+
 export function GridPost({query, excludePostId}) {
     // const [page, setPage] = useState(1)
     const {posts, isLoading, size, setSize} = usePosts(query || '')
     const smScreen = useMediaQuery('(max-width: 48em)')
-    if (!posts[0]?.postId) return <LoadingOverlay />
+    if (!posts[0]?.postId) return <GridPostSkeleton />
     return (
         <>
             <Grid m={0}>
