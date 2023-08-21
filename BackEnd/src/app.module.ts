@@ -21,6 +21,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MailerService } from './mailer/mailer.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { join } from 'path';
     AdvertisementModule,
     SettingModule,
     ConfigModule.forRoot(),
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailerService],

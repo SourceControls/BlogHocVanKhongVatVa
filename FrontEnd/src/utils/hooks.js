@@ -31,6 +31,23 @@ export function usePosts(query, slug = '') {
         mutate,
     }
 }
+// lấy danh sách post
+export function useDashboard(year) {
+    const {data, error, isLoading, size, setSize, mutate} = useSWRInfinite(
+        (index) => `/api/dashboard?year=` + year,
+        axios.get,
+    )
+    const dashboard = data?.[0]
+    console.log(dashboard)
+    return {
+        dashboard,
+        isLoading,
+        isError: error,
+        size,
+        setSize,
+        mutate,
+    }
+}
 
 export function useLiteries(query, slug = '') {
     const {data, error, isLoading, size, setSize, mutate} = useSWRInfinite(

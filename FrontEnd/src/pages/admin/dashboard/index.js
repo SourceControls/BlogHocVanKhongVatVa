@@ -1,8 +1,8 @@
-import {AspectRatio, Box, Grid, Group, Paper, Stack, Text} from '@mantine/core'
+import {AspectRatio, Box, Grid, Group, LoadingOverlay, Paper, Stack, Text} from '@mantine/core'
 import {IconEye, IconMessage, IconNews, IconTag, IconThumbDown, IconThumbUp} from '@tabler/icons-react'
 import 'chart.js/auto'
 import {Bar, Chart, Line} from 'react-chartjs-2'
-import {usePosts} from '@util'
+import {usePosts, useDashboard} from '@util'
 import AuthGuard from '../AuthGuard'
 import Layout from '../Layout'
 import {useState} from 'react'
@@ -23,10 +23,10 @@ function PostStatus({title, data, icon, total}) {
                     <Chart
                         type='doughnut'
                         data={{
-                            labels: data.map((row) => row.type),
+                            labels: data.map((row) => row.status),
                             datasets: [
                                 {
-                                    data: data.map((row) => row.count),
+                                    data: data.map((row) => row._count),
                                 },
                             ],
                         }}></Chart>
@@ -68,11 +68,11 @@ function TopPost() {
                                     </Group>
                                     <Group spacing='xs'>
                                         <IconThumbUp />
-                                        <Text> {item.likeCount}</Text>
+                                        <Text> {item.like_Count}</Text>
                                     </Group>
                                     <Group spacing='xs'>
                                         <IconThumbDown />
-                                        <Text> {item.dislikeCount}</Text>
+                                        <Text> {item.dislike_Count}</Text>
                                     </Group>
                                 </Group>
                             </Text>
@@ -83,7 +83,7 @@ function TopPost() {
     )
 }
 
-function Interaction() {
+function Interaction({data}) {
     return (
         <Paper shadow='md' withBorder p='xl' radius='xl' h='100%' display='block'>
             <Stack>
@@ -93,31 +93,31 @@ function Interaction() {
                 <Group align='center'>
                     <IconEye />
                     <Text fw='bold' size='1.3rem'>
-                        {'634.2k'}
+                        {data.view > 1000 ? (data.view / 1000).toFixed(2) + 'k' : data.view}
                     </Text>
                 </Group>
                 <Group align='center'>
                     <IconThumbUp />
                     <Text fw='bold' size='1.3rem'>
-                        {'12.6k'}
+                        {data.likeCount > 1000 ? (data.likeCount / 1000).toFixed(2) + 'k' : data.likeCount}
                     </Text>
                 </Group>
                 <Group align='center'>
                     <IconThumbDown />
                     <Text fw='bold' size='1.3rem'>
-                        {924}
+                        {data.dislikeCount > 1000 ? (data.dislikeCount / 1000).toFixed(2) + 'k' : data.dislikeCount}
                     </Text>
                 </Group>
                 <Group align='center'>
                     <IconMessage />
                     <Text fw='bold' size='1.3rem'>
-                        {523}
+                        {data.comment > 1000 ? (data.comment / 1000).toFixed(2) + 'k' : data.comment}
                     </Text>
                 </Group>
                 <Group align='center'>
                     <IconTag />
                     <Text fw='bold' size='1.3rem'>
-                        {24}
+                        {data.tag > 1000 ? (data.tag / 1000).toFixed(2) + 'k' : data.tag}
                     </Text>
                 </Group>
             </Stack>
@@ -125,7 +125,7 @@ function Interaction() {
     )
 }
 
-function NewUser() {
+function NewUser({data}) {
     const [year, setYear] = useState(new Date().getFullYear())
     const options = {
         responsive: true,
@@ -154,12 +154,11 @@ function NewUser() {
         'Tháng 11',
         'Tháng 12',
     ]
-    const data = {
+    const chartData = {
         labels,
         datasets: [
             {
-                label: '',
-                data: labels.map(() => Math.round(Math.random() * 100)),
+                data,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
                 tension: 0.3,
@@ -170,12 +169,12 @@ function NewUser() {
     return (
         // <Box h='30vh'>
         <Stack>
-            <Line options={options} data={data} />
+            <Line options={options} data={chartData} />
         </Stack>
         // </Box>
     )
 }
-function UserRole() {
+function UserRole({data}) {
     const options = {
         responsive: true,
         aspectRatio: 1.4,
@@ -198,14 +197,14 @@ function UserRole() {
             },
         },
     }
-    const labels = ['Admin', 'Contributor', 'Viewer']
-    const data = {
+    const labels = data.map((e) => e.role)
+    const chartData = {
         labels,
         datasets: [
             {
                 // axis: 'y',
                 label: '',
-                data: [3, 6, 20],
+                data: data.map((e) => e._count),
                 borderWidth: 1,
             },
         ],
@@ -213,32 +212,25 @@ function UserRole() {
 
     return (
         // <Box h='30vh'>
-        <Bar options={options} data={data} />
+        <Bar options={options} data={chartData} />
         // </Box>
     )
 }
 function Dashboard() {
-    const postData = [
-        {type: 'Công khai', count: 40},
-        {type: 'Nháp', count: 10},
-        {type: 'Ẩn', count: 15},
-    ]
+    const {dashboard, isLoading} = useDashboard(new Date().getFullYear())
 
-    const userData = [
-        {type: 'Viewer', count: 512},
-        {type: 'Author', count: 12},
-    ]
+    if (isLoading || !dashboard?.user) return <LoadingOverlay visible />
     return (
         <AuthGuard allowedRoles={['ADMIN', 'SUPERADMIN']}>
             <Grid align='stretch'>
                 <Grid.Col span={7}>
                     <Paper shadow='md' withBorder p='xl' radius='xl' h='100%' display='block'>
-                        <NewUser />
+                        <NewUser data={dashboard.user.newRegister} />
                     </Paper>
                 </Grid.Col>
                 <Grid.Col span={5}>
                     <Paper shadow='md' withBorder p='xl' radius='xl' h='100%' display='block'>
-                        <UserRole />
+                        <UserRole data={dashboard.user.groupByRole} />
                     </Paper>
                 </Grid.Col>
                 <Grid.Col span={7}>
@@ -249,13 +241,13 @@ function Dashboard() {
                 <Grid.Col span={3}>
                     <PostStatus
                         title='Bài viết'
-                        data={postData}
-                        total={postData.reduce((a, b) => a + b.count, 0)}
+                        data={dashboard.post.classify}
+                        total={dashboard.post.classify.reduce((a, b) => a + b._count, 0)}
                         icon={<IconNews size='1.6rem' />}
                     />
                 </Grid.Col>
                 <Grid.Col span={2}>
-                    <Interaction />
+                    <Interaction data={dashboard.post.reaction} />
                 </Grid.Col>
             </Grid>
         </AuthGuard>

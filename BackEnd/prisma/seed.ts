@@ -18,6 +18,17 @@ const comments = [
   'Nhật vật chính là một nhân vật vô cùng thú vị và đáng yêu, tôi đã rơi vào câu chuyện của cô và không thể dứt ra khỏi.',
 ];
 
+function getRandomDateInCurrentYear() {
+  const currentYear = new Date().getFullYear();
+  const startOfYear = new Date(currentYear, 0, 1).getTime();
+  const endOfYear = new Date(currentYear + 1, 0, 1).getTime() - 1;
+
+  const randomTimestamp =
+    startOfYear + Math.random() * (endOfYear - startOfYear);
+  const randomDate = new Date(randomTimestamp);
+
+  return randomDate;
+}
 async function main() {
   // create two dummy articles
   await prisma.setting.deleteMany();
@@ -60,6 +71,25 @@ async function main() {
           '$2b$10$O/UxP2LOsMpGuPFc2DE0AeSiYFIVZ2e8GSzMDcUUAQtGhENhnXqxy',
       },
     ],
+  });
+  await prisma.user.createMany({
+    data: Array.from({ length: 100 }).map((e, i) => ({
+      userId: i + 3,
+      name: 'Tuấn Hùng ' + (i + 3),
+      slug: 'tuan-hung-' + (i + 3),
+      avatarImage:
+        'https://i.ibb.co/vP05vCF/d4b927049e2f8f0760239c475a9d200b-cleanup.png',
+      role:
+        Math.random() > 0.8
+          ? Math.random() > 0.8
+            ? 'ADMIN'
+            : 'CONTRIBUTOR'
+          : 'VIEWER',
+      status: Math.random() > 0.8 ? 'BANNED' : 'ACTIVE',
+      createdAt: getRandomDateInCurrentYear(),
+      email: i + 3 + 'tuanhung592001@gmail.com',
+      password: '$2b$10$O/UxP2LOsMpGuPFc2DE0AeSiYFIVZ2e8GSzMDcUUAQtGhENhnXqxy',
+    })),
   });
   await prisma.literary.createMany({
     data: [
@@ -632,7 +662,28 @@ Thời gian đầu, chị làm được tiền và gửi về cho anh Dậu. Nh�
       },
     ],
   });
-
+  await prisma.post.createMany({
+    data: Array.from({ length: 20 }).map((e, i) => ({
+      title: 'demo' + i,
+      summary: 'Demo',
+      slug: 'demo' + i,
+      htmlContent: ``,
+      featuredImage:
+        'https://vnkings.com/wp-content/uploads/2021/04/maxresdefault.jpg',
+      featured: Math.random() > 0.8,
+      status:
+        Math.random() > 0.5
+          ? Math.random() > 0.5
+            ? 'HIDE'
+            : 'PENDING'
+          : 'DRAFT',
+      view: Math.round(Math.random() * 10000),
+      likeCount: Math.round(Math.random() * 1000),
+      dislikeCount: Math.round(Math.random() * 100),
+      createdBy: 1,
+      literary: 1,
+    })),
+  });
   tmpArr.map(async (e, k) => {
     await prisma.comment.createMany({
       data: comments.map((cmt, i) => ({
