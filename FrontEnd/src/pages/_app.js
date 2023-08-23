@@ -5,6 +5,8 @@ import {style} from '@util'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {useSettings} from '@util'
+import {Analytics} from '@vercel/analytics/react'
+
 import Head from 'next/head'
 
 function EmptyLayout({children}) {
@@ -45,6 +47,7 @@ export default function MyApp({Component, pageProps}) {
             }
             <ToastContainer position='top-left' autoClose={3000} limit={3} />
             {/* <GlobalLoading /> */}
+            <Analytics />
         </>
     )
 }
