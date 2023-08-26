@@ -46,7 +46,6 @@ export default function MyApp({Component, pageProps}) {
                 </MantineProvider>
             }
             <ToastContainer position='top-left' autoClose={3000} limit={3} />
-            {/* <GlobalLoading /> */}
             <Analytics />
         </>
     )

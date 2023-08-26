@@ -23,7 +23,7 @@ function PostStatus({title, data, icon, total}) {
                     <Chart
                         type='doughnut'
                         data={{
-                            labels: data.map((row) => row.status),
+                            labels: ['Công khai', 'Nháp', 'Ẩn', 'Chờ Duyệt'],
                             datasets: [
                                 {
                                     data: data.map((row) => row._count),
@@ -197,7 +197,7 @@ function UserRole({data}) {
             },
         },
     }
-    const labels = data.map((e) => e.role)
+    const labels = ['QTV cao cấp', 'Quản trị viên', 'Cộng tác viên', 'Người xem']
     const chartData = {
         labels,
         datasets: [

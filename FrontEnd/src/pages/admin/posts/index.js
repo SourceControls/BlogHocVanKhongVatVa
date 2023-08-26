@@ -147,9 +147,11 @@ function Posts() {
                         </Group>
                     ))}
             </div>
-            <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
-                Xem thêm
-            </Button>
+            {posts.length != 0 && (
+                <Button mx='auto' display='block' px='xl' mt='xl' onClick={() => setSize(size + 1)}>
+                    Xem thêm
+                </Button>
+            )}
             <Modal
                 size={1300}
                 opened={opened}

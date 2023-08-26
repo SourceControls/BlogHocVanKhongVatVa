@@ -2,14 +2,12 @@
 @import url(https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500;600;700&display=swap);
 
 
-/* :root {} */
 
 * {
     box-sizing: border-box;
     font-size: 18px;
 }
 
-html {}
 
 body {
     background-color: var(--primary-color-0) !important;
@@ -38,9 +36,6 @@ a {
     text-align: justify;
 }
 
-/* img {
-    borderRadius: 8px !important;
-} */
 
 @media (max-width: 32em) {
     * {
