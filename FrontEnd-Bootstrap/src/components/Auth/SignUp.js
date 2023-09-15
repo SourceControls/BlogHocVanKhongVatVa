@@ -1,48 +1,65 @@
-import {Button, PasswordInput, Stack, TextInput} from '@mantine/core'
-import {useForm} from '@mantine/form'
 import {signUp} from '@util'
+import {useState} from 'react'
+import {Button, Form, Stack} from 'react-bootstrap'
+import {Controller, useForm} from 'react-hook-form'
 function SignUp() {
-    const form = useForm({
-        initialValues: {
+    const {
+        register,
+        handleSubmit,
+        formState: {errors},
+    } = useForm({
+        defaultValues: {
             name: 'Tuấn Hùng',
             email: 'hungbuituan1@gmail.com',
             password: '123456',
             confirmPassword: '123456',
         },
     })
-    const handleSignUp = () => {
-        signUp(form.values).then((rs) => {
+
+    const handleSignUp = (data) => {
+        signUp(data).then((rs) => {
             console.log(rs)
         })
     }
     return (
-        <form onSubmit={form.onSubmit(handleSignUp)}>
-            <Stack>
-                <TextInput {...form.getInputProps('name')} label='Họ Tên' placeholder='Nhập họ tên của bạn' required />
-                <TextInput
-                    {...form.getInputProps('email')}
-                    type='email'
-                    label='Email'
-                    placeholder='Nhập email của bạn'
-                    required
-                />
-                <PasswordInput
-                    {...form.getInputProps('password')}
-                    label='Mật khẩu'
-                    placeholder='Nhập mật khẩu'
-                    required
-                />
-                <PasswordInput
-                    {...form.getInputProps('confirmPassword')}
-                    label='Nhập lại mật khẩu'
-                    placeholder='Nhập lại mật khẩu'
-                    required
-                />
-                <Button type='submit' mx='auto' mt='lg'>
-                    Đăng Ký
+        <Form onSubmit={handleSubmit(handleSignUp)}>
+            <Stack gap={3}>
+                <Form.Group>
+                    <Form.Label>Họ Tên</Form.Label>
+                    <Form.Control placeholder='Nhập họ tên của bạn' />
+                </Form.Group>
+
+                <Form.Group controlId='formBasicEmail'>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        name='email'
+                        placeholder='Nhập email của bạn'
+                        {...register('email', {
+                            required: 'Email is required',
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: 'Invalid email address',
+                            },
+                        })}
+                    />
+                    {errors.email && <div className='text-danger'>{errors.email.message}</div>}
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Mật khẩu</Form.Label>
+                    <Form.Control name='password' type='password' placeholder='Nhập mật khẩu' />
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Nhập lại mật khẩu</Form.Label>
+                    <Form.Control name='confirm-password' type='password' placeholder='Nhập lại mật khẩu' />
+                </Form.Group>
+
+                <Button type='submit' className='mx-auto mt-3'>
+                    Xác Nhận
                 </Button>
             </Stack>
-        </form>
+        </Form>
     )
 }
 

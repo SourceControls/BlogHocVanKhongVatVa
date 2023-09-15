@@ -1,13 +1,20 @@
 import Link from 'next/link'
-import {ArrowBarToRight, Logout, MailOpened, User, UserCircle} from 'tabler-icons-react'
 import {Auth, FloatingLabelInput} from '@comp'
-import {useMediaQuery, useDisclosure} from '@mantine/hooks'
 import {useRouter} from 'next/router'
-import {IconHome, IconSearch, IconTrash} from '@tabler/icons-react'
+import {
+    IconArrowBarToRight,
+    IconLogout,
+    IconMailOpened,
+    IconUser,
+    IconHome,
+    IconUserCircle,
+    IconSearch,
+    IconTrash,
+} from '@tabler/icons-react'
 import {useState} from 'react'
 import {useSettings, useUsers, signOut} from '@util'
 import {toast} from 'react-toastify'
-import {Modal, Button, Dropdown, Stack, Image} from 'react-bootstrap'
+import {Modal, Button, Dropdown, Stack, Image, Container} from 'react-bootstrap'
 
 import ContributorForm from './ContributorForm'
 import ProfileForm from './ProfileForm'
@@ -16,7 +23,6 @@ function Header({categories, active, setActive}) {
     const [openedContributorForm, setOpenedContributorForm] = useState(false)
     const [openedProfileForm, setOpenedProfileForm] = useState(false)
     const [searchKey, setSearchKey] = useState('')
-    const smScreen = useMediaQuery('(max-width: 48em)')
     const {settings, isLoading} = useSettings()
     const {users, mutate: userMutate} = useUsers('', '/profile')
     const closeAuthForm = () => {
@@ -27,16 +33,13 @@ function Header({categories, active, setActive}) {
     if (!settings[0]) return <></>
     return (
         <>
-            <header className='shadow sticky-top init-bg'>
-                <div className='container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between '>
+            <header className='shadow sticky-top init-bg  py-2'>
+                <Container className='d-flex flex-wrap align-items-center justify-content-between '>
                     <Link href='/home' onClick={() => setActive(undefined)}>
-                        {smScreen ? (
-                            <IconHome size={'2.5rem'} color='var(--primary-color-6)' />
-                        ) : (
-                            <Image width='200px' src={settings[1].logo} alt='' />
-                        )}
+                        <IconHome className='d-md-none color-6' size={'2rem'} />
+                        <Image width='200px' className='d-none d-md-block' src={settings[1].logo} alt='' />
                     </Link>
-                    <div className='position-relative'>
+                    <div className='position-relative' style={{width: '30%', minWidth: '300px'}}>
                         <FloatingLabelInput
                             placeholder='Nhập #hashtag,tác phẩm...'
                             label='Tìm kiếm'
@@ -54,15 +57,18 @@ function Header({categories, active, setActive}) {
                                 }
                             }}
                         />
-                        <button
-                            className='btn btn-primary position-absolute top-0 end-0 bg-transparent border-0 color-4'
-                            onClick={() => {
-                                searchKey.includes('#')
-                                    ? router.push('/search?type=post&tag=' + searchKey.replace('#', ''))
-                                    : router.push('/search?key=' + searchKey)
-                            }}>
-                            <i class='fas fa-arrow-right'></i>
-                        </button>
+
+                        {searchKey && (
+                            <i
+                                className='fas fa-arrow-right position-absolute color-5'
+                                role='button'
+                                style={{top: '.6rem', right: '0.5rem'}}
+                                onClick={() => {
+                                    searchKey.includes('#')
+                                        ? router.push('/search?type=post&tag=' + searchKey.replace('#', ''))
+                                        : router.push('/search?key=' + searchKey)
+                                }}></i>
+                        )}
                     </div>
                     {users[0]?.userId ? (
                         <div>
@@ -78,14 +84,14 @@ function Header({categories, active, setActive}) {
                                     <Dropdown.Item
                                         className='d-flex align-items-center'
                                         onClick={() => setOpenedProfileForm(true)}>
-                                        <User className='me-2' size='1.2rem' />
+                                        <IconUser className='me-2' size='1.2rem' />
                                         Tài khoản
                                     </Dropdown.Item>
                                     {users[0].role !== 'VIEWER' && (
                                         <Dropdown.Item
                                             className='d-flex align-items-center'
                                             onClick={() => router.push('/admin/posts')}>
-                                            <ArrowBarToRight className='me-2' size='1.2rem' />
+                                            <IconArrowBarToRight className='me-2' size='1.2rem' />
                                             Đến trang quản lý
                                         </Dropdown.Item>
                                     )}
@@ -93,7 +99,7 @@ function Header({categories, active, setActive}) {
                                         <Dropdown.Item
                                             className='d-flex align-items-center'
                                             onClick={() => setOpenedContributorForm(true)}>
-                                            <MailOpened className='me-2' size='1.2rem' />
+                                            <IconMailOpened className='me-2' size='1.2rem' />
                                             Trở thành cộng tác viên
                                         </Dropdown.Item>
                                     )}
@@ -104,7 +110,7 @@ function Header({categories, active, setActive}) {
                                             await signOut()
                                             userMutate([], false)
                                         }}>
-                                        <Logout className='me-2' size='1.2rem' />
+                                        <IconLogout className='me-2' size='1.2rem' />
                                         Đăng xuất
                                     </Dropdown.Item>
                                     <Dropdown.Divider />
@@ -119,24 +125,28 @@ function Header({categories, active, setActive}) {
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>
-                    ) : smScreen ? (
-                        <Button onClick={() => router.push(router.asPath + '#signIn')}>
-                            <UserCircle />
-                        </Button>
                     ) : (
-                        <div>
-                            <Button variant='primary' onClick={() => router.push(router.asPath + '#signIn')}>
-                                Đăng nhập
-                            </Button>
-                            <Button
-                                variant='link'
-                                className='ms-3'
-                                onClick={() => router.push(router.asPath + '#signUp')}>
-                                Đăng kí
-                            </Button>
-                        </div>
+                        <>
+                            <IconUserCircle
+                                className='d-md-none color-6'
+                                role='button'
+                                onClick={() => router.push(router.asPath + '#signIn')}
+                                size={'2rem'}
+                            />
+                            <div className='d-none d-md-block'>
+                                <Button variant='primary' onClick={() => router.push(router.asPath + '#signIn')}>
+                                    Đăng nhập
+                                </Button>
+                                <Button
+                                    variant='link'
+                                    className='ms-3'
+                                    onClick={() => router.push(router.asPath + '#signUp')}>
+                                    Đăng kí
+                                </Button>
+                            </div>
+                        </>
                     )}
-                </div>
+                </Container>
             </header>
             <Modal
                 scrollable

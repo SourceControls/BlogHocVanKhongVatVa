@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "@api/*": ["./src/pages/api/*"],
+            "@util": ["./src/utils/index.js"],
+            "@comp": ["./src/components/index.js"]
+        }
+    }
+}

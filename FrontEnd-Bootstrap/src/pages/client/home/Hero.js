@@ -1,4 +1,4 @@
-import {MailForward} from 'tabler-icons-react'
+import {IconMailForward} from '@tabler/icons-react'
 import RequestPostForm from './RequestPostForm'
 import {useSettings, useUsers} from '@util'
 import {useRouter} from 'next/router'
@@ -19,13 +19,12 @@ function Hero() {
                             <h1 className='fw-bold'>{settings[1].homeHeroTitle} </h1>
                             <h6>{settings[1].homeHeroSubtitle}</h6>
                             <p className='h2 fw-bold'>Bạn cần gấp?</p>
-                            <Button
-                                className='w-50 d-flex align-items-center'
-                                variant='outline-primary'
+                            <button
+                                className='btn btn-secondary w-50 d-flex justify-content-center align-items-center'
                                 onClick={() => setOpenedRequireLoginDialog(true)}>
-                                <MailForward className='me-2' />
                                 Liên Hệ Với Chúng Tôi
-                            </Button>
+                                <IconMailForward className='ms-2' />
+                            </button>
                         </Stack>
                     </Col>
                     <Col className='d-none d-md-block'>

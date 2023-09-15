@@ -1,10 +1,9 @@
 import {useRouter} from 'next/router'
-import {Box, Tabs} from '@mantine/core'
-import {Adverting} from '@comp'
 import Layout from '../Layout'
-import GridLiterary from './GridLiterary'
-import GridPostWithFilter from './GridPostWithFilter'
+import GridLiterary from './LiterariesTab'
+import PostsTab from './PostsTab'
 import {toast} from 'react-toastify'
+import {Nav} from 'react-bootstrap'
 function SearchPage({heading}) {
     const router = useRouter()
     const handleQuery = (type) => {
@@ -19,30 +18,30 @@ function SearchPage({heading}) {
     }
     if (!router.query.type) handleQuery('literary')
     return (
-        <>
-            <Adverting position='SEARCH' mt='xl' />
-            <Box pt='48px' px='md'>
-                <Tabs value={router.query?.type} pb='xl'>
-                    <Tabs.List mb='md'>
-                        <Tabs.Tab value='literary' onClick={() => handleQuery('literary')}>
-                            Tác phẩm
-                        </Tabs.Tab>
-                        <Tabs.Tab value='post' onClick={() => handleQuery('post')}>
-                            Bài Viết
-                        </Tabs.Tab>
-                        <Tabs.Tab
-                            value='user'
-                            onClick={async () => {
-                                toast.info('Coming soon')
-                            }}>
-                            Người Dùng
-                        </Tabs.Tab>
-                    </Tabs.List>
-                    <Tabs.Panel value='literary'>{router.query.type == 'literary' && <GridLiterary />}</Tabs.Panel>
-                    <Tabs.Panel value='post'>{router.query.type == 'post' && <GridPostWithFilter />}</Tabs.Panel>
-                </Tabs>
-            </Box>
-        </>
+        <div className='pt-5 px-3'>
+            <Nav justify variant='tabs' activeKey={router.query?.type} className='mb-4 w-50'>
+                <Nav.Item>
+                    <Nav.Link onClick={() => handleQuery('literary')} eventKey='literary'>
+                        Tác phẩm
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link onClick={() => handleQuery('post')} eventKey='post'>
+                        Bài Viết
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        onClick={async () => {
+                            toast.info('Coming soon')
+                        }}>
+                        Người Dùng
+                    </Nav.Link>
+                </Nav.Item>
+            </Nav>
+            <div value='literary'>{router.query.type == 'literary' && <GridLiterary />}</div>
+            <div value='post'>{router.query.type == 'post' && <PostsTab />}</div>
+        </div>
     )
 }
 SearchPage.Layout = Layout

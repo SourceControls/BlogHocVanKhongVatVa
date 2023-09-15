@@ -1,5 +1,3 @@
-import './globalStyle.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import {LoadingOverlay, MantineProvider} from '@mantine/core'
 import {useEffect} from 'react'
@@ -7,10 +5,10 @@ import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {useSettings} from '@util'
 import {Analytics} from '@vercel/analytics/react'
-import 'bootstrap/dist/css/bootstrap.min.css'
-
 import Head from 'next/head'
-
+import dynamic from 'next/dynamic'
+import Script from 'next/script'
+import '../assets/css/main.css'
 function EmptyLayout({children}) {
     return <>{children}</>
 }
@@ -36,6 +34,11 @@ export default function MyApp({Component, pageProps}) {
             <Head>
                 <title>{settings[1]?.webTitle}</title>
             </Head>
+            <Script
+                src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'
+                integrity='sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW'
+                crossOrigin='anonymous'
+            />
             {
                 <Layout>
                     <Component {...pageProps} />

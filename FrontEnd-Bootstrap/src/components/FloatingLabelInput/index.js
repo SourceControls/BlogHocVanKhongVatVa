@@ -1,61 +1,42 @@
 import {useState} from 'react'
-import {TextInput, createStyles, rem} from '@mantine/core'
-
-const useStyles = createStyles((theme, {floating}) => ({
-    root: {
-        position: 'relative',
-        borderBottom: '2px solid var(--primary-color-5)',
-    },
-
-    label: {
-        position: 'absolute',
-        zIndex: 2,
-        top: rem(11),
-        left: '40px',
-        pointerEvents: 'none',
-        color: floating
-            ? theme.colorScheme === 'dark'
-                ? theme.white
-                : theme.black
-            : theme.colorScheme === 'dark'
-            ? theme.colors.dark[3]
-            : theme.colors.gray[5],
-        transition: 'transform 150ms ease, color 150ms ease, font-size 150ms ease',
-        transform: floating ? `translate(-40px, ${rem(-20)})` : 'none',
-        fontSize: floating ? theme.fontSizes.xs : theme.fontSizes.sm,
-        fontWeight: floating ? 500 : 400,
-    },
-
-    required: {
-        transition: 'opacity 150ms ease',
-        opacity: floating ? 1 : 0,
-    },
-
-    input: {
-        border: 'none',
-        '&::placeholder': {
-            transition: 'color 150ms ease',
-            color: !floating ? 'transparent' : undefined,
-        },
-    },
-}))
 
 export function FloatingLabelInput(props) {
     const [focused, setFocused] = useState(false)
     const [value, setValue] = useState('')
-    const {classes} = useStyles({floating: value.trim().length !== 0 || focused})
-    {
-    }
+    const floating = value.trim().length !== 0 || focused
     return (
-        <TextInput
-            {...props}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            classNames={classes}
-            onChange={(e) => {
-                setValue(e.target.value)
-                props.onChange && props.onChange(e)
-            }}
-        />
+        <div style={{position: 'relative', borderBottom: '2px solid var(--primary-color-5)'}}>
+            <div
+                className={'position-absolute top-50 ' + (floating ? 'color-5' : 'color-2')}
+                style={{transform: 'translateY(-50%)', left: '0.2rem'}}>
+                {props.icon}
+            </div>
+            <label
+                style={{
+                    position: 'absolute',
+                    zIndex: 2,
+                    top: '50%',
+                    left: '40px',
+                    pointerEvents: 'none',
+                    transition: 'transform 150ms ease, color 150ms ease, font-size 150ms ease',
+                    transform: floating ? `translate(-2rem,-150%)` : 'translateY(-50%)',
+                    fontSize: floating ? '.8rem' : '1rem',
+                    fontWeight: floating ? 500 : 300,
+                }}>
+                {props.label}
+            </label>
+            <input
+                className='border-0 bg-transparent rounded-pill py-1 outline-none'
+                style={{paddingLeft: '2rem'}}
+                {...props}
+                placeholder={floating ? props.placeholder : ''}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                onChange={(e) => {
+                    setValue(e.target.value)
+                    props.onChange && props.onChange(e)
+                }}
+            />
+        </div>
     )
 }

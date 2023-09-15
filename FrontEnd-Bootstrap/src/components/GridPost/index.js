@@ -1,31 +1,35 @@
 import {ExtraInfo} from '@comp'
-import {useMediaQuery} from '@mantine/hooks'
 
 import Link from 'next/link'
-import {Eye, Heart, ThumbUp} from 'tabler-icons-react'
 import {usePosts, formatDate} from '@util'
-import {IconStarFilled} from '@tabler/icons-react'
+import {IconEye, IconHeart, IconThumbUp, IconStarFilled} from '@tabler/icons-react'
 import {Button, Col, Container, OverlayTrigger, Ratio, Row, Stack, Tooltip} from 'react-bootstrap'
 
 function GridPostSkeleton() {
-    // <SimpleGrid cols={3}>
-    //     {[1, 1, 1].map((e, i) => (
-    //         <Stack key={i}>
-    //             <Skeleton height={220} mb='xl' radius='md' />
-    //             <Skeleton height={16} radius='xl' />
-    //             <Skeleton height={8} mt={6} radius='xl' />
-    //             <Skeleton height={8} mt={6} width='70%' radius='xl' />
-    //             <Skeleton height={8} mt={6} width='30%' radius='xl' />
-    //         </Stack>
-    //     ))}
-    // </SimpleGrid>
-    return <></>
+    return (
+        <Container>
+            <Row>
+                {[1, 1, 1].map((e, i) => (
+                    <Col key={i}>
+                        <Stack gap={2}>
+                            <div className='animated-skeleton mb-3 rounded-3' style={{height: '220px'}} />
+                            <div className='animated-skeleton rounded-3 mb-2' style={{height: '20px'}} />
+                            <div className='animated-skeleton rounded-3 mb-1' style={{height: '10px'}} />
+                            <div className='animated-skeleton rounded-3 mb-1' style={{height: '10px'}} />
+                            <div className='animated-skeleton rounded-3 mb-1 w-75' style={{height: '10px'}} />
+                            <div className='animated-skeleton rounded-3 mb-1 w-75' style={{height: '10px'}} />
+                            <div className='animated-skeleton rounded-3 mb-1 w-25' style={{height: '10px'}} />
+                        </Stack>
+                    </Col>
+                ))}
+            </Row>
+        </Container>
+    )
 }
 
 export function GridPost({query, excludePostId}) {
     // const [page, setPage] = useState(1)
     const {posts, isLoading, size, setSize} = usePosts(query || '')
-    const smScreen = useMediaQuery('(max-width: 48em)')
     if (!posts[0]?.postId) return <GridPostSkeleton />
     return (
         <>
@@ -64,11 +68,11 @@ export function GridPost({query, excludePostId}) {
                                         </div>
                                         <div className='d-flex algin-items-center '>
                                             <div className='d-flex algin-items-center'>
-                                                <Eye className='me-2 text-muted' />
+                                                <IconEye className='me-2 text-muted' />
                                                 <p className='text-muted'>{item.view}</p>
                                             </div>
                                             <div className='d-flex algin-items-center ms-3'>
-                                                <ThumbUp className='me-2 text-muted' />
+                                                <IconThumbUp className='me-2 text-muted' />
                                                 <p className='text-muted'>{item.likeCount}</p>
                                             </div>
                                         </div>
@@ -79,8 +83,9 @@ export function GridPost({query, excludePostId}) {
                     })}
                 </Row>
             </Container>
-            <Button w='200px' mt='xl' mx='auto' variant='outline' onClick={() => setSize(size + 1)}>
-                Xem Thêm
+
+            <Button variant='primary mx-auto mt-5' onClick={() => setSize(size + 1)}>
+                Xem thêm
             </Button>
         </>
     )

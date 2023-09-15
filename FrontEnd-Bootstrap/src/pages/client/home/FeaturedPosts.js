@@ -1,15 +1,13 @@
 import {usePosts, formatDate} from '@util'
 import Link from 'next/link'
-import {Eye, ThumbUp} from 'tabler-icons-react'
 import {useState} from 'react'
-import {IconStarFilled} from '@tabler/icons-react'
+import {IconEye, IconThumbUp, IconStarFilled} from '@tabler/icons-react'
 import {Button, OverlayTrigger, Ratio, Stack, Tooltip} from 'react-bootstrap'
-import {LoadingOverlay} from '@mantine/core'
 
 export default function FeaturedPosts() {
     const [page, setPage] = useState(1)
     const {posts, isLoading, size, setSize} = usePosts(`&featured=true&status=published`)
-    if (!posts[0]?.postId) return <LoadingOverlay />
+    if (!posts[0]?.postId) return <></>
     return (
         <>
             <>
@@ -48,11 +46,11 @@ export default function FeaturedPosts() {
                                         </div>
                                         <div className='d-flex algin-items-center '>
                                             <div className='d-flex algin-items-center'>
-                                                <Eye className='me-2 text-muted' />
+                                                <IconEye className='me-2 text-muted' />
                                                 <p className='text-muted'>{item.view}</p>
                                             </div>
                                             <div className='d-flex algin-items-center ms-3'>
-                                                <ThumbUp className='me-2 text-muted' />
+                                                <IconThumbUp className='me-2 text-muted' />
                                                 <p className='text-muted'>{item.likeCount}</p>
                                             </div>
                                         </div>
@@ -62,8 +60,8 @@ export default function FeaturedPosts() {
                         )
                     })}
             </>
-            <Button w='200px' mt='xl' mx='auto' variant='outline' onClick={() => setSize(size + 1)}>
-                Xem Thêm
+            <Button variant='primary mx-auto mt-3' onClick={() => setSize(size + 1)}>
+                Xem thêm
             </Button>
         </>
     )

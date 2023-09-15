@@ -1,18 +1,17 @@
-import {LoadingOverlay, Stack} from '@mantine/core'
-import {Section, GridPost, FeaturedLiterary, Decorate, Adverting} from '@comp'
-import {usePosts} from '@util'
+import {Section, GridPost, AnimatedDivider} from '@comp'
+import {Stack} from 'react-bootstrap'
 import Layout from '../Layout'
 import FeaturedPosts from './FeaturedPosts'
 import Hero from './Hero'
+import FeaturedLiterary from './FeaturedLiterary'
 function Home() {
     return (
-        <Stack pt='xl'>
+        <Stack>
             <Hero></Hero>
-            <Decorate />
+            <AnimatedDivider />
             <Section title='Tác Phẩm Tiêu Biểu' titlePosition='center'>
                 <FeaturedLiterary />
             </Section>
-            <Adverting position='HOME' mb='md' />
 
             <Section title='Bài Viết Nổi Bật'>
                 <FeaturedPosts />

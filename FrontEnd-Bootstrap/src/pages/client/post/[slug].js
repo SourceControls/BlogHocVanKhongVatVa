@@ -1,12 +1,12 @@
-import Postcontent from './PostContent'
-import PostAction from './PostAction'
+import Content from './Content'
+import Actions from './Actions'
 import Layout from '../Layout'
 import {GridPost, Section, Adverting} from '@comp'
-import PostHeader from './PostHeader'
-import CommentSection from './CommentSection'
+import Header from './Header'
+import Comments from './Comments'
 import {usePosts, countPostView, getPostsSSR, useSettings} from '@util'
 import {useRouter} from 'next/router'
-import ViewCountTracker from './ViewCountTracker'
+import ViewTracker from './ViewTracker'
 import {useState} from 'react'
 import Head from 'next/head'
 import {Container, Col, Row, Stack} from 'react-bootstrap'
@@ -29,34 +29,27 @@ function Post({post}) {
             <Head>
                 <title>{post.title}</title>
             </Head>
-            <Adverting position='READ' my='md' />
-            {/* <Box pos='relative'>
-                <AspectRatio ratio={5 / 2} maw={800} w='100%' mx='auto'>
-                    <img style={{objectFit: 'contain'}} src={settings[1]?.readPostCover || post.featuredImage} alt='' />
-                </AspectRatio>
-            </Box> */}
+
             <Container className='my-5'>
                 <Row className='gy-3 mb-4'>
                     <Col xs={2} className='d-none d-md-block'>
-                        {relevantPost[0]?.postId && <PostAction post={relevantPost[0]} mutate={mutate} />}
+                        {relevantPost[0]?.postId && <Actions post={relevantPost[0]} mutate={mutate} />}
                     </Col>
                     <Col xs={12} md={8}>
-                        <PostHeader post={post} />
-                        <Postcontent post={post} />
+                        <Header post={post} />
+                        <Content post={post} />
                         {!viewed && (
-                            <ViewCountTracker postId={relevantPost[0]?.postId} onComponentInView={handleCountView} />
+                            <ViewTracker postId={relevantPost[0]?.postId} onComponentInView={handleCountView} />
                         )}
                     </Col>
                     <Col xs={12} md={2} className='d-block d-md-none'>
-                        {relevantPost[0]?.postId && (
-                            <PostAction post={relevantPost[0]} direction='row' mutate={mutate} />
-                        )}
+                        {relevantPost[0]?.postId && <Actions post={relevantPost[0]} mutate={mutate} />}
                     </Col>
                 </Row>
                 <Row className='justify-content-center'>
                     <Col md={8}>
                         <Section title='Bình Luận'>
-                            <CommentSection />
+                            <Comments />
                         </Section>
                     </Col>
                 </Row>
