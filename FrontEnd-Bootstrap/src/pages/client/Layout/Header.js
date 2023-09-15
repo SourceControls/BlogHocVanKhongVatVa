@@ -15,9 +15,7 @@ import {useState} from 'react'
 import {useSettings, useUsers, signOut} from '@util'
 import {toast} from 'react-toastify'
 import {Modal, Button, Dropdown, Stack, Image, Container} from 'react-bootstrap'
-
 import ContributorForm from './ContributorForm'
-import ProfileForm from './ProfileForm'
 function Header({categories, active, setActive}) {
     const router = useRouter()
     const [openedContributorForm, setOpenedContributorForm] = useState(false)
@@ -161,12 +159,6 @@ function Header({categories, active, setActive}) {
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body>
                     <ContributorForm close={() => setOpenedContributorForm(false)} />
-                </Modal.Body>
-            </Modal>
-            <Modal scrollable show={openedProfileForm} onHide={() => setOpenedProfileForm(false)}>
-                <Modal.Header closeButton></Modal.Header>
-                <Modal.Body>
-                    <ProfileForm close={() => setOpenedProfileForm(false)} />
                 </Modal.Body>
             </Modal>
         </>

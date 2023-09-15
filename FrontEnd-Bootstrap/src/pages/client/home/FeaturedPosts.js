@@ -14,7 +14,7 @@ export default function FeaturedPosts() {
                 {posts &&
                     posts.map((item, index) => {
                         return (
-                            <Link href={'/post/' + item.slug} className='hover-shadow rounded-5 p-4'>
+                            <Link href={'/post/' + item.slug} className='hover-shadow rounded-5 p-4' key={index}>
                                 <Stack gap='3' className={index % 2 == 0 ? 'flex-lg-row' : 'flex-lg-row-reverse'}>
                                     <Ratio
                                         aspectRatio='16x9'

@@ -2,7 +2,6 @@ import {useState} from 'react'
 import {AnimatedDivider} from '@comp'
 import Footer from './Footer'
 import Header from './Header'
-import CustomAffix from './CustomAffix'
 function Layout({children}) {
     const [active, setActive] = useState()
 
@@ -14,7 +13,6 @@ function Layout({children}) {
                 <AnimatedDivider />
             </main>
             <Footer></Footer>
-            <CustomAffix />
         </>
     )
 }

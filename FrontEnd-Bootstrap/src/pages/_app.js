@@ -1,12 +1,9 @@
 import '@fortawesome/fontawesome-free/css/all.min.css'
-import {LoadingOverlay, MantineProvider} from '@mantine/core'
 import {useEffect} from 'react'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {useSettings} from '@util'
-import {Analytics} from '@vercel/analytics/react'
 import Head from 'next/head'
-import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import '../assets/css/main.css'
 function EmptyLayout({children}) {
@@ -28,7 +25,7 @@ export default function MyApp({Component, pageProps}) {
     useEffect(() => {
         initWebInfo(settings[1]?.favIcon)
     }, [settings[1]?.favIcon])
-    if (!settings[1]) return <LoadingOverlay visible />
+    if (!settings[1]) return <></>
     return (
         <>
             <Head>
@@ -45,7 +42,6 @@ export default function MyApp({Component, pageProps}) {
                 </Layout>
             }
             <ToastContainer position='top-left' autoClose={3000} limit={3} />
-            <Analytics />
         </>
     )
 }

@@ -26,8 +26,8 @@ export function FloatingLabelInput(props) {
                 {props.label}
             </label>
             <input
-                className='border-0 bg-transparent rounded-pill py-1 outline-none'
-                style={{paddingLeft: '2rem'}}
+                className='bg-transparent rounded-pill py-1 outline-none'
+                style={{paddingLeft: '2rem', border: 'none', outline: 'none', width: '85%'}}
                 {...props}
                 placeholder={floating ? props.placeholder : ''}
                 onFocus={() => setFocused(true)}
